@@ -242,6 +242,8 @@ function ViewPanelBreakdown( data:table )
 					kInstanceBuild.BuildingName:SetToolTipString( building.ToolTip);
 
 					kInstanceBuild.Icon:SetIcon( building.Icon );
+					kInstanceBuild.Icon:SetToolTipString( building.ToolTip);
+
 					local yieldString:string = "";
 					for _,kYield in ipairs(building.Yields) do
 						yieldString = yieldString .. GetYieldString(kYield.YieldType,kYield.YieldChange);
@@ -263,13 +265,14 @@ function ViewPanelBreakdown( data:table )
 		local kInstanceWonder:table = m_kWondersIM:GetInstance();
 		kInstanceWonder.WonderName:SetText( wonder.Name );
 		kInstanceWonder.WonderName:SetToolTipString(wonder.ToolTip);
-		
+
 		local yieldString:string = "";
 		for _,kYield in ipairs(wonder.Yields) do
 			yieldString = yieldString .. GetYieldString(kYield.YieldType,kYield.YieldChange);
 		end
 		kInstanceWonder.WonderYield:SetText( yieldString );
 		kInstanceWonder.Icon:SetIcon( wonder.Icon );
+		kInstanceWonder.Icon:SetToolTipString(wonder.ToolTip);
 	end
 
 	-- Add trading posts
