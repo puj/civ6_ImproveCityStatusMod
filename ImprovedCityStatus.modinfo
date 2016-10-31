@@ -7,7 +7,7 @@
 		<Authors>Van Taylor</Authors>
 	</Properties>
 	<Components>
-		<ImportFiles>
+		<ImportFiles id="CITY_IMPROVE_FILES">
 			<Items>
 				<File>UI/Panels/CityPanelOverview.lua</File>
 				<File>UI/Panels/CityPanelOverview.xml</File>
