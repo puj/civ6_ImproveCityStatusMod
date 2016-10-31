@@ -239,7 +239,8 @@ function ViewPanelBreakdown( data:table )
 						buildingName = buildingName .. "[ICON_Pillaged]";
 					end
 					kInstanceBuild.BuildingName:SetText( buildingName );
-					kInstanceBuild.BuildingName:SetToolTipString( building.ToolTip );
+					kInstanceBuild.BuildingName:SetToolTipString( building.ToolTip);
+
 					kInstanceBuild.Icon:SetIcon( building.Icon );
 					local yieldString:string = "";
 					for _,kYield in ipairs(building.Yields) do
@@ -262,6 +263,7 @@ function ViewPanelBreakdown( data:table )
 		local kInstanceWonder:table = m_kWondersIM:GetInstance();
 		kInstanceWonder.WonderName:SetText( wonder.Name );
 		kInstanceWonder.WonderName:SetToolTipString(wonder.ToolTip);
+		
 		local yieldString:string = "";
 		for _,kYield in ipairs(wonder.Yields) do
 			yieldString = yieldString .. GetYieldString(kYield.YieldType,kYield.YieldChange);
