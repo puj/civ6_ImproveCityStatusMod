@@ -9,17 +9,17 @@
 	<Components>
 		<ImportFiles>
 			<Items>
-				<File>CityPanel.xml</File>
-				<File>CityPanel.lua</File>
-				<File>CityPanelOverview.lua</File>
-				<File>CityPanelOverview.xml</File>
+				<File>UI/Panels/CityPanelOverview.lua</File>
+				<File>UI/Panels/CityPanelOverview.xml</File>
+				<File>UI/Panels/CityPanel.lua</File>
+				<File>UI/Panels/CityPanel.xml</File>
 			</Items>
 		</ImportFiles>
 	</Components>
 	<Files>
-		<File>CityPanel.lua</File>
-		<File>CityPanel.xml</File>
-		<File>CityPanelOverview.lua</File>
-		<File>CityPanelOverview.xml</File>
+		<File>UI/Panels/CityPanelOverview.lua</File>
+		<File>UI/Panels/CityPanelOverview.xml</File>
+		<File>UI/Panels/CityPanel.lua</File>
+		<File>UI/Panels/CityPanel.xml</File>
 	</Files>
 </Mod>
