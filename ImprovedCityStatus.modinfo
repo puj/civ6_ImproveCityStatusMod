@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Mod id="4becad48-4a0c-379a-5dd1-33d0c65a471d" version="0.01">
+	<Properties>
+		<Name>Improved City Status</Name>
+		<Teaser>See wonder details on hover</Teaser>
+		<Description>Makes information in city buildings view more helpful</Description>
+		<Authors>Van Taylor</Authors>
+	</Properties>
+	<Components>
+		<ImportFiles>
+			<Items>
+				<File>CityPanel.xml</File>
+				<File>CityPanel.lua</File>
+				<File>CityPanelOverview.lua</File>
+				<File>CityPanelOverview.xml</File>
+			</Items>
+		</ImportFiles>
+	</Components>
+	<Files>
+		<File>CityPanel.lua</File>
+		<File>CityPanel.xml</File>
+		<File>CityPanelOverview.lua</File>
+		<File>CityPanelOverview.xml</File>
+	</Files>
+</Mod>
