@@ -1,0 +1,27 @@
+WAR:
+==================================
+
+UI/PartialScreens/CityStates.lua:                               isAtWar                                 = pLocalPlayer:GetDiplomacy():IsAtWarWith( iPlayer ),
+
+UNIT COLOR:
+==================================
+
+ GetUnitFlag(UI.GetHeadSelectedUnit():GetOwner(),UI.GetHeadSelectedUnit():GetID()).m_Instance.FlagBaseDarken:SetColor(RGBAValuesToABGRHex(255,0,0,255))
+ GetUnitFlag(UI.GetHeadSelectedUnit():GetOwner(),UI.GetHeadSelectedUnit():GetID()).m_Instance.FlagBaseDarken:SetColor(RGBAValuesToABGRHex(0,0,0,255))
+ GetUnitFlag(UI.GetHeadSelectedUnit():GetOwner(),UI.GetHeadSelectedUnit():GetID()).m_Instance.FlagBaseDarken:SetColor(RGBAValuesToABGRHex(255,0,0,255))
+ GetUnitFlag(UI.GetHeadSelectedUnit():GetOwner(),UI.GetHeadSelectedUnit():GetID()).m_Instance.FlagBaseLighten:SetColor(RGBAValuesToABGRHex(255,0,0,255))
+ GetUnitFlag(UI.GetHeadSelectedUnit():GetOwner(),UI.GetHeadSelectedUnit():GetID()).m_Instance.FlagBaseLighten:SetColor(RGBAValuesToABGRHex(255,0,0,255))
+
+
+SET COLOR OF SPECIFIC PLAYER UNIT
+
+When you know the id
+
+GetUnitFlag(4, Players[4]:GetUnits():FindID(0):GetID()).m_Instance.FlagBaseDarken:SetColor(RGBAValuesToABGRHex(255,0,0,255))
+
+
+ ITERATE UNITS for player
+==================================
+print name and id of unit
+
+ for k,v in Players[4]:GetUnits():Members() do print(k.. " : "..v:GetName()) end
