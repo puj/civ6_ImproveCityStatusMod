@@ -122,7 +122,7 @@ hstructure UnitFlag
 
 	m_InstanceManager				: table;				-- The instance manager that made the control set.
     m_Instance						: table;				-- The instanced control set.
-    
+
 	m_cacheMilitaryFormation		: number;				-- Name of last military formation this flag was in.
     m_Type							: number;
 	m_Style							: number;
@@ -135,12 +135,12 @@ hstructure UnitFlag
 	m_OverrideDimmed				: boolean;
 	m_OverrideDim					: boolean;
 	m_FogState						: number;
-    
+
     m_Player						: table;
     m_UnitID						: number;		-- The unit ID.  Keeping just the ID, rather than a reference because there will be times when we need the value, but the unit instance will not exist.
 end
 
--- Create one instance of the meta object as a global variable with the same name as the data structure portion.  
+-- Create one instance of the meta object as a global variable with the same name as the data structure portion.
 -- This allows us to do a UnitFlag:new, so the naming looks consistent.
 UnitFlag = hmake UnitFlagMeta {};
 
@@ -172,15 +172,15 @@ function UnitFlag.new( self : UnitFlagMeta, playerID: number, unitID : number, f
 	if (m_UnitFlagInstances[playerID] == nil) then
 		m_UnitFlagInstances[playerID] = {};
 	end
-	
+
 	m_UnitFlagInstances[playerID][unitID] = o;
 end
 
 ------------------------------------------------------------------
 function UnitFlag.destroy( self : UnitFlag )
-    if ( self.m_InstanceManager ~= nil ) then           
+    if ( self.m_InstanceManager ~= nil ) then
         self:UpdateSelected( false );
-                        		    
+
 		if (self.m_Instance ~= nil) then
 			self.m_InstanceManager:ReleaseInstance( self.m_Instance );
 		end
@@ -219,7 +219,7 @@ function UnitFlag.Initialize( self : UnitFlag, playerID: number, unitID : number
 		self.m_IsDimmed = false;
 		self.m_OverrideDimmed = false;
 		self.m_FogState = 0;
-    
+
 		self.m_Player = Players[playerID];
 		self.m_UnitID = unitID;
 
@@ -252,7 +252,7 @@ function OnUnitFlagClick( playerID : number, unitID : number )
 	if m_isMapDeselectDisabled then
 		return;
 	end
-		
+
 	-- Only allow a unit selection when in one of the following modes:
 	local interfaceMode:number = UI.GetInterfaceMode();
 	if interfaceMode ~= InterfaceModeTypes.SELECTION and interfaceMode ~= InterfaceModeTypes.MAKE_TRADE_ROUTE and interfaceMode ~= InterfaceModeTypes.SPY_CHOOSE_MISSION and interfaceMode ~= InterfaceModeTypes.SPY_TRAVEL_TO_CITY and interfaceMode ~= InterfaceModeTypes.VIEW_MODAL_LENS then
@@ -281,8 +281,8 @@ function OnUnitFlagClick( playerID : number, unitID : number )
 			else
 				UnitManager.RequestOperation(pSelectedUnit, UnitOperationTypes.MOVE_TO, tParameters);
 			end
-		end		
-	else	
+		end
+	else
 		-- Player's unit; show info:
 		UI.DeselectAllUnits();
 		UI.DeselectAllCities();
@@ -297,31 +297,31 @@ function UnitFlag.SetInteractivity( self : UnitFlag )
     local localPlayerID :number = Game.GetLocalPlayer();
     local flagPlayerID	:number = self.m_Player:GetID();
 	local unitID		:number = self.m_UnitID;
-        			
+
 
     self.m_Instance.NormalButton:SetVoid1( flagPlayerID );
     self.m_Instance.NormalButton:SetVoid2( unitID );
     self.m_Instance.NormalButton:RegisterCallback( Mouse.eLClick, OnUnitFlagClick );
     -- self.m_Instance.NormalButton:RegisterCallback( Mouse.eMouseEnter, UnitFlagEnter );
     -- self.m_Instance.NormalButton:RegisterCallback( Mouse.eMouseExit, UnitFlagExit );
-            
+
     self.m_Instance.HealthBarButton:SetVoid1( flagPlayerID );
     self.m_Instance.HealthBarButton:SetVoid2( unitID );
     self.m_Instance.HealthBarButton:RegisterCallback( Mouse.eLClick, OnUnitFlagClick );
     -- self.m_Instance.HealthBarButton:RegisterCallback( Mouse.eMouseEnter, UnitFlagEnter );
-    -- self.m_Instance.HealthBarButton:RegisterCallback( Mouse.eMouseExit, UnitFlagExit );		
-		
+    -- self.m_Instance.HealthBarButton:RegisterCallback( Mouse.eMouseExit, UnitFlagExit );
+
 	-- Off of the root flag set callbacks to let other UI pieces know that it's focus.
 	-- This cannot be done on the buttons because enemy flags are disabled and some
 	-- UI (e.g., CombatPreview) may want to query this.
-	self.m_Instance.FlagRoot:RegisterMouseEnterCallback( 
+	self.m_Instance.FlagRoot:RegisterMouseEnterCallback(
 		function()
-			LuaEvents.UnitFlagManager_PointerEntered( flagPlayerID, unitID ); 
+			LuaEvents.UnitFlagManager_PointerEntered( flagPlayerID, unitID );
 		end );
-	
-	self.m_Instance.FlagRoot:RegisterMouseExitCallback(	 
-		function() 
-			LuaEvents.UnitFlagManager_PointerExited( flagPlayerID, unitID ); 
+
+	self.m_Instance.FlagRoot:RegisterMouseExitCallback(
+		function()
+			LuaEvents.UnitFlagManager_PointerExited( flagPlayerID, unitID );
 		end);
 
 end
@@ -342,6 +342,7 @@ function UnitFlag.UpdateStats( self : UnitFlag )
 		self:UpdateHealth();
 		self:UpdatePromotions();
 		self:UpdateAircraftCounter();
+		self:SetColor();
 	end
 end
 
@@ -410,7 +411,7 @@ function UnitFlag.UpdateAircraftCounter( self : UnitFlag )
 						scrollPanel:SetOffsetX(7);
 					end
 				end
-		
+
 				self.m_Instance.UnitListPopup:ReprocessAnchoring();
 				self.m_Instance.UnitListPopup:GetGrid():ReprocessAnchoring();
 			else
@@ -448,11 +449,24 @@ function UnitFlag.SetColor( self : UnitFlag )
 	local brighterFlagColor :number = DarkenLightenColor(primaryColor,90,255);
 	local brighterIconColor :number = DarkenLightenColor(secondaryColor,20,255);
 	local darkerIconColor	:number = DarkenLightenColor(secondaryColor,-30,255);
-        
+
+
+  -- War Check
+	local pUnit : table = self:GetUnit();
+	local localPlayer =  Players[Game.GetLocalPlayer()];
+	local ownerPlayer = pUnit:GetOwner();
+
+	local isAtWar = localPlayer:GetDiplomacy():IsAtWarWith( ownerPlayer );
+	if(isAtWar) then
+		self.m_Instance.FlagBaseDarken:SetColor( RGBAValuesToABGRHex(255,0,0,255) );
+	else
+		self.m_Instance.FlagBaseDarken:SetColor( darkerFlagColor );
+	end
+
+
 	self.m_Instance.FlagBase:SetColor( primaryColor );
 	self.m_Instance.UnitIcon:SetColor( brighterIconColor );
 	self.m_Instance.FlagBaseOutline:SetColor( primaryColor );
-	self.m_Instance.FlagBaseDarken:SetColor( darkerFlagColor );
 	self.m_Instance.FlagBaseLighten:SetColor( primaryColor );
 
 	self.m_Instance.FlagOver:SetColor( brighterFlagColor );
@@ -470,7 +484,7 @@ end
 
 ------------------------------------------------------------------
 -- Set the flag texture based on the unit's type
-function UnitFlag.SetFlagUnitEmblem( self : UnitFlag )      
+function UnitFlag.SetFlagUnitEmblem( self : UnitFlag )
 	local pUnit = self:GetUnit();
 	local iconInfo = "ICON_"..GameInfo.Units[pUnit:GetUnitType()].UnitType;
 	self.m_Instance.UnitIcon:SetIcon(iconInfo);
@@ -490,7 +504,7 @@ function UnitFlag.OverrideDimmed( self : UnitFlag, bOverride : boolean )
 	self.m_OverrideDimmed = bOverride;
     self:UpdateDimmedState();
 end
-     
+
 -----------------------------------------------------------------
 -- Set the flag's alpha state, based on the current dimming flags.
 function UnitFlag.UpdateDimmedState( self : UnitFlag )
@@ -500,7 +514,7 @@ function UnitFlag.UpdateDimmedState( self : UnitFlag )
         self.m_Instance.HealthBar:SetAlpha( 1.0 / ALPHA_DIM ); -- Health bar doesn't get dimmed, else it is too hard to see.
 	else
         self.m_Instance.FlagRoot:SetAlpha( 1.0 );
-        self.m_Instance.HealthBar:SetAlpha( 1.0 );            
+        self.m_Instance.HealthBar:SetAlpha( 1.0 );
     end
 end
 
@@ -516,7 +530,7 @@ function UnitFlag.SetFogState( self : UnitFlag, fogState : number )
     else
 		self:SetHide( false );
     end
-        
+
     self.m_FogState = fogState;
 end
 
@@ -541,17 +555,17 @@ end
 -- Update the flag's type.  This adjust the look of the flag based
 -- on the state of the unit.
 function UnitFlag.UpdateFlagType( self : UnitFlag )
-            
+
 	local pUnit = self:GetUnit();
     if pUnit == nil then
 		return;
-	end	
-	
+	end
+
     local textureName:string;
     local maskName:string;
-			
-	-- Make this more data driven.  It would be nice to have it so any state the unit could be in could have its own look.		
-    if( pUnit:IsEmbarked() ) then 
+
+	-- Make this more data driven.  It would be nice to have it so any state the unit could be in could have its own look.
+    if( pUnit:IsEmbarked() ) then
         textureName = TEXTURE_EMBARK;
         maskName	= TEXTURE_MASK_EMBARK;
     elseif( pUnit:GetFortifyTurns() > 0 ) then
@@ -573,8 +587,8 @@ function UnitFlag.UpdateFlagType( self : UnitFlag )
         textureName = TEXTURE_BASE;
         maskName	= TEXTURE_MASK_BASE;
     end
-             
-        
+
+
 	self.m_Instance.FlagBaseDarken:SetTexture( textureName );
 	self.m_Instance.FlagBaseLighten:SetTexture( textureName );
     self.m_Instance.FlagShadow:SetTexture( textureName );
@@ -589,7 +603,7 @@ function UnitFlag.UpdateFlagType( self : UnitFlag )
     self.m_Instance.HealthBarBG:SetTexture( textureName );
     --self.m_Instance.NormalAlphaAnim:SetTexture( textureName );
     --self.m_Instance.HealthBarAlphaAnim:SetTexture( textureName );
-        
+
    self.m_Instance.NormalScrollAnim:SetMask( maskName );
     --self.m_Instance.HealthBarScrollAnim:SetMask( maskName );
 end
@@ -597,15 +611,15 @@ end
 ------------------------------------------------------------------
 -- Update the health bar.
 function UnitFlag.UpdateHealth( self : UnitFlag )
-    
+
 	local pUnit = self:GetUnit();
     if pUnit == nil then
 		return;
-	end	
-			
+	end
+
     local healthPercent = 0;
 	local maxDamage = pUnit:GetMaxDamage();
-	if (maxDamage > 0) then		
+	if (maxDamage > 0) then
 		healthPercent = math.max( math.min( (maxDamage - pUnit:GetDamage()) / maxDamage, 1 ), 0 );
     end
 
@@ -615,16 +629,16 @@ function UnitFlag.UpdateHealth( self : UnitFlag )
         self.m_Instance.HealthBarBG:SetHide( false );
         self.m_Instance.HealthBar:SetHide( false );
         self.m_Instance.HealthBarButton:SetHide( false );
-                    
+
         -- hide the normal button
         self.m_Instance.NormalButton:SetHide( true );
-            
-        -- handle the selection indicator    
+
+        -- handle the selection indicator
         if ( self.m_IsSelected ) then
             self.m_Instance.NormalSelect:SetHide( true );
             self.m_Instance.HealthBarSelect:SetHide( false );
         end
-                    
+
         if ( healthPercent >= 0.8 ) then
             self.m_Instance.HealthBar:SetColor( COLOR_GREEN );
         elseif( healthPercent > 0.4 and healthPercent < .8) then
@@ -632,26 +646,26 @@ function UnitFlag.UpdateHealth( self : UnitFlag )
         else
             self.m_Instance.HealthBar:SetColor( COLOR_RED );
         end
-            
-    --------------------------------------------------------------------    
+
+    --------------------------------------------------------------------
     -- going to full health
     else
         self.m_Instance.HealthBar:SetColor( COLOR_GREEN );
-            
+
         -- hide the bar and the button anim
         self.m_Instance.HealthBarBG:SetHide( true );
         self.m_Instance.HealthBarButton:SetHide( true );
-        
+
         -- show the normal button
         self.m_Instance.NormalButton:SetHide( false );
-        
-        -- handle the selection indicator    
+
+        -- handle the selection indicator
         if ( self.m_IsSelected ) then
             self.m_Instance.NormalSelect:SetHide( false );
             self.m_Instance.HealthBarSelect:SetHide( true );
         end
     end
-        
+
     self.m_Instance.HealthBar:SetPercent( healthPercent );
 end
 
@@ -677,13 +691,13 @@ function UnitFlag.UpdateVisibility( self : UnitFlag )
 			end
 		else
 			-- Fade out (hide)
-			-- One case where a unit flag is first created, if this check isn't done 
+			-- One case where a unit flag is first created, if this check isn't done
 			-- it will pop into existance and then immediately fade out in the FOW.
 			if self.m_IsInitialized then
 				self.m_Instance.FlagRoot:RegisterEndCallback(function() self.m_Instance.Anchor:SetHide(not self.m_IsCurrentlyVisible); end);
 				self.m_Instance.FlagRoot:SetToEnd();
 				self.m_Instance.FlagRoot:Reverse();
-			else				
+			else
 				self.m_Instance.Anchor:SetHide(true);
 			end
 			self.m_Instance.Formation3:SetHide(true);
@@ -768,7 +782,7 @@ function UnitFlag.UpdateName( self : UnitFlag )
 				nameString = nameString .. TXT_UNITFLAG_FLEET_SUFFIX;
 			elseif (militaryFormation == MilitaryFormationTypes.ARMY_FORMATION) then
 				nameString = nameString .. TXT_UNITFLAG_ARMADA_SUFFIX;
-			end	
+			end
 		else
 			if (militaryFormation == MilitaryFormationTypes.CORPS_FORMATION) then
 				nameString = nameString .. TXT_UNITFLAG_CORPS_SUFFIX;
@@ -834,12 +848,12 @@ end
 -- The selection state has changed.
 function UnitFlag.UpdateSelected( self : UnitFlag, isSelected : boolean )
 	local pUnit : table = self:GetUnit();
-	
+
 	--local pPlayer : table = Players[Game.GetLocalPlayer()];
-	
+
 	if (pUnit ~= nil) then
         self.m_IsSelected = isSelected;
-        
+
         if( pUnit:GetDamage() == 0 ) then
             self.m_Instance.NormalSelect:SetHide( not self.m_IsSelected );
             self.m_Instance.HealthBarSelect:SetHide( true );
@@ -847,15 +861,15 @@ function UnitFlag.UpdateSelected( self : UnitFlag, isSelected : boolean )
             self.m_Instance.HealthBarSelect:SetHide( not self.m_IsSelected );
             self.m_Instance.NormalSelect:SetHide( true );
         end
-        
+
 		-- If selected, change our parent to the selection container so we are on top in the drawing order
        -- if( self.m_IsSelected ) then
        --     self.m_Instance.Anchor:ChangeParent( m_SelectedContainer );
        -- else
-			-- Re-attach back to the manager parent            			
-		--	self.m_Instance.Anchor:ChangeParent( self.m_InstanceManager.m_ParentControl );			            
+			-- Re-attach back to the manager parent
+		--	self.m_Instance.Anchor:ChangeParent( self.m_InstanceManager.m_ParentControl );
         --end
-        
+
         self:OverrideDimmed( self.m_IsSelected );
 
 	end
@@ -868,7 +882,7 @@ function UnitFlag.UpdatePosition( self : UnitFlag )
 	if (pUnit ~= nil) then
 		self:SetPosition( UI.GridToWorld( pUnit:GetX(), pUnit:GetY() ) );
 	end
-	
+
 	--local yOffset = 0;	--offset for 2D strategic view
 	--local zOffset = 0;	--offset for 3D world view
 	--
@@ -1040,7 +1054,7 @@ end
 
 ------------------------------------------------------------------
 function OnUnitRemovedFromMap( playerID: number, unitID : number )
-	
+
     local flagInstance:UnitFlag = GetUnitFlag( playerID, unitID );
 	if flagInstance ~= nil then
 		flagInstance:destroy();
@@ -1052,7 +1066,7 @@ function OnUnitRemovedFromMap( playerID: number, unitID : number )
 		end
 
 	end
-	
+
 end
 
 ------------------------------------------------------------------
@@ -1141,15 +1155,15 @@ end
 function UpdateIconStack( plotX:number, plotY:number )
 	local unitList:table = Units.GetUnitsInPlotLayerID( plotX, plotY, MapLayers.ANY );
 	if unitList ~= nil then
-		-- If a unit is going to die it shouldn't be counted 
-		
+		-- If a unit is going to die it shouldn't be counted
+
 		local numUnits:number = table.count(unitList);
 		for i, pUnit in ipairs(unitList) do
 			if pUnit:IsDelayedDeath() then
-				numUnits = numUnits - 1; 
+				numUnits = numUnits - 1;
 			elseif ShouldHideFlag(pUnit) then
 				-- Don't count unit flags which will be hidden
-				numUnits = numUnits - 1; 
+				numUnits = numUnits - 1;
 			end
 		end
 		local multiSpacingX = 32;
@@ -1173,7 +1187,7 @@ function UpdateIconStack( plotX:number, plotY:number )
 				local formationClassString:string = unitInfo.FormationClass;
 				local iFormationCount:number = pUnit:GetFormationUnitCount();
 				if(iFormationCount > 1 or numUnits > 1) then
-					if ( iFormationCount < 2 ) then					
+					if ( iFormationCount < 2 ) then
 						if (formationClassString == "FORMATION_CLASS_LAND_COMBAT") then
 							flag.m_Instance.FlagRoot:SetOffsetVal(landCombatOffsetX + m_FlagOffsets[1][1], m_FlagOffsets[1][2] );
 							landCombatOffsetX = landCombatOffsetX - multiSpacingX;
@@ -1190,7 +1204,7 @@ function UpdateIconStack( plotX:number, plotY:number )
 
 						flag.m_Instance.Formation2:SetHide(true);
 						flag.m_Instance.Formation3:SetHide(true);
-					else 
+					else
 						if (iFormationCount < 3) then
 							flag.m_Instance.Formation2:SetHide(true);
 							flag.m_Instance.Formation3:SetHide(true);
@@ -1204,19 +1218,19 @@ function UpdateIconStack( plotX:number, plotY:number )
 								end
 								DuoFlag = flag;
 							end
-							
+
 						else
 							flag.m_Instance.Formation2:SetHide(true);
 							flag.m_Instance.Formation3:SetHide(true);
-							if formationClassString == "FORMATION_CLASS_CIVILIAN" or formationClassString == "FORMATION_CLASS_SUPPORT" then	
+							if formationClassString == "FORMATION_CLASS_CIVILIAN" or formationClassString == "FORMATION_CLASS_SUPPORT" then
 								flag.m_Instance.Formation3:SetHide(false);
 								flag.m_Instance.Formation3:SetOffsetVal(m_LinkOffsets[2][1], m_LinkOffsets[2][2]);
 								flag.m_Instance.Formation3:SetSizeX(100);
 								flag.m_Instance.Formation3:SetSizeY(80);
-							end	
-							
+							end
+
 						end
-						
+
 						formationIndex = formationIndex + 1;
 						flag.m_Instance.FlagRoot:SetOffsetVal(m_FlagOffsets[formationIndex][1], m_FlagOffsets[formationIndex][2] );
 					end
@@ -1224,7 +1238,7 @@ function UpdateIconStack( plotX:number, plotY:number )
 				else
 					-- If there is not more than one unit remove the offset and hide the formation indicator
 					flag.m_Instance.FlagRoot:SetOffsetX(0);
-					flag.m_Instance.FlagRoot:SetOffsetY(0);		
+					flag.m_Instance.FlagRoot:SetOffsetY(0);
 					flag.m_Instance.Formation2:SetHide(true);
 					flag.m_Instance.Formation3:SetHide(true);
 				end
@@ -1317,13 +1331,13 @@ function OnCameraUpdate( vFocusX:number, vFocusY:number, fZoomLevel:number )
 	m_cameraFocusY	= vFocusY;
 
 	-- If no change in the zoom, no update necessary.
-	if( math.abs( (1-fZoomLevel) - m_zoomMultiplier ) < ZOOM_MULT_DELTA ) then 
+	if( math.abs( (1-fZoomLevel) - m_zoomMultiplier ) < ZOOM_MULT_DELTA ) then
 		return;
 	end
 	m_zoomMultiplier= 1-fZoomLevel;
-	 
-	if m_zoomMultiplier < 0.6 then 
-		m_zoomMultiplier = 0.6; 
+
+	if m_zoomMultiplier < 0.6 then
+		m_zoomMultiplier = 0.6;
 	end
 
 
@@ -1331,8 +1345,11 @@ function OnCameraUpdate( vFocusX:number, vFocusY:number, fZoomLevel:number )
 
 	local units = Game.GetUnits{NearCity = true};
 	for i, idTable:table in pairs(units) do
-		PositionFlagForUnitToView( idTable[1], idTable[2] ); 
+		PositionFlagForUnitToView( idTable[1], idTable[2] );
 	end
+
+	PositionFlagsToView();
+	Refresh();
 end
 
 -- ===========================================================================
@@ -1348,7 +1365,7 @@ function OnPlayerTurnActivated( ePlayer:number, bFirstTimeThisTurn:boolean )
 	if pPlayer == nil then
 		return;
 	end
-	
+
 	if m_UnitFlagInstances[ ePlayer ]==nil then
 		return;
 	end
@@ -1365,15 +1382,15 @@ function OnPlayerTurnActivated( ePlayer:number, bFirstTimeThisTurn:boolean )
 		end
 	else
 		-- If a barbarian, update any scout units that have been alerted.
-		if pPlayer:IsBarbarian() then			
+		if pPlayer:IsBarbarian() then
 			local pPlayerUnits:table = pPlayer:GetUnits();
-			for i, pUnit in pPlayerUnits:Members() do	
+			for i, pUnit in pPlayerUnits:Members() do
 				local targetPlayer	:number		= pUnit:GetBarbarianTargetPlayer();
 				local unitID		:number		= pUnit:GetID();
 				local unitOwnerID	:number		= pUnit:GetOwner();
 				local flag			:UnitFlag	= GetUnitFlag( unitOwnerID, unitID );
 
-				if targetPlayer ~= -1 and targetPlayer == idLocalPlayer then				
+				if targetPlayer ~= -1 and targetPlayer == idLocalPlayer then
 					if flag.m_Instance.FlagRoot["AttentionInstance"] == nil then
 						local pInstance		:table = {};
 						ContextPtr:BuildInstanceForControl( "AttentionMarkerInstance", pInstance, flag.m_Instance.FlagRoot );
@@ -1383,7 +1400,7 @@ function OnPlayerTurnActivated( ePlayer:number, bFirstTimeThisTurn:boolean )
 					if flag.m_Instance.FlagRoot["AttentionInstance"] ~= nil then
 						flag.m_Instance.FlagRoot:DestroyChild( flag.m_Instance.FlagRoot["AttentionInstance"] );
 						flag.m_Instance.FlagRoot["AttentionInstance"] = nil;
-					end					
+					end
 				end
 			end
 		end
@@ -1434,7 +1451,7 @@ function OnUnitDamageChanged( playerID : number, unitID : number, newDamage : nu
 end
 
 ------------------------------------------------------------------
-function OnUnitFortificationChanged( playerID : number, unitID : number ) 
+function OnUnitFortificationChanged( playerID : number, unitID : number )
 	local pPlayer = Players[ playerID ];
 	if (pPlayer ~= nil) then
 		local pUnit = pPlayer:GetUnits():FindID(unitID);
@@ -1447,8 +1464,32 @@ function OnUnitFortificationChanged( playerID : number, unitID : number )
 	end
 end
 
+
+function OnDiplomacyWarStateChange(player1ID:number, player2ID:number)
+	local localPlayer =  Players[Game.GetLocalPlayer()];
+
+	local playerToUpdate = player1ID;
+	if(player1ID ==Game.GetLocalPlayer()) then
+		playerToUpdate = player2ID;
+	else
+		playerToUpdate = player1ID;
+	end
+
+
+	if (playerToUpdate ~= nil) then
+ 		for index,pUnit in Players[playerToUpdate]:GetUnits():Members() do
+			if (pUnit ~= nil) then
+				local flag = GetUnitFlag(playerToUpdate, pUnit:GetID());
+				if (flag ~= nil) then
+					flag:UpdateStats();
+				end
+			end
+		end
+	end
+end
+
 ------------------------------------------------------------------
-function OnUnitPromotionChanged( playerID : number, unitID : number ) 
+function OnUnitPromotionChanged( playerID : number, unitID : number )
 	local pPlayer = Players[ playerID ];
 	if (pPlayer ~= nil) then
 		local pUnit = pPlayer:GetUnits():FindID(unitID);
@@ -1478,7 +1519,7 @@ function OnObjectPairingChanged(eSubType, parentOwner, parentType, parentID, chi
 end
 
 ------------------------------------------------------------------
-function OnUnitArtifactChanged( playerID : number, unitID : number ) 
+function OnUnitArtifactChanged( playerID : number, unitID : number )
 	local pPlayer = Players[ playerID ];
 	if (pPlayer ~= nil) then
 		local pUnit = pPlayer:GetUnits():FindID(unitID);
@@ -1549,7 +1590,7 @@ end
 function Refresh()
 	local pLocalPlayerVis = PlayersVisibility[Game.GetLocalPlayer()];
 	if (pLocalPlayerVis ~= nil) then
-		
+
 		local plotsToUpdate	:table = {};
 		local players		:table = Game.GetPlayers{Alive = true};
 
@@ -1566,17 +1607,17 @@ function Refresh()
 					if not unit:IsDead() and not unit:IsDelayedDeath() then
 						CreateUnitFlag(playerID, unitID, locX, locY);
 					end
-				end				
-				
+				end
+
 				-- If flag is visible, ensure it's being viewed that way; set plot for an update call.
-				-- While event will handle in normal case, this is necessary for hotloading and flags are re-created.								
+				-- While event will handle in normal case, this is necessary for hotloading and flags are re-created.
 				if pLocalPlayerVis:IsVisible(locX, locY) then
 					OnUnitVisibilityChanged(playerID, unitID, RevealedState.VISIBLE);
 					if plotsToUpdate[locX] == nil then
 						plotsToUpdate[locX] = {};
 					end
 					plotsToUpdate[locX][locY] = true;	-- Mark for update
-				end				
+				end
 
 			end
 		end
@@ -1584,8 +1625,8 @@ function Refresh()
 		-- Update only the plots requiring a refresh.
 		for locX:number,ys:table in pairs(plotsToUpdate) do
 			for locY:number,_ in pairs(ys) do
-				UpdateIconStack( locX, locY );	
-			end				
+				UpdateIconStack( locX, locY );
+			end
 		end
 
 	end
@@ -1638,7 +1679,7 @@ function OnMilitaryFormationChanged( playerID : number, unitID : number )
 	end
 end
 
-------------------------------------------------- 
+-------------------------------------------------
 -- Position flag for unit appropriately in 2D and 3D view
 -------------------------------------------------
 function PositionFlagForUnitToView( playerID : number, unitID : number )
@@ -1655,7 +1696,7 @@ end
 -- Position all unit flags appropriately in 2D and 3D view
 -------------------------------------------------
 function PositionFlagsToView()
-	local players = Game.GetPlayers{Alive = true}; 
+	local players = Game.GetPlayers{Alive = true};
 	for i, player in ipairs(players) do
 		local playerID = player:GetID();
 		local playerUnits = players[i]:GetUnits();
@@ -1686,7 +1727,7 @@ end
 --	Called once per layer that is turned on when a new lens is activated,
 --	or when a player explicitly turns off the layer from the "player" lens.
 -- ===========================================================================
-function OnLensLayerOn( layerNum:number )		
+function OnLensLayerOn( layerNum:number )
 	if	layerNum == LensLayers.UNITS_MILITARY or
 		layerNum == LensLayers.UNITS_RELIGIOUS or
 		layerNum == LensLayers.UNITS_CIVILIAN or
@@ -1792,13 +1833,15 @@ function Initialize()
 	ContextPtr:SetShutdown( OnShutdown );
 
 	Events.Camera_Updated.Add( OnCameraUpdate );
-	Events.CombatVisBegin.Add( OnCombatVisBegin );		
+	Events.CombatVisBegin.Add( OnCombatVisBegin );
 	Events.CombatVisEnd.Add( OnCombatVisEnd );
+	Events.DiplomacyMakePeace.Add( OnDiplomacyWarStateChange );
+	Events.DiplomacyDeclareWar.Add( OnDiplomacyWarStateChange );
 	Events.GameCoreEventPlaybackComplete.Add(OnEventPlaybackComplete);
 	Events.LensLayerOn.Add(	OnLensLayerOn );
 	Events.LensLayerOff.Add( OnLensLayerOff );
 	Events.LevyCounterChanged.Add( OnLevyCounterChanged );
-	Events.LocalPlayerChanged.Add(OnLocalPlayerChanged);	
+	Events.LocalPlayerChanged.Add(OnLocalPlayerChanged);
 	Events.MultiplayerPlayerConnected.Add( OnPlayerConnectChanged );
 	Events.MultiplayerPostPlayerDisconnected.Add( OnPlayerConnectChanged );
 	Events.ObjectPairing.Add(OnObjectPairingChanged);
@@ -1823,7 +1866,7 @@ function Initialize()
 	--Events.UnitActivityChanged.Add(OnUnitActivityChanged); --Currently only needed for debugging.
 
 	LuaEvents.Tutorial_DisableMapSelect.Add( OnTutorial_DisableMapSelect );
-		
+
 	RegisterDirtyEvents();
 end
 Initialize();
