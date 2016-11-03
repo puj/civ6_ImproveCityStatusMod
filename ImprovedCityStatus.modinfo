@@ -17,6 +17,7 @@
 				<File>UI/Panels/CityPanel.xml</File>
 				<File>UI/CitySupport.lua</File>
 				<File>UI/ToolTipHelper.lua</File>
+				<File>UI/UnitFlagManager.lua</File>
 			</Items>
 		</ImportFiles>
 	</Components>
@@ -27,5 +28,6 @@
 		<File>UI/Panels/CityPanel.xml</File>
 		<File>UI/CitySupport.lua</File>
 		<File>UI/ToolTipHelper.lua</File>
+		<File>UI/UnitFlagManager.lua</File>
 	</Files>
 </Mod>
