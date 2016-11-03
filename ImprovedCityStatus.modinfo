@@ -16,6 +16,7 @@
 				<File>UI/Panels/CityPanel.lua</File>
 				<File>UI/Panels/CityPanel.xml</File>
 				<File>UI/CitySupport.lua</File>
+				<File>UI/ToolTipHelper.lua</File>
 			</Items>
 		</ImportFiles>
 	</Components>
@@ -25,5 +26,6 @@
 		<File>UI/Panels/CityPanel.lua</File>
 		<File>UI/Panels/CityPanel.xml</File>
 		<File>UI/CitySupport.lua</File>
+		<File>UI/ToolTipHelper.lua</File>
 	</Files>
 </Mod>
