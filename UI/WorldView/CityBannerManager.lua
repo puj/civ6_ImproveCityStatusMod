@@ -680,20 +680,40 @@ function CityBanner.SetColor( self : CityBanner )
 	local backColor, frontColor  = UI.GetPlayerColors( self.m_Player:GetID() );
 	local darkerBackColor = DarkenLightenColor(backColor,(-85),238);
 	local brighterBackColor = DarkenLightenColor(backColor,90,255);
+	local whiteColor = RGBAValuesToABGRHex(1.0,1.0,1.0,1.0) ;
+	local warColor = RGBAValuesToABGRHex(.9,.2,.2,255);
 	if (self.m_IsSelected == false or self.m_IsSelected == nil) then
 		backColor = DarkenLightenColor(backColor, 0, 80);
 	end
 
+	-- War Check
+	local pCity : table = self:GetCity();
+	local localPlayer =  Players[Game.GetLocalPlayer()];
+	local ownerPlayer = pCity:GetOwner();
+
+	local isAtWar = localPlayer:GetDiplomacy():IsAtWarWith( ownerPlayer );
+
 	if (self.m_Type == BANNERTYPE_CITY_CENTER) then
 		self.m_Instance.CityBannerFill:SetColor( backColor );
 		self.m_Instance.CityBannerFill2:SetColor( darkerBackColor );
-		self.m_Instance.CityBannerFill3:SetColor( brighterBackColor );
 		self.m_Instance.CityBannerFillOver:SetColor( frontColor );
 		self.m_Instance.CityBannerFillOut:SetColor( brighterBackColor );
 		self.m_Instance.CityName:SetColor( frontColor, 0 );
 		self.m_Instance.CityName:SetColor( darkerBackColor, 1 );
 		self.m_Instance.CityPopulation:SetColor( frontColor, 0 );
 		self.m_Instance.CityPopulation:SetColor( darkerBackColor, 1 );
+
+		if(isAtWar) then
+			self.m_Instance.CityBannerFill3:SetColor( warColor );
+			self.m_Instance.DefenseNumber:SetColor(  warColor);
+			self.m_Instance.DefenseIcon:SetColor( warColor );
+		else
+			self.m_Instance.CityBannerFill3:SetColor( brighterBackColor );
+			self.m_Instance.DefenseNumber:SetColor(  whiteColor);
+			self.m_Instance.DefenseIcon:SetColor( whiteColor );
+		end
+
+
 		if not self:IsTeam() then self.m_Instance.CivIcon:SetColor( frontColor ); end
 	elseif (self.m_Type == BANNERTYPE_AERODROME) then
 		if self.m_Instance.AerodromeUnitsButton_Base ~= nil then
@@ -702,6 +722,14 @@ function CityBanner.SetColor( self : CityBanner )
 			self.m_Instance.AerodromeUnitsButton_Lighter:SetColor( brighterBackColor );
 			self.m_Instance.AerodromeUnitsButton_None:SetColor( frontColor );
 			self.m_Instance.AerodromeUnitsButtonIcon:SetColor( frontColor );
+
+
+			if(isAtWar) then
+				self.m_Instance.AerodromeUnitsButton_Lighter:SetColor( warColor );
+			else
+				self.m_Instance.AerodromeUnitsButton_Lighter:SetColor( brighterBackColor );
+			end
+
 		end
 	elseif (self.m_Type == BANNERTYPE_MISSILE_SILO) then
 		if self.m_Instance.Banner_Base ~= nil then
@@ -711,6 +739,14 @@ function CityBanner.SetColor( self : CityBanner )
 			self.m_Instance.Banner_None:SetColor( frontColor );
 			self.m_Instance.NukeCountLabel:SetColor( frontColor );
 			self.m_Instance.ThermoNukeCountLabel:SetColor( frontColor );
+
+
+			if(isAtWar) then
+				self.m_Instance.Banner_Lighter:SetColor( warColor );
+			else
+				self.m_Instance.Banner_Lighter:SetColor( brighterBackColor );
+			end
+
 		end
 	elseif (self.m_Type == BANNERTYPE_ENCAMPMENT) then
 		if self.m_Instance.Banner_Base ~= nil then
@@ -718,6 +754,14 @@ function CityBanner.SetColor( self : CityBanner )
 			self.m_Instance.Banner_Darker:SetColor( darkerBackColor );
 			self.m_Instance.Banner_Lighter:SetColor( brighterBackColor );
 			self.m_Instance.Banner_None:SetColor( frontColor );
+
+
+			if(isAtWar) then
+				self.m_Instance.Banner_Lighter:SetColor( warColor );
+			else
+		  	self.m_Instance.Banner_Lighter:SetColor( brighterBackColor );
+		  end
+
 		end
 	else
 		self.m_Instance.MiniBannerBackground:SetColor( backColor );
@@ -746,6 +790,7 @@ end
 
 -- ===========================================================================
 function CityBanner.UpdateStats( self : CityBanner)
+	self:SetColor()
 	local pDistrict:table = self:GetDistrict();
 	local localPlayerID:number = Game.GetLocalPlayer();
 
@@ -2455,6 +2500,7 @@ function OnDiplomacyDeclareWar( firstPlayerID:number, secondPlayerID:number )
 	if firstPlayerID == localPlayer or secondPlayerID == localPlayer then
 		RefreshPlayerRangeStrike( localPlayer );
 	end
+	OnDiplomacyWarStateChange(firstPlayerID, secondPlayerID);
 end
 
 -- ===========================================================================
@@ -2464,6 +2510,30 @@ function OnDiplomacyMakePeace( firstPlayerID:number, secondPlayerID:number )
 	local localPlayer = Game.GetLocalPlayer();
 	if firstPlayerID == localPlayer or secondPlayerID == localPlayer then
 		RefreshPlayerRangeStrike( localPlayer );
+	end
+	OnDiplomacyWarStateChange(firstPlayerID, secondPlayerID);
+end
+
+function OnDiplomacyWarStateChange(player1ID:number, player2ID:number)
+	local localPlayer =  Players[Game.GetLocalPlayer()];
+
+	local playerToUpdate = player1ID;
+	if(player1ID ==Game.GetLocalPlayer()) then
+		playerToUpdate = player2ID;
+	else
+		playerToUpdate = player1ID;
+	end
+
+
+	if (playerToUpdate ~= nil) then
+		for index,pCity in Players[playerToUpdate]:GetCities():Members() do
+			if (pCity ~= nil) then
+				local banner = GetCityBanner(playerToUpdate, pCity:GetID());
+				if (banner ~= nil) then
+					banner:UpdateStats();
+				end
+			end
+		end
 	end
 end
 
