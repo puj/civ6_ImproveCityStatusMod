@@ -20,6 +20,8 @@
 				<File>UI/UnitFlagManager.lua</File>
 				<File>UI/InGame.lua</File>
 				<File>UI/InGame.xml</File>
+				<File>UI/WorldInput.lua</File>
+				<File>UI/WorldInput.xml</File>
 				<File>UI/WorldView/CityBannerManager.lua</File>
 				<File>UI/WorldView/CityBannerManager.xml</File>
 			</Items>
@@ -35,6 +37,8 @@
 		<File>UI/UnitFlagManager.lua</File>
 		<File>UI/InGame.lua</File>
 		<File>UI/InGame.xml</File>
+		<File>UI/WorldInput.lua</File>
+		<File>UI/WorldInput.xml</File>
 		<File>UI/WorldView/CityBannerManager.lua</File>
 		<File>UI/WorldView/CityBannerManager.xml</File>
 	</Files>
