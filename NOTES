@@ -25,3 +25,25 @@ GetUnitFlag(4, Players[4]:GetUnits():FindID(0):GetID()).m_Instance.FlagBaseDarke
 print name and id of unit
 
  for k,v in Players[4]:GetUnits():Members() do print(k.. " : "..v:GetName()) end
+
+
+ITERATE CITIES for player
+==================================
+
+for k,v in Players[0]:GetCities():Members() do print(v:GetName()) end
+
+
+FIND ID BY CITY NAME STR
+==================================
+for i = 0, GameDefines.MAX_PLAYERS, 1 do for k,v in Players[i]:GetCities():Members() do if (string.match(v:GetName(), "KUMASI")) then print("P: " .. tostring(i) .. " - C: ".. tostring(v:GetID()) .. " : " .. v:GetName())  end end end
+
+
+SET COLOR OF SPECIFIC CITY BANNER
+
+GetCityBanner(0,65536).m_Instance.CityBannerFill2:SetColor( RGBAValuesToABGRHex(255,0,0,255) );
+
+
+light overlay
+GetCityBanner(4,65536).m_Instance.CityBannerFill3:SetColor( RGBAValuesToABGRHex(.9,.2,.2,255) );
+GetCityBanner(4,65536).m_Instance.DefenseNumber:SetColor( RGBAValuesToABGRHex(.9,.2,.2,255) );
+GetCityBanner(4,65536).m_Instance.DefenseIcon:SetColor( RGBAValuesToABGRHex(.9,.2,.2,255) );
