@@ -654,6 +654,25 @@ function CityBanner.Resize( self : CityBanner )
 	end
 end
 
+function GetPercentGrowthBackColor( percent:number, alpha:number)
+	local fullValue = 0.4;
+	local zeroValue = 0.1;
+	return GetPercentColorWithValues(fullValue, zeroValue, percent, alpha);
+end
+
+function GetPercentGrowthColor( percent:number, alpha:number)
+	local fullValue = 0.8;
+	local zeroValue = 0.1;
+	return GetPercentColorWithValues(fullValue, zeroValue, percent, alpha);
+	end
+
+function GetPercentColorWithValues( fullValue: number, zeroValue: number, percent:number, alpha:number)
+	if percent <= 0.25 then return RGBAValuesToABGRHex(fullValue, zeroValue, zeroValue, alpha); end
+	if percent <= 0.5 then return  RGBAValuesToABGRHex(fullValue, fullValue, zeroValue, alpha); end
+	return RGBAValuesToABGRHex(zeroValue, fullValue, zeroValue, alpha);
+end
+
+
 -- ===========================================================================
 -- Assign player colors to the appropriate banner elements
 function CityBanner.SetColor( self : CityBanner )
@@ -694,6 +713,28 @@ function CityBanner.SetColor( self : CityBanner )
 			self.m_Instance.DefenseIcon:SetColor( whiteColor );
 		end
 
+		-- Growth and Amenity icons
+		if(self:IsTeam()) then
+				local growthColor = GetPercentGrowthColor(pCity:GetGrowth():GetHousingGrowthModifier(), 1.0);
+				local growthColorBack = GetPercentGrowthBackColor(pCity:GetGrowth():GetHousingGrowthModifier(), 0.8);
+
+				local amentitiesNeeded =pCity:GetGrowth():GetAmenitiesNeeded();
+				local amentities =pCity:GetGrowth():GetAmenities();
+				local amenityFulfilledPercent = 1.0;
+				local amentityDiff = amentities - amentitiesNeeded;
+				if(amentityDiff == 0) then
+					amenityFulfilledPercent = .5;
+				elseif (amentityDiff < 0) then
+					amenityFulfilledPercent = .25;
+				end
+				local amenityColor = GetPercentGrowthColor(amenityFulfilledPercent, 1.0);
+				local amenityColorBack = GetPercentGrowthBackColor(amenityFulfilledPercent, 0.8);
+
+				self.m_Instance.HousingIcon:SetColor( growthColor);
+				self.m_Instance.HousingIconCircle:SetColor( growthColorBack);
+				self.m_Instance.AmenitiesIcon:SetColor( amenityColor);
+				self.m_Instance.AmenitiesIconCircle:SetColor( amenityColorBack);
+		end
 
 		if not self:IsTeam() then self.m_Instance.CivIcon:SetColor( frontColor ); end
 	elseif (self.m_Type == BANNERTYPE_AERODROME) then
@@ -1202,25 +1243,6 @@ function CityBanner.UpdateName( self : CityBanner )
 				self.m_Instance.CityUnderSiegeIcon:SetHide(true);
 			end
 
-			-- Update insufficient housing icon
-			if self.m_Instance.CityHousingInsufficientIcon ~= nil then
-				local pCityGrowth:table = pCity:GetGrowth();
-				if pCityGrowth and pCityGrowth:GetHousing() < pCity:GetPopulation() then
-					self.m_Instance.CityHousingInsufficientIcon:SetHide(false);
-				else
-					self.m_Instance.CityHousingInsufficientIcon:SetHide(true);
-				end
-			end
-
-			-- Update insufficient amenities icon
-			if self.m_Instance.CityAmenitiesInsufficientIcon ~= nil then
-				local pCityGrowth:table = pCity:GetGrowth();
-				if pCityGrowth and pCityGrowth:GetAmenitiesNeeded() > pCityGrowth:GetAmenities() then
-					self.m_Instance.CityAmenitiesInsufficientIcon:SetHide(false);
-				else
-					self.m_Instance.CityAmenitiesInsufficientIcon:SetHide(true);
-				end
-			end
 
 			self.m_Instance.CityQuestIcon:SetToolTipString(questTooltip);
 			self.m_Instance.CityQuestIcon:SetText(statusString);
