@@ -59,7 +59,27 @@
 							<Image				ID="ReligionBannerIconContainer" Anchor="L,C"	Size="26,26"  Texture="Banner_ProductionCircle" Color="255,255,255,200" Hidden="1">
 								<Image			ID="ReligionBannerIcon"					Anchor="C,C" 	Size="22,22"  Texture="Religions22"/>
 							</Image>
+
+
+
 						</Stack>
+					</Container>
+
+          <Container	Anchor="R,C" 	Offset="0,0" Size="28,28" >
+								<Image ID="HousingIconCircle" Anchor="R,C" Texture="CircleBacking22" Size="26,26" Offset="0,0">
+									<Button		 Anchor="C,C" Size="22,22" Color="255,255,255,0" Disabled="1">
+										<Image	ID="HousingIcon" Anchor="C,C" Size="22,22"  Icon="ICON_HOUSING"   Texture="Stats22"/>
+									</Button>
+								</Image>
+					</Container>
+
+
+          <Container	Anchor="R,C" 	Offset="0,0" Size="28,28" >
+								<Image ID="AmenitiesIconCircle" Anchor="R,C" Texture="CircleBacking22" Size="26,26" Offset="0,0" Color="255,0,0,250">
+									<Button		 Anchor="C,C" Size="22,22" Color="255,255,255,0" Disabled="1">
+										<Image	ID="AmenitiesIcon" Anchor="C,C" Size="22,22"  Icon="ICON_AMENITIES"   Texture="Stats22"/>
+									</Button>
+								</Image>
 					</Container>
 
 					<Container				ID="ProductionOrSpace"					Anchor="L,C" Offset="0,1" Size="40,34" >
@@ -363,7 +383,7 @@
       </SlideAnim>
     </AlphaAnim>
   </Instance>
-  
+
   <Instance Name="HolySiteIcon">
     <WorldAnchor ID="Anchor" Size="22,22">
       <Grid    ID="HolySiteBacking" Style="DistrictBonusBack" AutoSize="H" AutoSizePadding="8,0">
