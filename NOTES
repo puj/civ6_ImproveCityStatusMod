@@ -47,3 +47,14 @@ light overlay
 GetCityBanner(4,65536).m_Instance.CityBannerFill3:SetColor( RGBAValuesToABGRHex(.9,.2,.2,255) );
 GetCityBanner(4,65536).m_Instance.DefenseNumber:SetColor( RGBAValuesToABGRHex(.9,.2,.2,255) );
 GetCityBanner(4,65536).m_Instance.DefenseIcon:SetColor( RGBAValuesToABGRHex(.9,.2,.2,255) );
+
+
+CAMERA STUFF
+==================================
+ -- Look at local player capital city
+UI.LookAtPlot( Players[Game.GetLocalPlayer()]:GetCities():GetCapitalCity():GetX(), Players[Game.GetLocalPlayer()]:GetCities():GetCapitalCity():GetY())
+
+
+Players[Game.GetLocalPlayer()]:GetCapitalCity();
+
+UI.LookAtPlot( kCity:GetX(), kCity:GetY() );
