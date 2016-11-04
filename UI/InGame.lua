@@ -96,6 +96,8 @@ end
 ----------------------------------------------------------------
 function OnShow()
 	Controls.WorldViewControls:SetHide( false );
+	UI.LookAtPlot( Players[Game.GetLocalPlayer()]:GetCities():GetCapitalCity():GetX(), Players[Game.GetLocalPlayer()]:GetCities():GetCapitalCity():GetY());
+
 
 	if GameConfiguration.IsAnyMultiplayer() then
 		if GameConfiguration.IsHotseat() then
