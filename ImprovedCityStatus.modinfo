@@ -18,6 +18,8 @@
 				<File>UI/CitySupport.lua</File>
 				<File>UI/ToolTipHelper.lua</File>
 				<File>UI/UnitFlagManager.lua</File>
+				<File>UI/InGame.lua</File>
+				<File>UI/InGame.xml</File>
 				<File>UI/WorldView/CityBannerManager.lua</File>
 				<File>UI/WorldView/CityBannerManager.xml</File>
 			</Items>
@@ -31,6 +33,8 @@
 		<File>UI/CitySupport.lua</File>
 		<File>UI/ToolTipHelper.lua</File>
 		<File>UI/UnitFlagManager.lua</File>
+		<File>UI/InGame.lua</File>
+		<File>UI/InGame.xml</File>
 		<File>UI/WorldView/CityBannerManager.lua</File>
 		<File>UI/WorldView/CityBannerManager.xml</File>
 	</Files>
