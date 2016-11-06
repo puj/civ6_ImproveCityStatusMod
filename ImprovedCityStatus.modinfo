@@ -24,6 +24,8 @@
 				<File>UI/WorldInput.xml</File>
 				<File>UI/WorldView/CityBannerManager.lua</File>
 				<File>UI/WorldView/CityBannerManager.xml</File>
+				<File>UI/TopPanel.lua</File>
+				<File>UI/TopPanel.xml</File>
 			</Items>
 		</ImportFiles>
 	</Components>
@@ -41,5 +43,7 @@
 		<File>UI/WorldInput.xml</File>
 		<File>UI/WorldView/CityBannerManager.lua</File>
 		<File>UI/WorldView/CityBannerManager.xml</File>
+		<File>UI/TopPanel.lua</File>
+		<File>UI/TopPanel.xml</File>
 	</Files>
 </Mod>
