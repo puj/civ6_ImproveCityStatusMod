@@ -1,7 +1,42 @@
+GLOBAL SPACE
+==================================
+AutoplayManager
+Cities
+CityManager
+CombatManager
+DealManager
+DiplomacyManager
+Game
+GameConfiguration
+GameEffects
+GameInfo
+GameSummary
+Map
+AreaBuilder
+Areas
+ImprovementBuilder
+ResourceBuilder
+RouteBuilder
+StartPositioner
+TerrainBuilder
+NotificationManager
+PlayerManager
+PlayerVisibilityManager
+UnitManager
+Units
+WorldBuilder
+
+
+
 WAR:
 ==================================
 
 UI/PartialScreens/CityStates.lua:                               isAtWar                                 = pLocalPlayer:GetDiplomacy():IsAtWarWith( iPlayer ),
+
+
+GET METHODS FROM UNKNOWN OBJECTS
+==================================
+for k,v in pairs(getmetatable(Players[0]:GetTrade()).__index) do print(k) end
 
 UNIT COLOR:
 ==================================
@@ -24,14 +59,77 @@ GetUnitFlag(4, Players[4]:GetUnits():FindID(0):GetID()).m_Instance.FlagBaseDarke
 ==================================
 print name and id of unit
 
- for k,v in Players[4]:GetUnits():Members() do print(k.. " : "..v:GetName()) end
+for k,v in Players[0]:GetUnits():Members() do print(tostring(v:GetID()) .." : " .. v:GetName()) end
 
+specific unit
+UnitManager.GetUnit(0, 4325398 ):GetName()
+
+unit methods
+ for k,v in pairs(getmetatable(UnitManager.GetUnit(0, 4325398 )).__index) do print (k) end
+ TopPanel: IsReadyToAutomate
+ TopPanel: GetX
+ TopPanel: IsDead
+ TopPanel: GetAirSlots
+ TopPanel: GetFormationClass
+ TopPanel: GetRange
+ TopPanel: HasHiddenVisibility
+ TopPanel: GetPursuingSpyName
+ TopPanel: GetLocation
+ TopPanel: GetCombat
+ TopPanel: GetAirUnits
+ TopPanel: GetUnitType
+ TopPanel: IsAutomated
+ TopPanel: IsHuman
+ TopPanel: GetReligionType
+ TopPanel: IsReadyToMove
+ TopPanel: HasMovedIntoZOC
+ TopPanel: GetLootName
+ TopPanel: IsEmbarked
+ TopPanel: GetSpyOperationEndTurn
+ TopPanel: GetExperience
+ TopPanel: GetSpyOperation
+ TopPanel: GetDamage
+ TopPanel: GetArchaeologyHomeCity
+ TopPanel: GetGreatWorkIndex
+ TopPanel: GetUpgradeCost
+ TopPanel: GetMilitaryFormation
+ TopPanel: __instances
+ TopPanel: GetName
+ TopPanel: GetFormationID
+ TopPanel: IsCannotAttack
+ TopPanel: GetGreatPerson
+ TopPanel: IgnoresZOC
+ TopPanel: IsReadyToSelect
+ TopPanel: GetY
+ TopPanel: GetMaxMoves
+ TopPanel: HasPendingOperations
+ TopPanel: GetOriginalOwner
+ TopPanel: GetFortifyTurns
+ TopPanel: GetMovementMovesRemaining
+ TopPanel: IsDelayedDeath
+ TopPanel: GetAntiAirCombat
+ TopPanel: GetReligiousStrength
+ TopPanel: GetComponentID
+ TopPanel: GetID
+ TopPanel: GetSpreadCharges
+ TopPanel: GetMaxDamage
+ TopPanel: GetBombardCombat
+ TopPanel: GetAttacksRemaining
+ TopPanel: GetFormationMaxMoves
+ TopPanel: GetOwner
+ TopPanel: GetRangedCombat
+ TopPanel: GetBuildCharges
+ TopPanel: TypeName
+ TopPanel: GetFormationMovesRemaining
+ TopPanel: GetMovesRemaining
+ TopPanel: GetFormationUnitCount
 
 ITERATE CITIES for player
 ==================================
+for k,v in Players[0]:GetCities():Members() do print(v:GetName().. " : " ..tostring(v:GetID())) end
 
-for k,v in Players[0]:GetCities():Members() do print(v:GetName()) end
-
+ -- Get specific city
+ CityManager.GetCity(player, id);
 
 FIND ID BY CITY NAME STR
 ==================================
@@ -58,3 +156,32 @@ UI.LookAtPlot( Players[Game.GetLocalPlayer()]:GetCities():GetCapitalCity():GetX(
 Players[Game.GetLocalPlayer()]:GetCapitalCity();
 
 UI.LookAtPlot( kCity:GetX(), kCity:GetY() );
+
+
+TRADE STUFF
+==================================
+CityManager.GetCity(0,393221):GetTrade():GetOutgoingRoutes();
+
+
+MAYBE PATH COLORS CAN BE CHANGED IN VARIATION
+UI/Choosers/TradeRouteChooser.lua:319:  UILens.ClearLayerHexes( LensLayers.TRADE_ROUTE );
+UI/Choosers/TradeRouteChooser.lua:327:          UILens.SetLayerHexesPath( LensLayers.TRADE_ROUTE, Game.GetLocalPlayer(), pathPlots, kVariations );
+
+PATH
+UI/Choosers/TradeRouteChooser.lua:323:          pathPlots = tradeManager:GetTradeRoutePath(m_originCity:GetOwner(), m_originCity:GetID(), city:GetOwner(), city:GetID() );
+
+
+ROUTE MEMBERS
+for k,v in pairs(CityManager.GetCity(0,262147):GetTrade():GetOutgoingRoutes()[1]) do print (k) end
+TopPanel: OriginCityPlayer
+TopPanel: DestinationCityPlayer
+TopPanel: DestinationYields
+TopPanel: TraderUnitID
+TopPanel: TraderUnitPlayer
+TopPanel: OriginCityID
+TopPanel: DestinationCityID
+TopPanel: OriginYields
+
+
+GET PATH
+for k,v in pairs(Game.GetTradeManager():GetTradeRoutePath(CityManager.GetCity(0, 262147 ):GetTrade():GetOutgoingRoutes()[1].OriginCityPlayer,CityManager.GetCity(0, 262147 ):GetTrade():GetOutgoingRoutes()[1].OriginCityID , CityManager.GetCity(0, 262147 ):GetTrade():GetOutgoingRoutes()[1].DestinationCityPlayer, CityManager.GetCity(0, 262147 ):GetTrade():GetOutgoingRoutes()[1].DestinationCityID )) do print(v) end
