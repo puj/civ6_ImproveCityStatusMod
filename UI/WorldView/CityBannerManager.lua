@@ -736,11 +736,13 @@ function CityBanner.SetColor( self : CityBanner )
 		if(self:IsTeam()) then
 				local growthColor = GetPercentGrowthColor(pCity:GetGrowth():GetHousingGrowthModifier(), 1.0);
 				local growthColorBack = GetPercentGrowthBackColor(pCity:GetGrowth():GetHousingGrowthModifier(), 0.8);
+				local numHousing = pCity:GetGrowth():GetHousing();
+				local numPopulation = pCity:GetPopulation();
 
-				local amentitiesNeeded =pCity:GetGrowth():GetAmenitiesNeeded();
-				local amentities =pCity:GetGrowth():GetAmenities();
+				local amenitiesNeeded =pCity:GetGrowth():GetAmenitiesNeeded();
+				local amenities =pCity:GetGrowth():GetAmenities();
 				local amenityFulfilledPercent = 1.0;
-				local amentityDiff = amentities - amentitiesNeeded;
+				local amentityDiff = amenities - amenitiesNeeded;
 				if(amentityDiff == 0) then
 					amenityFulfilledPercent = .5;
 				elseif (amentityDiff < 0) then
@@ -749,10 +751,16 @@ function CityBanner.SetColor( self : CityBanner )
 				local amenityColor = GetPercentGrowthColor(amenityFulfilledPercent, 1.0);
 				local amenityColorBack = GetPercentGrowthBackColor(amenityFulfilledPercent, 0.8);
 
+				local housingToolTip = tostring(numPopulation) .. " / " .. tostring(numHousing) .. "  " .. Locale.Lookup("LOC_HUD_CITY_HOUSING_CAPACITY");
 				self.m_Instance.HousingIcon:SetColor( growthColor);
 				self.m_Instance.HousingIconCircle:SetColor( growthColorBack);
+				self.m_Instance.HousingIconCircle:SetToolTipString(housingToolTip);
+
+
+				local amenityToolTip = tostring(amenities) .. " / " .. tostring(amenitiesNeeded) .. "  " .. Locale.Lookup("LOC_HUD_CITY_AMENITIES");
 				self.m_Instance.AmenitiesIcon:SetColor( amenityColor);
 				self.m_Instance.AmenitiesIconCircle:SetColor( amenityColorBack);
+				self.m_Instance.AmenitiesIconCircle:SetToolTipString(amenityToolTip);
 		end
 
 		if not self:IsTeam() then self.m_Instance.CivIcon:SetColor( frontColor ); end
