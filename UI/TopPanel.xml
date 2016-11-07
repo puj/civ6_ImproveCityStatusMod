@@ -66,6 +66,8 @@
           <Label	ID="TradeRoutesActive"									Offset="0,-3" Style="FontNormal14" ColorSet="TopBarValueCS" String="?"	WrapWidth="45" />
           <Label																					Offset="0,-3" Style="FontNormal14" ColorSet="TopBarValueCS" String="/"	WrapWidth="45" />
           <Label	ID="TradeRoutesCapacity"								Offset="0,-3"	Style="FontNormal14" ColorSet="TopBarValueCS" String="?"	WrapWidth="45" />
+          <Label	ID="TradeRoutesIdleLabel"								Offset="0,-3" Style="FontNormal14" ColorSet="TopBarValueCS" String="/"	WrapWidth="45" Hidden="1"/>
+          <Label	ID="TradeRoutesIdle"   	  							Offset="0,-3"	Style="FontNormal14" ColorSet="TopBarValueCS" String="?"	WrapWidth="45" Hidden="1"/>
         </Stack>
 
 		  <Tutorial  ID="TutTradeRoutes" Style="TutorialContainer" Anchor="C,B" AnchorSide="I,O" Offset="0,24" TriggerBy="TutorialTradeRoutes" >
