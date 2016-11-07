@@ -197,6 +197,14 @@ function RefreshTrade()
 	end
 
 	routesConstructed = routesActive + routesIdle;
+	local routesIdle :table = GetIdleTradeUnits(Game.GetLocalPlayer());
+	local numTurnsUntilPassive : number = -1;
+
+	if (routesIdle) then
+		routesConstructed = routesConstructed + table.count(routesIdle);
+
+	end
+	routesConstructed = routesConstructed  + routesActive;
 
 	local sRoutesActive :string = "" .. routesActive;
 	local sRoutesConstructed:string = "" .. routesConstructed;
