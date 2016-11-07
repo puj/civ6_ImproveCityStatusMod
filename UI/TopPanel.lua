@@ -188,18 +188,27 @@ function RefreshTrade()
 	local playerTrade	:table	= localPlayer:GetTrade();
 	local routesConstructed = 0 ;
 	local routesActive	:number = playerTrade:GetNumOutgoingRoutes();
-	local routesIdle :table = GetIdleTradeUnits(Game.GetLocalPlayer());
+	local routesIdle :number = 0;
+	local idleRoutes :table = GetIdleTradeUnits(Game.GetLocalPlayer());
 	local numTurnsUntilPassive : number = -1;
 
-	if (routesIdle) then
-		routesConstructed = routesConstructed + table.count(routesIdle);
-		
+	if (idleRoutes) then
+		routesIdle = table.count(idleRoutes);
 	end
-	routesConstructed = routesConstructed  + routesActive;
+
+	routesConstructed = routesActive + routesIdle;
 
 	local sRoutesActive :string = "" .. routesActive;
+	local sRoutesConstructed:string = "" .. routesConstructed;
+	local sRoutesIdle :string = "" .. routesIdle;
 	local routesCapacity:number = playerTrade:GetOutgoingRouteCapacity();
 	if (routesCapacity > 0) then
+		if (routesConstructed > routesCapacity) then
+			sRoutesConstructed = "[COLOR_RED]" .. sRoutesConstructed .. "[ENDCOLOR]";
+		elseif (routesConstructed < routesCapacity) then
+			sRoutesConstructed = "[COLOR_GREEN]" .. sRoutesConstructed .. "[ENDCOLOR]";
+		end
+
 		if (routesActive > routesCapacity) then
 			sRoutesActive = "[COLOR_RED]" .. sRoutesActive .. "[ENDCOLOR]";
 		elseif (routesActive < routesCapacity) then
@@ -207,10 +216,23 @@ function RefreshTrade()
 		end
 		Controls.TradeRoutesActive:SetText(sRoutesActive);
 		Controls.TradeRoutesCapacity:SetText(routesCapacity);
+		if(routesIdle > 0) then
+			Controls.TradeRoutesIdle:SetHide(false);
+			Controls.TradeRoutesIdleLabel:SetHide(false);
+			Controls.TradeRoutesIdle:SetText("[COLOR_ModStatusYellow]" .. sRoutesIdle .. "[ENDCOLOR]");
+		else
+			Controls.TradeRoutesIdle:SetHide(true);
+			Controls.TradeRoutesIdleLabel:SetHide(true);
+		end
 
 		local sTooltip = Locale.Lookup("LOC_TOP_PANEL_TRADE_ROUTES_TOOLTIP_ACTIVE", routesActive);
+		-- local sTooltip = tostring(routesConstructed) .. " " .. Locale.Lookup("LOC_TOP_PANEL_TRADE_ROUTES");
 		sTooltip = sTooltip .. "[NEWLINE]";
 		sTooltip = sTooltip .. Locale.Lookup("LOC_TOP_PANEL_TRADE_ROUTES_TOOLTIP_CAPACITY", routesCapacity);
+		if(routesIdle > 0) then
+			sTooltip = sTooltip .. "[NEWLINE]";
+			sTooltip = sTooltip .. sRoutesIdle .. " " .. Locale.Lookup("LOC_UNITPANEL_ESPIONAGE_AWAITING_ASSIGNMENT");
+		end
 		sTooltip = sTooltip .. "[NEWLINE][NEWLINE]";
 		sTooltip = sTooltip .. Locale.Lookup("LOC_TOP_PANEL_TRADE_ROUTES_TOOLTIP_SOURCES_HELP");
 		Controls.TradeRoutes:SetToolTipString(sTooltip);
