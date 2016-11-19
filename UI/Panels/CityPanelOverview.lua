@@ -4,9 +4,9 @@
 include( "AdjacencyBonusSupport" );		-- GetAdjacentYieldBonusString()
 include( "Civ6Common" );				-- GetYieldString()
 include( "InstanceManager" );
-include( "ToolTipHelper" );
+include( "ToolTipHelper" );	
 include( "SupportFunctions" );			-- Round(), Clamp()
-include( "TabSupport" );
+include( "TabSupport" );	
 
 -- ===========================================================================
 --	CONSTANTS
@@ -60,11 +60,11 @@ local m_kWondersIM			:table	= InstanceManager:new( "WonderInstance",			"Top", Co
 
 local m_kData				:table	= nil;
 local m_isDirty				:boolean= false;
-local m_isInitializing		:boolean= false;
+local m_isInitializing		:boolean= false;		
 local m_isShowingPanels		:boolean= false;
 local m_pCity				:table	= nil;
 local m_pPlayer				:table	= nil;
-local m_primaryColor		:number = 0xcafef00d;
+local m_primaryColor		:number = 0xcafef00d;	
 local m_secondaryColor		:number = 0xf00d1ace;
 
 local ms_eventID = 0;
@@ -123,17 +123,17 @@ function CalculateSizeAndAccomodate(scrollPanelControl: table, stackControl: tab
 	stackControl:CalculateSize();
 	stackControl:ReprocessAnchoring();
 	scrollPanelControl:CalculateSize();
-
+	
 	if(scrollPanelControl:GetRatio()<1) then
 		adjustedSizeX = SIZE_PANEL_X-12;
-	else
+	else	
 		adjustedSizeX = SIZE_PANEL_X;
 	end
 	scrollPanelControl:SetSizeX(adjustedSizeX);
 	stackControl:SetSizeX(adjustedSizeX);
 
 	scrollPanelControl:CalculateSize();
-
+	
 	stackControl:CalculateSize();
 	stackControl:ReprocessAnchoring();
 end
@@ -142,7 +142,7 @@ function OnSelectHealthTab()
 	HideAll();
 	Controls.HealthButton:SetSelected(true);
 	Controls.HealthIcon:SetColorByName("DarkBlue");
-
+	
 	if(m_kData ~= nil) then
         UI.PlaySound("UI_CityPanel_ButtonClick");
 		ViewPanelAmenities( m_kData );
@@ -153,7 +153,7 @@ function OnSelectHealthTab()
 	Controls.PanelAmenities:SetHide(false);
 	Controls.PanelHousing:SetHide(false);
 	Controls.PanelCitizensGrowth:SetHide(false);
-
+	
 	CalculateSizeAndAccomodate(Controls.PanelScrollPanel, Controls.PanelStack);
 end
 
@@ -163,12 +163,12 @@ function OnSelectBuildingsTab()
 	Controls.BuildingsButton:SetSelected(true);
 	Controls.BuildingsIcon:SetColorByName("DarkBlue");
 	UI.PlaySound("UI_CityPanel_ButtonClick");
-
+	
 	if(m_kData ~= nil) then
 		ViewPanelBreakdown( m_kData );
 	end
 	Controls.PanelBreakdown:SetHide(false);
-
+	
 	--UILens.ToggleLayerOn(LensLayers.ADJACENCY_BONUS_DISTRICTS);
 	--UILens.ToggleLayerOn(LensLayers.DISTRICTS);
 
@@ -179,7 +179,7 @@ function OnSelectReligionTab()
 	Controls.ReligionButton:SetSelected(true);
 	Controls.ReligionIcon:SetColorByName("DarkBlue");
 	UI.PlaySound("UI_CityPanel_ButtonClick");
-
+	
 	if(m_kData ~= nil) then
 		ViewPanelReligion( m_kData );
 	end
@@ -210,13 +210,13 @@ end
 --end
 
 -- ===========================================================================
-function ViewPanelBreakdown( data:table )
+function ViewPanelBreakdown( data:table )	
 	Controls.DistrictsNum:SetText( data.DistrictsNum );
-	Controls.DistrictsConstructed:SetText( Locale.Lookup("LOC_HUD_CITY_DISTRICTS_CONSTRUCTED", data.DistrictsNum) );
+	Controls.DistrictsConstructed:SetText( Locale.Lookup("LOC_HUD_CITY_DISTRICTS_CONSTRUCTED", data.DistrictsNum) );	
 	Controls.DistrictsPossibleNum:SetText( data.DistrictsPossibleNum );
 
 	m_kBuildingsIM:ResetInstances();
-	m_kDistrictsIM:ResetInstances();
+	m_kDistrictsIM:ResetInstances();	
 	m_kTradingPostsIM:ResetInstances();
 	m_kWondersIM:ResetInstances();
 
@@ -239,11 +239,7 @@ function ViewPanelBreakdown( data:table )
 						buildingName = buildingName .. "[ICON_Pillaged]";
 					end
 					kInstanceBuild.BuildingName:SetText( buildingName );
-					kInstanceBuild.BuildingName:SetToolTipString( building.ToolTip);
-
 					kInstanceBuild.Icon:SetIcon( building.Icon );
-					kInstanceBuild.Icon:SetToolTipString( building.ToolTip);
-
 					local yieldString:string = "";
 					for _,kYield in ipairs(building.Yields) do
 						yieldString = yieldString .. GetYieldString(kYield.YieldType,kYield.YieldChange);
@@ -263,32 +259,29 @@ function ViewPanelBreakdown( data:table )
 
 	for _, wonder in ipairs(data.Wonders) do
 		local kInstanceWonder:table = m_kWondersIM:GetInstance();
-		kInstanceWonder.WonderName:SetText( wonder.Name );
-		kInstanceWonder.WonderName:SetToolTipString(wonder.ToolTip);
-
+		kInstanceWonder.WonderName:SetText( wonder.Name );			
 		local yieldString:string = "";
 		for _,kYield in ipairs(wonder.Yields) do
 			yieldString = yieldString .. GetYieldString(kYield.YieldType,kYield.YieldChange);
 		end
 		kInstanceWonder.WonderYield:SetText( yieldString );
 		kInstanceWonder.Icon:SetIcon( wonder.Icon );
-		kInstanceWonder.Icon:SetToolTipString(wonder.ToolTip);
 	end
 
 	-- Add trading posts
 	local isHasTradingPosts :boolean = (table.count(data.TradingPosts) > 0)
 	Controls.NoTradingPostsArea:SetHide( isHasTradingPosts );
 	Controls.TradingPostsArea:SetHide( not isHasTradingPosts );
-
+	
 	if isHasTradingPosts then
 		for _, tradePostPlayerId in ipairs(data.TradingPosts) do
-			local kInstanceTradingPost	:table = m_kTradingPostsIM:GetInstance();
+			local kInstanceTradingPost	:table = m_kTradingPostsIM:GetInstance();		
 			local playerName			:string = Locale.Lookup( PlayerConfigurations[tradePostPlayerId]:GetPlayerName() );
 			local iconName				:string = "ICON_"..PlayerConfigurations[tradePostPlayerId]:GetLeaderTypeName();
 			local textureOffsetX :number, textureOffsetY:number, textureSheet:string = IconManager:FindIconAtlas(iconName, SIZE_LEADER_ICON);
-
+		
 			kInstanceTradingPost.LeaderPortrait:SetTexture(textureOffsetX, textureOffsetY, textureSheet);
-			kInstanceTradingPost.LeaderPortrait:SetHide(false);
+			kInstanceTradingPost.LeaderPortrait:SetHide(false);					
 			if tradePostPlayerId == m_pPlayer:GetID() then
 				playerName = playerName .. " (" .. Locale.Lookup("LOC_HUD_CITY_YOU") .. ")";
 			end
@@ -296,12 +289,12 @@ function ViewPanelBreakdown( data:table )
 		end
 	end
 
-	Controls.PanelBreakdown:ReprocessAnchoring();
+	Controls.PanelBreakdown:ReprocessAnchoring();	
 end
 
 
 -- ===========================================================================
-function ViewPanelReligion( data:table )
+function ViewPanelReligion( data:table )	
 
 	-- Precursor to religion:
 	Controls.PantheonArea:SetHide( data.PantheonBelief == -1 );
@@ -328,8 +321,8 @@ function ViewPanelReligion( data:table )
 		end
 
 
-		for _,religion in ipairs(data.Religions) do
-
+		for _,religion in ipairs(data.Religions) do		
+			
 			local religionName	:string = Game.GetReligion():GetName(religion.ID);
 			local iconName		:string = "ICON_" .. religion.ReligionType;
 			local textureOffsetX:number, textureOffsetY:number, textureSheet:string = IconManager:FindIconAtlas(iconName);
@@ -345,7 +338,7 @@ function ViewPanelReligion( data:table )
 					Controls.DominantReligionName:SetText( Locale.Lookup("LOC_HUD_CITY_RELIGIOUS_CITIZENS_NUMBER",religion.Followers,religionName) );
 				elseif religion.ReligionType ~= "RELIGION_PANTHEON" then
 					-- Other religion
-					local religionInstance:table = m_kOtherReligionsIM:GetInstance();
+					local religionInstance:table = m_kOtherReligionsIM:GetInstance();	
 					religionInstance.ReligionSymbol:SetTexture( textureSheet );
 					religionInstance.ReligionSymbol:SetTextureOffsetVal( textureOffsetX, textureOffsetY );
 					religionInstance.ReligionName:SetText( Locale.Lookup("LOC_HUD_CITY_RELIGIOUS_CITIZENS_NUMBER",religion.Followers,religionName) );
@@ -353,13 +346,13 @@ function ViewPanelReligion( data:table )
 			else
 				error("Unable to find texture "..iconName.." in a texture sheet for a CityPanel's religion symbol.");
 			end
-
+			
 		end
 
 	else
-
+		
 	end
-	Controls.PanelReligion:ReprocessAnchoring();
+	Controls.PanelReligion:ReprocessAnchoring();	
 end
 
 -- ===========================================================================
@@ -379,7 +372,7 @@ end
 -- ===========================================================================
 function GetTurnsUntilGrowthColor( turns:number )
 	if	turns < 1	then return "StatBadCSGlow"; end
-	return "StatGoodCSGlow";
+	return "StatGoodCSGlow";	
 end
 
 function GetPercentGrowthColor( percent:number )
@@ -390,9 +383,9 @@ function GetPercentGrowthColor( percent:number )
 end
 
 -- ===========================================================================
-function ViewPanelAmenities( data:table )
+function ViewPanelAmenities( data:table )	
 	Controls.AmenitiesAdvisorBubble:SetHide( false );
-
+	
 	local colorName:string = GetHappinessColor(data.Happiness);
 	Controls.AmenitiesConstructedLabel:SetText( Locale.Lookup( "LOC_HUD_CITY_AMENITY", data.AmenitiesNum) );
 	Controls.AmenitiesConstructedNum:SetText( Locale.ToNumber(data.AmenitiesNum) );
@@ -400,7 +393,7 @@ function ViewPanelAmenities( data:table )
 	Controls.AmenitiesConstructedNum:SetColorByName( colorName );
 	Controls.Mood:SetText( Locale.Lookup(GameInfo.Happinesses[data.Happiness].Name) );
 	Controls.Mood:SetColorByName( colorName );
-
+	 
 	if data.HappinessGrowthModifier == 0 then
 		Controls.CitizenGrowth:SetText( Locale.Lookup("LOC_HUD_CITY_CITIZENS_SATISFIED") );
 		Controls.CitizenGrowth:SetFontSize(12);
@@ -408,20 +401,20 @@ function ViewPanelAmenities( data:table )
 		Controls.CitizenGrowth:SetFontSize(12);
 		local iGrowthPercent = Round(1 + (data.HappinessGrowthModifier/100), 2);
 		local iYieldPercent = Round(1 + (data.HappinessNonFoodYieldModifier/100), 2);
-		local growthInfo:string =
-			GetColorPercentString(iGrowthPercent) ..
+		local growthInfo:string = 
+			GetColorPercentString(iGrowthPercent) .. 
 			" "..
-			Locale.Lookup("LOC_HUD_CITY_CITIZEN_GROWTH") ..
+			Locale.Lookup("LOC_HUD_CITY_CITIZEN_GROWTH") .. 
 			"[NEWLINE]" ..
-			GetColorPercentString(iYieldPercent) ..
+			GetColorPercentString(iYieldPercent) .. 
 			" "..
 			Locale.ToUpper( Locale.Lookup("LOC_HUD_CITY_ALL_YIELDS") );
-
+			
 		Controls.CitizenGrowth:SetText( growthInfo );
 		--Controls.CitizenYields:SetText( data.HappinessNonFoodYieldModifier );
 		--Controls.CitizenYields:SetHide(false);
 	end
-
+	
 	Controls.AmenityAdvice:SetText(data.AmenityAdvice);
 
 	m_kAmenitiesIM:ResetInstances();
@@ -434,15 +427,15 @@ function ViewPanelAmenities( data:table )
 	local kInstance :table = m_kAmenitiesIM:GetInstance();
 	kInstance.Amenity:SetText( Locale.Lookup("LOC_HUD_CITY_AMENITIES_FROM_LUXURIES") );
 	kInstance.AmenityYield:SetText( Locale.ToNumber(data.AmenitiesFromLuxuries) );
-
+	
 	kInstance = m_kAmenitiesIM:GetInstance();
 	kInstance.Amenity:SetText( Locale.Lookup("LOC_HUD_CITY_AMENITIES_FROM_CIVICS") );
 	kInstance.AmenityYield:SetText( Locale.ToNumber(data.AmenitiesFromCivics) );
-
+	
 	kInstance = m_kAmenitiesIM:GetInstance();
 	kInstance.Amenity:SetText( Locale.Lookup("LOC_HUD_CITY_AMENITIES_FROM_ENTERTAINMENT") );
 	kInstance.AmenityYield:SetText( Locale.ToNumber(data.AmenitiesFromEntertainment) );
-
+		
 	kInstance = m_kAmenitiesIM:GetInstance();
 	kInstance.Amenity:SetText( Locale.Lookup("LOC_HUD_CITY_AMENITIES_FROM_GREAT_PEOPLE") );
 	kInstance.AmenityYield:SetText( Locale.ToNumber(data.AmenitiesFromGreatPeople) );
@@ -455,12 +448,12 @@ function ViewPanelAmenities( data:table )
 	kInstance.Amenity:SetText( Locale.Lookup("LOC_HUD_CITY_AMENITIES_FROM_NATIONAL_PARKS") );
 	kInstance.AmenityYield:SetText( Locale.ToNumber(data.AmenitiesFromNationalParks) );
 
-	if(data.AmenitiesFromStartingEra > 0) then
+	if(data.AmenitiesFromStartingEra > 0) then 
 		kInstance = m_kAmenitiesIM:GetInstance();
 		kInstance.Amenity:SetText( Locale.Lookup("LOC_HUD_CITY_AMENITIES_FROM_STARTING_ERA") );
 		kInstance.AmenityYield:SetText( Locale.ToNumber(data.AmenitiesFromStartingEra) );
 	end
-
+	
 	kInstance = m_kAmenitiesIM:GetInstance();
 	kInstance.Amenity:SetText( Locale.Lookup("LOC_HUD_CITY_AMENITIES_LOST_FROM_WAR_WEARINESS") );
 	if data.AmenitiesLostFromWarWeariness == 0 then
@@ -484,22 +477,24 @@ function ViewPanelAmenities( data:table )
 end
 
 -- ===========================================================================
-function ViewPanelHousing( data:table )
+function ViewPanelHousing( data:table )	
 	local colorName:string = GetPercentGrowthColor( data.HousingMultiplier ) ;
-	Controls.HousingTotalNum:SetText( data.Housing );
+	Controls.HousingTotalNum:SetText( data.Housing );	
 	Controls.HousingTotalNum:SetColorByName( colorName );
+	Controls.HousingTotalNumLabel:SetText(Locale.Lookup("LOC_HUD_CITY_HOUSING_LABEL", data.Housing));
+
 	local uv:number;
 
 	if data.HousingMultiplier == 0 then
-		Controls.HousingPopulationStatus:SetText(Locale.Lookup("LOC_HUD_CITY_POPULATION_GROWTH_HALTED"));
-		uv = 0;
+		Controls.HousingPopulationStatus:SetText(Locale.Lookup("LOC_HUD_CITY_POPULATION_GROWTH_HALTED"));	
+		uv = 0;	
 	elseif data.HousingMultiplier <= 0.25 then
 	    local iPercent = (1 - data.HousingMultiplier) * 100;
-		Controls.HousingPopulationStatus:SetText(Locale.Lookup("LOC_HUD_CITY_POPULATION_GROWTH_SLOWED", iPercent));
+		Controls.HousingPopulationStatus:SetText(Locale.Lookup("LOC_HUD_CITY_POPULATION_GROWTH_SLOWED", iPercent));		
 		uv = 1;
 	elseif data.HousingMultiplier <= 0.5 then
 	    local iPercent = (1 - data.HousingMultiplier) * 100;
-		Controls.HousingPopulationStatus:SetText(Locale.Lookup("LOC_HUD_CITY_POPULATION_GROWTH_SLOWED", iPercent));
+		Controls.HousingPopulationStatus:SetText(Locale.Lookup("LOC_HUD_CITY_POPULATION_GROWTH_SLOWED", iPercent));		
 		uv = 1;
 	else
 		Controls.HousingPopulationStatus:SetText(Locale.Lookup("LOC_HUD_CITY_POPULATION_GROWTH_NORMAL"));
@@ -508,14 +503,11 @@ function ViewPanelHousing( data:table )
 	Controls.HousingPopulationStatus:SetColorByName( colorName );
 
 	Controls.CitizensNum:SetText( data.Population );
-	if data.Population <= 1 then
-		Controls.CitizensName:SetText(Locale.Lookup("LOC_HUD_CITY_CITIZEN"));
-	elseif data.Population > 1 then
-		Controls.CitizensName:SetText(Locale.Lookup("LOC_HUD_CITY_CITIZENS"));
-	end
+	Controls.CitizensName:SetText(Locale.Lookup("LOC_HUD_CITY_CITIZENS_LABEL", data.Population));
+	
 	Controls.HousingTotalNum2:SetText( data.Housing );
 	Controls.HousingTotalNum2:SetColorByName( colorName );
-
+		
 	--local uv:number = data.TurnsUntilGrowth > 0 and 1 or 0;
 	Controls.HousingStatus:SetTextureOffsetVal( UV_HOUSING_GROWTH_STATUS[uv].u, UV_HOUSING_GROWTH_STATUS[uv].v );
 	Controls.HousingStatusIcon:SetColorByName( colorName );
@@ -523,7 +515,7 @@ function ViewPanelHousing( data:table )
 	Controls.HousingAdvice:SetText(data.HousingAdvice);
 
 	m_kHousingIM:ResetInstances();
-
+		
 	local kInstance :table = m_kHousingIM:GetInstance();
 	kInstance.HousingName:SetText( Locale.Lookup("LOC_HUD_CITY_HOUSING_FROM_BUILDINGS") );
 	kInstance.HousingYield:SetText( Locale.ToNumber(data.HousingFromBuildings) );
@@ -583,7 +575,7 @@ function UpdateCitizenGrowthStatusIcon( turnsUntilGrowth:number )
 	Controls.CitizenGrowthStatus2:SetTextureOffsetVal( uv.u, uv.v );
 end
 
---[[TODO: Going to adapt this function to link directly to the amenities/growth portions of
+--[[TODO: Going to adapt this function to link directly to the amenities/growth portions of 
 -- the Citizen Health tab, if a player clicks one of the stats in the city panel
 --function ScrollToNode( typeName:string )
 --	local percent:number = 0;
@@ -593,15 +585,15 @@ end
 --	Controls.NodeScroller:SetScrollValue(percent);
 --end]]--
 -- ===========================================================================
-function ViewPanelCitizensGrowth( data:table )
+function ViewPanelCitizensGrowth( data:table )	
 
 	Controls.FoodPerTurnNum:SetText( toPlusMinusString(data.FoodPerTurn) );
 	Controls.FoodConsumption:SetText( toPlusMinusString(-(data.FoodPerTurn - data.FoodSurplus)) );
-	Controls.NetFoodPerTurn:SetText( toPlusMinusString(data.FoodSurplus) );
+	Controls.NetFoodPerTurn:SetText( toPlusMinusString(data.FoodSurplus) );	
 	Controls.GrowthLongTurnsBar:SetPercent( data.CurrentFoodPercent );
 	Controls.GrowthLongTurnsBar:SetShadowPercent( data.FoodPercentNextTurn );
 	Controls.GrowthLongNum:SetText( math.abs(data.TurnsUntilGrowth));
-
+	
 	local iModifiedFood;
 	local total :number;
 
@@ -613,7 +605,7 @@ function ViewPanelCitizensGrowth( data:table )
 	end
 
 	if data.TurnsUntilGrowth > -1 then
-
+		
 		-- Set bonuses and multipliers
 		local iHappinessPercent = data.HappinessGrowthModifier;
 		Controls.HappinessBonus:SetText( toPlusMinusString(Round(iHappinessPercent, 0)) .. "%");
@@ -622,9 +614,9 @@ function ViewPanelCitizensGrowth( data:table )
 		Controls.HousingMultiplier:SetText( Locale.ToNumber( data.HousingMultiplier));
 		local growthModifier =  math.max(1 + (data.HappinessGrowthModifier/100) + data.OtherGrowthModifiers, 0); -- This is unintuitive but it's in parity with the logic in City_Growth.cpp
 		iModifiedFood = Round(data.FoodSurplus * growthModifier, 2);
-		total = iModifiedFood * data.HousingMultiplier;
+		total = iModifiedFood * data.HousingMultiplier;		
 		if data.Occupied then
-			total = iModifiedFood * data.OccupationMultiplier;
+			total = iModifiedFood * data.OccupationMultiplier;		
 			Controls.TurnsUntilBornLost:SetText( Locale.Lookup("LOC_HUD_CITY_GROWTH_OCCUPIED"));
 		else
 			Controls.TurnsUntilBornLost:SetText( Locale.Lookup("LOC_HUD_CITY_TURNS_UNTIL_CITIZEN_BORN", data.TurnsUntilGrowth));
@@ -636,11 +628,11 @@ function ViewPanelCitizensGrowth( data:table )
 		Controls.OtherGrowthBonuses:LocalizeAndSetText("LOC_HUD_CITY_NOT_APPLICABLE");
 		Controls.HousingMultiplier:LocalizeAndSetText("LOC_HUD_CITY_NOT_APPLICABLE");
 		iModifiedFood = data.FoodSurplus;
-		total = iModifiedFood;
+		total = iModifiedFood;		
 
 		Controls.TurnsUntilBornLost:SetText( Locale.Lookup("LOC_HUD_CITY_TURNS_UNTIL_CITIZEN_LOST", math.abs(data.TurnsUntilGrowth)));
 		Controls.FoodSurplusDeficitLabel:LocalizeAndSetText("LOC_HUD_CITY_TOTAL_FOOD_DEFICIT");
-	end
+	end	
 
 	Controls.ModifiedGrowthFoodPerTurn:SetText( toPlusMinusString(iModifiedFood) );
 	local totalString:string = toPlusMinusString(total) .. (total <= 0 and "[Icon_FoodDeficit]" or "[Icon_FoodSurplus]");
@@ -652,10 +644,10 @@ function ViewPanelCitizensGrowth( data:table )
 end
 
 -- ===========================================================================
-function ViewPanelProductionNow( data:table )
+function ViewPanelProductionNow( data:table )	
 	Controls.ProductionNowHeader:SetText( data.CurrentProductionName );
-
-	-- If a unit is building built; show it's stats before the description:
+	
+	-- If a unit is building built; show it's stats before the description:	
 	Controls.UnitStatsStack:SetHide( data.UnitStats == nil );
 	if data.UnitStats ~= nil then
 		Controls.IconStrength:SetHide( data.UnitStats.Combat <= 0 );
@@ -667,7 +659,7 @@ function ViewPanelProductionNow( data:table )
 		Controls.LabelRangedStrength:SetHide( data.UnitStats.RangedCombat <= 0 );
 		Controls.LabelBombardStrength:SetHide( data.UnitStats.Bombard <= 0 );
 		Controls.LabelRange:SetHide( data.UnitStats.Range <= 0 );
-
+				
 		Controls.LabelStrength:SetText( Locale.ToNumber(data.UnitStats.Combat ) );
 		Controls.LabelRangedStrength:SetText( Locale.ToNumber(data.UnitStats.RangedCombat ) );
 		Controls.LabelBombardStrength:SetText( Locale.ToNumber(data.UnitStats.Bombard ) );
@@ -685,7 +677,7 @@ function CreateQueueItem( index:number, kProductionInfo:table )
 	kInstance.Index:SetText( tostring(index).."." );
 	kInstance.Close:RegisterCallback( Mouse.eLClick,
 		function()
-			m_kProductionIM:ReleaseInstance( kInstance );
+			m_kProductionIM:ReleaseInstance( kInstance );			
 			Controls.PanelStack:CalculateSize();
 			Controls.PanelStack:ReprocessAnchoring();
 			Controls.PanelStack:ReprocessAnchoring();	-- Because of all the autosizing, the anchoring must be processed twice.
@@ -702,12 +694,28 @@ function CreateQueueItem( index:number, kProductionInfo:table )
 end
 
 -- ===========================================================================
-function ViewPanelQueue( data:table )
+function ViewPanelQueue( data:table )	
 	m_kProductionIM:ResetInstances();
 	for i:number,kProductionInfo:table in ipairs( data.ProductionQueue ) do
 		CreateQueueItem(i, kProductionInfo );
 	end
 end
+
+-- ===========================================================================
+function RenameCity(city, new_name)
+	-- Do nothing if the city names match or new name is blank or invalid.
+	local old_name = city:GetName();
+	if(new_name == nil or new_name == old_name or new_name == Locale.Lookup(old_name)) then
+		return;
+	else
+		-- Send net message to change name.
+		local params = {};
+		params[CityCommandTypes.PARAM_NAME] = new_name;
+	
+		CityManager.RequestCommand(city, CityCommandTypes.NAME_CITY, params);
+	end
+end
+
 
 -- ===========================================================================
 function OnAddToProductionQueue()
@@ -762,6 +770,23 @@ end
 function View(data)
 	if (m_isDirty) then
 		Controls.OverviewSubheader:SetText(Locale.ToUpper(Locale.Lookup(data.CityName)));
+
+		Controls.RenameCityButton:RegisterCallback(Mouse.eLClick, function()
+			Controls.OverviewSubheader:SetHide(true);
+
+			Controls.EditCityName:SetText(Controls.OverviewSubheader:GetText());
+			Controls.EditCityName:SetHide(false);
+			Controls.EditCityName:TakeFocus();
+		end);
+
+		local city = data.City;
+		Controls.EditCityName:RegisterCommitCallback(function(editBox)
+			local userInput:string = Controls.EditCityName:GetText();
+			RenameCity(city, userInput);
+			Controls.EditCityName:SetHide(true);
+			Controls.OverviewSubheader:SetHide(false);
+		end);
+
 		ViewPanelAmenities( data );
 		ViewPanelCitizensGrowth( data );
 		ViewPanelHousing( data );
@@ -793,7 +818,7 @@ end
 --	UI Event Handler
 -- ===========================================================================
 function KeyHandler( key:number )
-    if key == Keys.VK_ESCAPE then
+	if key == Keys.VK_ESCAPE then
 		if ( m_isShowingPanel ) then
 			LuaEvents.CityPanelOverview_CloseButton();
 			Close();
@@ -801,25 +826,25 @@ function KeyHandler( key:number )
 		else
 			return false;
 		end
-    end
-    return false;
+	end
+	return false;  
 end
 
 function OnInputHandler( pInputStruct:table )
 	local uiMsg = pInputStruct:GetMessageType();
 	if (uiMsg == KeyEvents.KeyUp) then return KeyHandler( pInputStruct:GetKey() ); end;
 	return false;
-end
+end 
 
 -- Resize Handler
-function OnUpdateUI( type:number, tag:string, iData1:number, iData2:number, strData1:string )
+function OnUpdateUI( type:number, tag:string, iData1:number, iData2:number, strData1:string )   
   if type == SystemUpdateUI.ScreenResize then
     Resize();
   end
 end
 
 -- Called whenever CityPanel is refreshed
-function OnLiveCityDataChanged( data:table, isSelected:boolean)
+function OnLiveCityDataChanged( data:table, isSelected:boolean) 
 	if (not isSelected) then
 		Close();
 	else
@@ -827,6 +852,12 @@ function OnLiveCityDataChanged( data:table, isSelected:boolean)
 		m_isDirty = true;
 		ContextPtr:SetHide(false);
 		Refresh();
+	end
+end
+
+function OnCityNameChanged( playerID: number, cityID : number )
+	if(m_pCity and playerID == m_pCity:GetOwner() and cityID == m_pCity:GetID()) then
+		Controls.OverviewSubheader:SetText(Locale.ToUpper(Locale.Lookup(m_pCity:GetName())));
 	end
 end
 
@@ -855,7 +886,7 @@ function Resize()
 	Controls.PanelScrollPanel:SetSizeY(screenY-120);
 end
 
-function OnUpdateUI( type:number, tag:string, iData1:number, iData2:number, strData1:string )
+function OnUpdateUI( type:number, tag:string, iData1:number, iData2:number, strData1:string )   
   if type == SystemUpdateUI.ScreenResize then
     Resize();
   end
@@ -880,13 +911,13 @@ function OnShowBreakdownTab()
 	m_tabs.SelectTab( Controls.BuildingsButton );
 end
 
-function Initialize()
+function Initialize()	
 	PopulateTabs();
 
 	ContextPtr:SetInputHandler( OnInputHandler, true );
 	Controls.Close:RegisterCallback(Mouse.eLClick, OnCloseButtonClicked);
 	Controls.Close:RegisterCallback( Mouse.eMouseEnter, function() UI.PlaySound("Main_Menu_Mouse_Over"); end);
-
+	
 	LuaEvents.Tutorial_ResearchOpen.Add(OnClose);
 	LuaEvents.ActionPanel_OpenChooseResearch.Add(OnClose);
 	LuaEvents.ActionPanel_OpenChooseCivic.Add(OnClose);
@@ -895,6 +926,7 @@ function Initialize()
 	LuaEvents.CityPanel_LiveCityDataChanged.Add( OnLiveCityDataChanged )
 
 	Events.SystemUpdateUI.Add( OnUpdateUI );
+	Events.CityNameChanged.Add(OnCityNameChanged);
 	Events.LocalPlayerTurnEnd.Add( OnLocalPlayerTurnEnd );
 	Events.ResearchCompleted.Add( OnResearchCompleted );
 	Events.GovernmentPolicyChanged.Add( OnPolicyChanged );

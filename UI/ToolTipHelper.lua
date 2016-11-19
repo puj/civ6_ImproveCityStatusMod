@@ -1,13 +1,13 @@
 -------------------------------------------------------------------------------
 -- ToolTipHelper
 -- Contains logic for generating a tooltip for a specific type.
--- NOTE:
+-- NOTE: 
 --	Currently, all information gathering is performed by these functions.
---	In the future, for extensibility, this function will enumerate several
---	functions which will return different bits of information that can be
+--	In the future, for extensibility, this function will enumerate several 
+--	functions which will return different bits of information that can be 
 --  formatted or filtered in different ways.
---	This will allow modders to come in and adjust what information they want
---  shown to the user without taking ownership over the entire tooltip.
+--	This will allow modders to come in and adjust what information they want 
+--  shown to the user without taking ownership over the entire tooltip.	
 -------------------------------------------------------------------------------
 include("TechAndCivicUnlockables")
 
@@ -27,7 +27,7 @@ ToolTipHelper.GetAdjacencyBonuses = function(t, field, key)
 
 	for row in GameInfo.Adjacency_YieldChanges() do
 		if(has_bonus[row.ID]) then
-
+			
 			local object;
 			if(row.OtherDistrictAdjacent) then
 				object = "LOC_TYPE_TRAIT_ADJACENT_OBJECT_DISTRICT";
@@ -56,7 +56,7 @@ ToolTipHelper.GetAdjacencyBonuses = function(t, field, key)
 				if(improvement) then
 					object = improvement.Name;
 				end
-			elseif(row.AdjacentDistrict) then
+			elseif(row.AdjacentDistrict) then		
 				local district = GameInfo.Districts[row.AdjacentDistrict];
 				if(district) then
 					object = district.Name;
@@ -92,7 +92,7 @@ ToolTipHelper.GetAdjacencyBonuses = function(t, field, key)
 					else
 						item = GameInfo.Technologies[row.ObsoleteTech];
 					end
-
+				
 					if(item) then
 						local text = Locale.Lookup("LOC_TYPE_TRAIT_ADJACENT_BONUS_OBSOLETE_WITH_TECH_OR_CIVIC", item.Name);
 						value = value .. text;
@@ -100,7 +100,7 @@ ToolTipHelper.GetAdjacencyBonuses = function(t, field, key)
 				end
 
 				table.insert(bonuses, value);
-			end
+			end		
 		end
 	end
 
@@ -110,7 +110,7 @@ end
 
 -------------------------------------------------------------------------------
 ToolTipHelper.GetBuildingToolTip = function(buildingHash, playerId, city)
-
+	
 	-- ToolTip Format
 	-- <Name>
 	-- <Static Description>
@@ -118,7 +118,7 @@ ToolTipHelper.GetBuildingToolTip = function(buildingHash, playerId, city)
 	-- <RequiredDistrict>
 	-- <RequiredAdjacentDistrict>
 	local building = GameInfo.Buildings[buildingHash];
-
+	
 	local buildingType:string = "";
 	if (building ~= nil) then
 		buildingType = building.BuildingType;
@@ -144,20 +144,6 @@ ToolTipHelper.GetBuildingToolTip = function(buildingHash, playerId, city)
 	end
 
 	if(building.MaxWorldInstances ~= -1) then
-		local eraStringKey = nil;
-		local prereqTech = building.PrereqTech;
-		if(prereqTech) then
-			local eraType = GameInfo.Technologies[prereqTech].EraType;
-			if(eraType) then
-				eraStringKey = GameInfo.Eras[eraType].Name;
-			end
-		end
-
-		if(eraStringKey) then
-			table.insert(toolTipLines, Locale.Lookup(eraStringKey));
-		end
-
-
 		if(replaces_building) then
 			table.insert(toolTipLines, Locale.Lookup("LOC_WONDER_NAME_REPLACES", replaces_building.Name));
 		else
@@ -194,7 +180,7 @@ ToolTipHelper.GetBuildingToolTip = function(buildingHash, playerId, city)
 			if(row.BuildingType == buildingType) then
 				local yield = GameInfo.Yields[row.YieldType];
 				if(yield) then
-					table.insert(stats, Locale.Lookup("LOC_TYPE_TRAIT_YIELD", row.YieldChange, yield.IconString, yield.Name));
+					table.insert(stats, Locale.Lookup("LOC_TYPE_TRAIT_YIELD", row.YieldChange, yield.IconString, yield.Name)); 
 				end
 			end
 		end
@@ -202,7 +188,7 @@ ToolTipHelper.GetBuildingToolTip = function(buildingHash, playerId, city)
 		for yield in GameInfo.Yields() do
 			local yieldChange = city:GetBuildingPotentialYield(buildingHash, yield.YieldType);
 			if yieldChange ~= 0 then
-				table.insert(stats, Locale.Lookup("LOC_TYPE_TRAIT_YIELD", yieldChange, yield.IconString, yield.Name));
+				table.insert(stats, Locale.Lookup("LOC_TYPE_TRAIT_YIELD", yieldChange, yield.IconString, yield.Name)); 
 			end
 		end
 	end
@@ -249,7 +235,7 @@ ToolTipHelper.GetBuildingToolTip = function(buildingHash, playerId, city)
 			end
 		end
 	end
-
+	
 	local slotStrings = {
 		["GREATWORKSLOT_ART"] = "LOC_TYPE_TRAIT_GREAT_WORKS_ART_SLOTS";
 		["GREATWORKSLOT_WRITING"] = "LOC_TYPE_TRAIT_GREAT_WORKS_WRITING_SLOTS";
@@ -268,15 +254,15 @@ ToolTipHelper.GetBuildingToolTip = function(buildingHash, playerId, city)
 			end
 		end
 	end
-
+	
 	if(not Locale.IsNilOrWhitespace(description)) then
-		table.insert(toolTipLines, "[NEWLINE]" .. Locale.Lookup(description));
+		table.insert(toolTipLines, "[NEWLINE]" .. Locale.Lookup(description));	
 	end
 
 	if district ~= nil and building.RegionalRange ~= 0 then
 		local extraRange = district:GetExtraRegionalRange();
 		if extraRange ~= 0 then
-			table.insert(toolTipLines, Locale.Lookup("LOC_TOOLTIP_EXTRA_REGIONAL_RANGE", extraRange));
+			table.insert(toolTipLines, Locale.Lookup("LOC_TOOLTIP_EXTRA_REGIONAL_RANGE", extraRange)); 
 		end
 	end
 
@@ -287,7 +273,7 @@ ToolTipHelper.GetBuildingToolTip = function(buildingHash, playerId, city)
 			table.insert(toolTipLines, v);
 		end
 	end
-
+		
 	local reqLines = {};
 
 	if(building.RequiresReligion) then
@@ -318,7 +304,7 @@ ToolTipHelper.GetBuildingToolTip = function(buildingHash, playerId, city)
 		end
 	end
 
-	-- Required Buildings is an OR relationship.
+	-- Required Buildings is an OR relationship.  
 	-- If there are 3 or more, show as bullet list.
 	local required_buildings_count = #required_buildings;
 	if(required_buildings_count > 2) then
@@ -370,7 +356,7 @@ ToolTipHelper.GetBuildingToolTip = function(buildingHash, playerId, city)
 	if(building.Coast or building.MustBeAdjacentLand) then
 		table.insert(reqLines, Locale.Lookup("LOC_TOOLTIP_PLACEMENT_REQUIRES_COAST"));
 	end
-
+	
 	if(#reqLines > 0) then
 		table.insert(toolTipLines, "[NEWLINE]" .. Locale.Lookup("LOC_TOOLTIP_BUILDING_REQUIRES"));
 		for i,v in ipairs(reqLines) do
@@ -384,7 +370,7 @@ ToolTipHelper.GetBuildingToolTip = function(buildingHash, playerId, city)
 end
 -------------------------------------------------------------------------------
 ToolTipHelper.GetCivicToolTip = function(civicType, playerId)
-
+	
 	-- ToolTip Format
 	-- <Name> <Cost>
 	-- <Static Description>
@@ -393,7 +379,7 @@ ToolTipHelper.GetCivicToolTip = function(civicType, playerId)
 	-- 	<UnlocksImprovements>
 	-- 	<UnlocksUnits>
 	-- </Unlocks>
-
+	
 	-- Gather up all the information
 	local civic = GameInfo.Civics[civicType];
 	if(civic == nil) then
@@ -438,7 +424,7 @@ ToolTipHelper.GetCivicToolTip = function(civicType, playerId)
 				else
 					return Locale.Lookup(name);
 				end
-			end
+			end 
 		end
 
 		unlock_text = {};
@@ -481,11 +467,11 @@ ToolTipHelper.GetCivicToolTip = function(civicType, playerId)
 	local toolTipLines = {};
 	table.insert(toolTipLines, Locale.ToUpper(name));
 	table.insert(toolTipLines, Locale.Lookup("{1_Cost} {2_Icon} {3_Name}", cost, yield_icon, yield_name));
-
+	
 	if(not Locale.IsNilOrWhitespace(description)) then
 		table.insert(toolTipLines, "[NEWLINE]" .. Locale.Lookup(description));
 	end
-
+		
 	if(unlock_text and #unlock_text > 0) then
 		table.insert(toolTipLines, "[NEWLINE]" .. Locale.Lookup("LOC_TOOLTIP_UNLOCKS"));
 		for i,v in ipairs(unlock_text) do
@@ -528,7 +514,7 @@ ToolTipHelper.GetUnitToolTip = function(unitType)
 	local baseBombard = unitReference.Bombard;
 	local baseMoves = unitReference.BaseMoves;
 	local description = unitReference.Description;
-
+	
 	-- Build ze tip!
 	-- Build the tool tip line by line.
 	local toolTipLines = {};
@@ -566,7 +552,7 @@ ToolTipHelper.GetUnitToolTip = function(unitType)
 		end
 	end
 
-
+	
 	if(not Locale.IsNilOrWhitespace(description)) then
 		description = "[NEWLINE]" .. Locale.Lookup(description);
 		table.insert(toolTipLines, description);
@@ -608,10 +594,10 @@ ToolTipHelper.GetUnitToolTip = function(unitType)
 			table.insert(toolTipLines, "[ICON_BULLET] " .. "[ICON_" .. resource.ResourceType .. "]" .. Locale.Lookup(resource.Name));
 		end
 	end
-
+	
 	-- Return the composite tooltip!
 	return table.concat(toolTipLines, "[NEWLINE]");
-
+	
 end
 -------------------------------------------------------------------------------
 ToolTipHelper.GetDistrictToolTip = function(districtType)
@@ -630,7 +616,7 @@ ToolTipHelper.GetDistrictToolTip = function(districtType)
 	if(replaces) then
 		replaces_district = GameInfo.Districts[replaces.ReplacesDistrictType];
 	end
-
+	
 	-- Build ze tip!
 	-- Build the tool tip line by line.
 	local toolTipLines = {};
@@ -657,7 +643,7 @@ ToolTipHelper.GetDistrictToolTip = function(districtType)
 			table.insert(toolTipLines, Locale.Lookup("LOC_TOOLTIP_MAINTENANCE", maintenance, yield.IconString, yield.Name));
 		end
 	end
-
+	
 	if(not Locale.IsNilOrWhitespace(description)) then
 		table.insert(toolTipLines, "[NEWLINE]" .. Locale.Lookup(description));
 	end
@@ -706,7 +692,7 @@ ToolTipHelper.GetDistrictToolTip = function(districtType)
 			end
 		end
 	end
-
+	
 	for i,v in ipairs(stats) do
 		if(i == 1) then
 			table.insert(toolTipLines, "[NEWLINE]" .. v);
@@ -734,7 +720,7 @@ ToolTipHelper.GetDistrictToolTip = function(districtType)
 end
 -------------------------------------------------------------------------------
 ToolTipHelper.GetProjectToolTip = function(projectType)
-
+	
 	-- ToolTip Format
 	-- <Name>
 	-- <Static Description>
@@ -788,7 +774,7 @@ ToolTipHelper.GetProjectToolTip = function(projectType)
 				local greatPersonClassName = greatPersonClass.Name;
 				local greatPersonClassIconString = greatPersonClass.IconString;
 				table.insert(toolTipLines, Locale.Lookup("LOC_PROJECT_GREAT_PERSON_POINTS", greatPersonClassIconString, greatPersonClassName));
-			end
+			end	
 		end
 	end
 
@@ -797,7 +783,7 @@ ToolTipHelper.GetProjectToolTip = function(projectType)
 end
 -------------------------------------------------------------------------------
 ToolTipHelper.GetImprovementToolTip = function(improvementType)
-
+	
 	-- ToolTip Format
 	-- <Name>
 	-- <Static Description>
@@ -818,7 +804,7 @@ ToolTipHelper.GetImprovementToolTip = function(improvementType)
 	end
 
 	local stats = {};
-
+	
 	for row in GameInfo.Improvement_YieldChanges() do
 		if(row.ImprovementType == improvementType and row.YieldChange ~= 0) then
 			local yield = GameInfo.Yields[row.YieldType];
@@ -892,7 +878,7 @@ ToolTipHelper.GetImprovementToolTip = function(improvementType)
 end
 -------------------------------------------------------------------------------
 ToolTipHelper.GetRouteToolTip = function(routeType)
-
+	
 	-- ToolTip Format
 	-- <Name>
 	-- <Movement Cost>
@@ -939,7 +925,7 @@ ToolTipHelper.GetRouteToolTip = function(routeType)
 end
 -------------------------------------------------------------------------------
 ToolTipHelper.GetPolicyToolTip = function(policyType)
-
+	
 	-- ToolTip Format
 	-- <Name>
 	-- <Slot Type>
@@ -969,7 +955,7 @@ ToolTipHelper.GetPolicyToolTip = function(policyType)
 end
 -------------------------------------------------------------------------------
 ToolTipHelper.GetGovernmentToolTip = function(governmentType)
-
+	
 	-- ToolTip Format
 	-- <Name>
 	-- <Inherent Bonus Description>
@@ -1010,7 +996,7 @@ ToolTipHelper.GetResourceToolTip = function(resourceType)
 
 	local name = resource.Name;
 	local description = resource.Description;
-
+	
 	-- Build the tool tip line by line.
 	local toolTipLines = {};
 	table.insert(toolTipLines, Locale.ToUpper(name));
@@ -1018,7 +1004,7 @@ ToolTipHelper.GetResourceToolTip = function(resourceType)
 	if(not Locale.IsNilOrWhitespace(description)) then
 		table.insert(toolTipLines, "[NEWLINE]" .. Locale.Lookup(description));
 	end
-
+	
 	return table.concat(toolTipLines, "[NEWLINE]");
 end
 -------------------------------------------------------------------------------
@@ -1047,7 +1033,7 @@ ToolTipHelper.GetTechnologyToolTip = function(techType, playerId)
 	-- 	<UnlocksImprovements>
 	-- 	<UnlocksUnits>
 	-- </Unlocks>
-
+	
 	-- Gather up all the information
 	local tech = GameInfo.Technologies[techType];
 	if(tech == nil) then
@@ -1092,7 +1078,7 @@ ToolTipHelper.GetTechnologyToolTip = function(techType, playerId)
 				else
 					return Locale.Lookup(name);
 				end
-			end
+			end 
 		end
 
 		unlock_text = {};
@@ -1104,7 +1090,7 @@ ToolTipHelper.GetTechnologyToolTip = function(techType, playerId)
 		end
 		table.sort(unlock_text, function(a,b) return Locale.Compare(a,b) == -1; end);
 	end
-
+	
 	local yield_icon;
 	local yield_name;
 	local yield = GameInfo.Yields["YIELD_SCIENCE"];
@@ -1112,7 +1098,7 @@ ToolTipHelper.GetTechnologyToolTip = function(techType, playerId)
 		yield_name = yield.Name;
 		yield_icon = yield.IconString;
 	end
-
+		
 	-- Build the tool tip line by line.
 	local toolTipLines = {};
 	table.insert(toolTipLines, Locale.ToUpper(name));
@@ -1121,7 +1107,7 @@ ToolTipHelper.GetTechnologyToolTip = function(techType, playerId)
 	if(not Locale.IsNilOrWhitespace(description)) then
 		table.insert(toolTipLines, "[NEWLINE]" .. Locale.Lookup(description));
 	end
-
+	
 	if(unlock_text and #unlock_text > 0) then
 		--table.insert(toolTipLines, "");
 		table.insert(toolTipLines, "[NEWLINE]" .. Locale.Lookup("LOC_TOOLTIP_UNLOCKS"));
@@ -1135,7 +1121,7 @@ end
 -------------------------------------------------------------------------------
 -- Generalized method for generating ToolTips.
 -- This method uses g_ToolTipGenerators to discover which function to use
--- when generating the tooltip.  It can be specialized by modder/scenario
+-- when generating the tooltip.  It can be specialized by modder/scenario 
 -- scripts to a specific kind or type.
 -------------------------------------------------------------------------------
 
@@ -1156,7 +1142,7 @@ g_ToolTipGenerators = {
 };
 
 
--- Load all lua scripts prefixed with ToolTip_  so that they can hook into tooltip
+-- Load all lua scripts prefixed with ToolTip_  so that they can hook into tooltip 
 -- creation.
 include ("ToolTip_", true);
 
@@ -1170,7 +1156,7 @@ ToolTipHelper.GetToolTip = function(typeName, playerId)
 			handler = g_ToolTipGenerators["DEFAULT"];
 		end
 	end
-
+	
 	if(handler) then
 		return handler(typeName, playerId);
 	end
