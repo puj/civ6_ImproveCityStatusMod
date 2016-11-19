@@ -943,11 +943,13 @@ function DefaultKeyDownHandler( uiKey:number )
 	end
 
   if( uiKey == Keys.VK_NEXT) then
-		UI.SetMapZoom( MOUSE_SCALAR, 0.0, 0.0 );
+		local wheelValue = 70 * (( (1.0/12000.0) * MOUSE_SCALAR));
+		UI.SetMapZoom( UI.GetMapZoom() + wheelValue, 0.0, 0.0 );
   end
 
   if( uiKey == Keys.VK_PRIOR ) then
-		UI.SetMapZoom( -MOUSE_SCALAR, 0.0, 0.0 );
+		local wheelValue = 70 * (( (1.0/12000.0) * MOUSE_SCALAR));
+		UI.SetMapZoom( UI.GetMapZoom()  -wheelValue, 0.0, 0.0 );
   end
 
 
