@@ -196,9 +196,7 @@ function RefreshTrade()
 		routesIdle = table.count(idleRoutes);
 	end
 
-	if (routesIdle) then
-		routesConstructed = routesConstructed + table.count(routesIdle);
-	end
+	routesConstructed = routesConstructed + routesIdle;
 
 	local sRoutesActive :string = "" .. routesActive;
 	local sRoutesConstructed:string = "" .. routesConstructed;
