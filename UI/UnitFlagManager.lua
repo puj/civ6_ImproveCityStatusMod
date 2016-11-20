@@ -1348,8 +1348,8 @@ function OnCameraUpdate( vFocusX:number, vFocusY:number, fZoomLevel:number )
 		PositionFlagForUnitToView( idTable[1], idTable[2] );
 	end
 
-	PositionFlagsToView();
-	Refresh();
+	--PositionFlagsToView();
+	--Refresh();
 end
 
 -- ===========================================================================
