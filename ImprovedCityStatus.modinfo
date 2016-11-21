@@ -20,6 +20,8 @@
 				<File>UI/UnitFlagManager.lua</File>
 				<File>UI/InGame.lua</File>
 				<File>UI/InGame.xml</File>
+				<File>UI/Screens/GovernmentScreen.lua</File>
+				<File>UI/Screens/GovernmentScreen.xml</File>
 				<File>UI/WorldInput.lua</File>
 				<File>UI/WorldInput.xml</File>
 				<File>UI/WorldView/CityBannerManager.lua</File>
@@ -39,6 +41,8 @@
 		<File>UI/UnitFlagManager.lua</File>
 		<File>UI/InGame.lua</File>
 		<File>UI/InGame.xml</File>
+		<File>UI/Screens/GovernmentScreen.lua</File>
+		<File>UI/Screens/GovernmentScreen.xml</File>
 		<File>UI/WorldInput.lua</File>
 		<File>UI/WorldInput.xml</File>
 		<File>UI/WorldView/CityBannerManager.lua</File>
