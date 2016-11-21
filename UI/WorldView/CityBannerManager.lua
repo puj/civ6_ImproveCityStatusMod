@@ -921,24 +921,29 @@ function CityBanner.UpdateStats( self : CityBanner)
 						pProjectDef	= GameInfo.Projects[currentProductionHash];
 					end
 
+					local pProductionToolTipDescriptionLine = "";
+
 					if( pBuildingDef ~= nil ) then
 						currentProduction = pBuildingDef.Name;
 						prodTypeName = pBuildingDef.BuildingType;
 						prodTurnsLeft = pBuildQueue:GetTurnsLeft(pBuildingDef.BuildingType);
 						progress = pBuildQueue:GetBuildingProgress(pBuildingDef.Index);
 						pct = progress / pBuildQueue:GetBuildingCost(pBuildingDef.Index);
+						pProductionToolTipDescriptionLine = ToolTipHelper.GetBuildingToolTip(pBuildingDef.Hash, pCity:GetOwner(), pCity);
 					elseif ( pDistrictDef ~= nil ) then
 						currentProduction = pDistrictDef.Name;
 						prodTypeName = pDistrictDef.DistrictType;
 						prodTurnsLeft = pBuildQueue:GetTurnsLeft(pDistrictDef.DistrictType);
 						progress = pBuildQueue:GetDistrictProgress(pDistrictDef.Index);
 						pct = progress / pBuildQueue:GetDistrictCost(pDistrictDef.Index);
+						pProductionToolTipDescriptionLine = ToolTipHelper.GetDistrictToolTip(prodTypeName);
 					elseif ( pUnitDef ~= nil ) then
 						local eMilitaryFormationType = pBuildQueue:GetCurrentProductionTypeModifier();
 						currentProduction = pUnitDef.Name;
 						prodTypeName = pUnitDef.UnitType;
 						prodTurnsLeft = pBuildQueue:GetTurnsLeft(pUnitDef.UnitType, eMilitaryFormationType);
 						progress = pBuildQueue:GetUnitProgress(pUnitDef.Index);
+						pProductionToolTipDescriptionLine = ToolTipHelper.GetUnitToolTip(prodTypeName);
 
 						if (eMilitaryFormationType == MilitaryFormationTypes.STANDARD_FORMATION) then
 							pct = progress / pBuildQueue:GetUnitCost(pUnitDef.Index);
@@ -970,6 +975,7 @@ function CityBanner.UpdateStats( self : CityBanner)
 						prodTurnsLeft = pBuildQueue:GetTurnsLeft(pProjectDef.ProjectType);
 						progress = pBuildQueue:GetProjectProgress(pProjectDef.Index);
 						pct = progress / pBuildQueue:GetProjectCost(pProjectDef.Index);
+						pProductionToolTipDescriptionLine = ToolTipHelper.GetProjectToolTip(prodTypeName);
 					end
 
 					if(currentProduction ~= nil) then
@@ -994,6 +1000,7 @@ function CityBanner.UpdateStats( self : CityBanner)
 							self.m_Instance.CityProdTurnsLeft:SetText(prodTurnsLeft);
 						end
 						productionTip = productionTip .. "[NEWLINE]" .. productionTurnsLeftString;
+						productionTip = productionTip .. "[NEWLINE]" .. "[NEWLINE]" .. pProductionToolTipDescriptionLine;
 						self.m_Instance.CityProduction:SetToolTipString(productionTip);
 						self.m_Instance.ProductionIndicator:SetHide(false);
 						self.m_Instance.CityProductionProgress:SetHide(false);
