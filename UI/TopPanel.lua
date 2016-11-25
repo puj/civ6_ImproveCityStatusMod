@@ -3,6 +3,7 @@
 -- ===========================================================================
 include( "InstanceManager" );
 include( "SupportFunctions" ); -- Round
+include("TradeSupport");
 include( "ToolTipHelper_PlayerYields" );
 
 -- ===========================================================================
@@ -28,21 +29,21 @@ function OnCityInitialized(owner, ID)
 	if owner == Game.GetLocalPlayer() then
 		local player = Players[owner];
 		local pPlayerCities	:table = player:GetCities();
-		if table.count(pPlayerCities) == 1 then			
+		if table.count(pPlayerCities) == 1 then
 			-- Remove?
 			--Controls.YieldStack:SetHide(false);		-- Once the first city is founded, then display the corner.
 		end
 		RefreshYields();
-	end	
+	end
 end
 
 -- ===========================================================================
 --	Game Engine Event
 -- ===========================================================================
-function OnLocalPlayerChanged( playerID:number , prevLocalPlayerID:number )	
+function OnLocalPlayerChanged( playerID:number , prevLocalPlayerID:number )
 	if playerID == -1 then return; end
 	local player = Players[playerID];
-	local pPlayerCities	:table = player:GetCities();	
+	local pPlayerCities	:table = player:GetCities();
 	RefreshAll();
 end
 
@@ -94,7 +95,7 @@ function Resize()
 	Controls.ViewReports:SetSizeToText(20,11);
 	Controls.Backing:ReprocessAnchoring();
 	Controls.Backing2:ReprocessAnchoring();
-	Controls.RightContents:ReprocessAnchoring();	
+	Controls.RightContents:ReprocessAnchoring();
 end
 
 -- ===========================================================================
@@ -116,16 +117,16 @@ function RefreshYields()
 	---- SCIENCE ----
 	local playerTechnology		:table	= localPlayer:GetTechs();
 	local currentScienceYield	:number = playerTechnology:GetScienceYield();
-	Controls.SciencePerTurn:SetText( FormatValuePerTurn(currentScienceYield) );	
+	Controls.SciencePerTurn:SetText( FormatValuePerTurn(currentScienceYield) );
 
 	Controls.ScienceBacking:SetToolTipString( GetScienceTooltip() );
 	Controls.ScienceStack:CalculateSize();
 	Controls.ScienceBacking:SetSizeX(Controls.ScienceStack:GetSizeX() + YIELD_PADDING_Y);
-	
+
 	---- CULTURE----
 	local playerCulture			:table	= localPlayer:GetCulture();
 	local currentCultureYield	:number = playerCulture:GetCultureYield();
-	Controls.CulturePerTurn:SetText( FormatValuePerTurn(currentCultureYield) );	
+	Controls.CulturePerTurn:SetText( FormatValuePerTurn(currentCultureYield) );
 
 	Controls.CultureBacking:SetToolTipString( GetCultureTooltip() );
 	Controls.CultureStack:CalculateSize();
@@ -138,39 +139,39 @@ function RefreshYields()
 	if(tourismBreakdown and #tourismBreakdown > 0) then
 		tourismRateTT = tourismRateTT .. "[NEWLINE][NEWLINE]" .. tourismBreakdown;
 	end
-	
-	Controls.TourismBalance:SetText( tourismRate );	
+
+	Controls.TourismBalance:SetText( tourismRate );
 	Controls.TourismBacking:SetToolTipString(tourismRateTT);
 	if (tourismRate > 0) then
 		Controls.TourismBacking:SetHide(false);
 	else
 		Controls.TourismBacking:SetHide(true);
-	end 
-	
+	end
+
 	---- GOLD ----
 	local playerTreasury:table	= localPlayer:GetTreasury();
 	local goldYield		:number = playerTreasury:GetGoldYield() - playerTreasury:GetTotalMaintenance();
 	local goldBalance	:number = math.floor(playerTreasury:GetGoldBalance());
-	Controls.GoldBalance:SetText( Locale.ToNumber(goldBalance, "#,###.#") );	
-	Controls.GoldPerTurn:SetText( FormatValuePerTurn(goldYield) );	
+	Controls.GoldBalance:SetText( Locale.ToNumber(goldBalance, "#,###.#") );
+	Controls.GoldPerTurn:SetText( FormatValuePerTurn(goldYield) );
 	-- local gptTooltip	:string = GetExtendedGoldTooltip();
 	-- Controls.GoldPerTurn:SetToolTipString(gptTooltip);
 
 	Controls.GoldBacking:SetToolTipString( GetGoldTooltip() );
 
-	Controls.GoldStack:CalculateSize();	
+	Controls.GoldStack:CalculateSize();
 	Controls.GoldBacking:SetSizeX(Controls.GoldStack:GetSizeX() + YIELD_PADDING_Y);
 
 	---- FAITH ----
 	local playerReligion		:table	= localPlayer:GetReligion();
 	local faithYield			:number = playerReligion:GetFaithYield();
 	local faithBalance			:number = playerReligion:GetFaithBalance();
-	Controls.FaithBalance:SetText( Locale.ToNumber(faithBalance, "#,###.#") );	
+	Controls.FaithBalance:SetText( Locale.ToNumber(faithBalance, "#,###.#") );
 	Controls.FaithPerTurn:SetText( FormatValuePerTurn(faithYield) );
 
 	Controls.FaithBacking:SetToolTipString( GetFaithTooltip() );
 
-	Controls.FaithStack:CalculateSize();	
+	Controls.FaithStack:CalculateSize();
 	Controls.FaithBacking:SetSizeX(Controls.FaithStack:GetSizeX() + YIELD_PADDING_Y);
 
 	RefreshResources();
@@ -192,10 +193,29 @@ function RefreshTrade()
 
 	---- ROUTES ----
 	local playerTrade	:table	= localPlayer:GetTrade();
+	local routesConstructed = 0 ;
 	local routesActive	:number = playerTrade:GetNumOutgoingRoutes();
+	local routesIdle :number = 0;
+	local idleRoutes :table = GetIdleTradeUnits(Game.GetLocalPlayer());
+	local numTurnsUntilPassive : number = -1;
+
+	if (idleRoutes) then
+		routesIdle = table.count(idleRoutes);
+	end
+
+	routesConstructed = routesConstructed + routesIdle;
+
 	local sRoutesActive :string = "" .. routesActive;
+	local sRoutesConstructed:string = "" .. routesConstructed;
+	local sRoutesIdle :string = "" .. routesIdle;
 	local routesCapacity:number = playerTrade:GetOutgoingRouteCapacity();
 	if (routesCapacity > 0) then
+		if (routesConstructed > routesCapacity) then
+			sRoutesConstructed = "[COLOR_RED]" .. sRoutesConstructed .. "[ENDCOLOR]";
+		elseif (routesConstructed < routesCapacity) then
+			sRoutesConstructed = "[COLOR_GREEN]" .. sRoutesConstructed .. "[ENDCOLOR]";
+		end
+
 		if (routesActive > routesCapacity) then
 			sRoutesActive = "[COLOR_RED]" .. sRoutesActive .. "[ENDCOLOR]";
 		elseif (routesActive < routesCapacity) then
@@ -203,10 +223,23 @@ function RefreshTrade()
 		end
 		Controls.TradeRoutesActive:SetText(sRoutesActive);
 		Controls.TradeRoutesCapacity:SetText(routesCapacity);
+		if(routesIdle > 0) then
+			Controls.TradeRoutesIdle:SetHide(false);
+			Controls.TradeRoutesIdleLabel:SetHide(false);
+			Controls.TradeRoutesIdle:SetText("[COLOR_ModStatusYellow]" .. sRoutesIdle .. "[ENDCOLOR]");
+		else
+			Controls.TradeRoutesIdle:SetHide(true);
+			Controls.TradeRoutesIdleLabel:SetHide(true);
+		end
 
 		local sTooltip = Locale.Lookup("LOC_TOP_PANEL_TRADE_ROUTES_TOOLTIP_ACTIVE", routesActive);
+		-- local sTooltip = tostring(routesConstructed) .. " " .. Locale.Lookup("LOC_TOP_PANEL_TRADE_ROUTES");
 		sTooltip = sTooltip .. "[NEWLINE]";
 		sTooltip = sTooltip .. Locale.Lookup("LOC_TOP_PANEL_TRADE_ROUTES_TOOLTIP_CAPACITY", routesCapacity);
+		if(routesIdle > 0) then
+			sTooltip = sTooltip .. "[NEWLINE]";
+			sTooltip = sTooltip .. sRoutesIdle .. " " .. Locale.Lookup("LOC_UNITPANEL_ESPIONAGE_AWAITING_ASSIGNMENT");
+		end
 		sTooltip = sTooltip .. "[NEWLINE][NEWLINE]";
 		sTooltip = sTooltip .. Locale.Lookup("LOC_TOP_PANEL_TRADE_ROUTES_TOOLTIP_SOURCES_HELP");
 		Controls.TradeRoutes:SetToolTipString(sTooltip);
@@ -234,7 +267,7 @@ function RefreshInfluence()
 	local influenceThreshold:number	= playerInfluence:GetPointsThreshold();
 	local envoysPerThreshold:number = playerInfluence:GetTokensPerThreshold();
 	local currentEnvoys		:number = playerInfluence:GetTokensToGive();
-	
+
 	local sTooltip = "";
 
 	if (currentEnvoys > 0) then
@@ -248,7 +281,7 @@ function RefreshInfluence()
 	sTooltip = sTooltip .. Locale.Lookup("LOC_TOP_PANEL_INFLUENCE_TOOLTIP_POINTS_RATE", influenceRate);
 	sTooltip = sTooltip .. "[NEWLINE][NEWLINE]";
 	sTooltip = sTooltip .. Locale.Lookup("LOC_TOP_PANEL_INFLUENCE_TOOLTIP_SOURCES_HELP");
-	
+
 	local meterRatio = influenceBalance / influenceThreshold;
 	if (meterRatio < 0) then
 		meterRatio = 0;
@@ -265,9 +298,9 @@ end
 -- ===========================================================================
 function RefreshTime()
 	local format = UserConfiguration.GetClockFormat();
-	
+
 	local strTime;
-	
+
 	if(format == 1) then
 		strTime = os.date("%H:%M");
 	else
@@ -284,7 +317,7 @@ end
 function RefreshResources()
 	local localPlayerID = Game.GetLocalPlayer();
 	if (localPlayerID ~= -1) then
-		m_kResourceIM:ResetInstances(); 
+		m_kResourceIM:ResetInstances();
 		local pPlayerResources	=  Players[localPlayerID]:GetResources();
 		local yieldStackX		= Controls.YieldStack:GetSizeX();
 		local metaStackX		= Controls.RightContents:GetSizeX();
@@ -295,13 +328,13 @@ function RefreshResources()
 		local overflowString = "";
 		local plusInstance:table;
 		for resource in GameInfo.Resources() do
-			local showLux = "RESOURCECLASS_LUXURY";
-			if (g_showluxury) then showLux = nil; end
+	      local showLux = "RESOURCECLASS_LUXURY";
+	      if (g_showluxury) then showLux = nil; end
 
-			if (resource.ResourceClassType ~= nil 
-				and resource.ResourceClassType ~= "RESOURCECLASS_BONUS" 
-				and resource.ResourceClassType ~= showLux
-			) then
+	      if (resource.ResourceClassType ~= nil
+	             and resource.ResourceClassType ~= "RESOURCECLASS_BONUS"
+	             and resource.ResourceClassType ~= showLux
+	      ) then
 				local amount = pPlayerResources:GetResourceAmount(resource.ResourceType);
 				if (amount > 0) then
 					local resourceText = "[ICON_"..resource.ResourceType.."] ".. amount;
@@ -314,7 +347,7 @@ function RefreshResources()
 						if (amount ~= 0) then
 							local instance:table = m_kResourceIM:GetInstance();
 							instance.ResourceText:SetText(resourceText);
-							
+
 							if (resource.ResourceClassType == "RESOURCECLASS_LUXURY") then
 								instance.ResourceText:SetToolTipString(Locale.Lookup(resource.Name).."[NEWLINE]"..Locale.Lookup("LOC_TOOLTIP_LUXURY_RESOURCE"));
 							elseif (resource.ResourceClassType == "RESOURCECLASS_STRATEGIC") then
@@ -325,7 +358,7 @@ function RefreshResources()
 							currSize = currSize + instanceWidth;
 						end
 					else
-						if (not isOverflow) then 
+						if (not isOverflow) then
 							overflowString = amount.. "[ICON_"..resource.ResourceType.."]".. Locale.Lookup(resource.Name);
 							local instance:table = m_kResourceIM:GetInstance();
 							instance.ResourceText:SetText("[ICON_Plus]");
@@ -439,7 +472,7 @@ end
 -- ===========================================================================
 --	Game Engine Event
 -- ===========================================================================
-function OnTurnBegin()	
+function OnTurnBegin()
 	RefreshAll();
 end
 
@@ -463,7 +496,7 @@ end
 -- ===========================================================================
 --	Game Engine Event
 --	Wait until the game engine is done loading before the initial refresh,
---	otherwise there is a chance the load of the LUA threads (UI & core) will 
+--	otherwise there is a chance the load of the LUA threads (UI & core) will
 --  clash and then we'll all have a bad time. :(
 -- ===========================================================================
 function OnLoadGameViewStateDone()
@@ -472,7 +505,7 @@ end
 
 
 -- ===========================================================================
-function Initialize()	
+function Initialize()
 
 	m_viewReportsX = Controls.ViewReports:GetSizeX();
 	Resize();
@@ -515,7 +548,7 @@ function Initialize()
 	Events.UnitKilledInCombat.Add(			OnRefreshYields );
 	Events.UnitRemovedFromMap.Add(			OnRefreshYields );
 	Events.VisualStateRestored.Add(			OnTurnBegin );
-	Events.WMDCountChanged.Add(				OnWMDUpdate );	
+	Events.WMDCountChanged.Add(				OnWMDUpdate );
 	OnTurnBegin();
 end
 Initialize();
