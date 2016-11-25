@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Context xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="..\..\..\..\..\CivTech\Libs\ForgeUI\ForgeUI_Assets\Controls.xsd">
-	
-	<WorldAnchor ID="GrowthHexAnchor" Hidden="1">
-		<AlphaAnim ID="GrowthHexAlpha" AlphaBegin="1" AlphaEnd="0" Stopped="1" Function="OutQuad">
-			<Stack	 ID="GrowthHexStack" Anchor="C,T" StackGrowth="Right" Padding="5">
-				<Label ID="TurnsLeftLabel" Anchor="L,C" Style="FontFlair26" Color0="255,113,246,255" Color1="52,33,90,128" Color2="248,188,238,255" FontStyle="Stroke"/>
-				<Label ID="TurnsLeftDescription" Anchor="L,C" Style="FontNormal14" Color0="252,201,247,255" Color1="0,0,0,100" FontStyle="Stroke" WrapWidth="130" />
-			</Stack>
-		</AlphaAnim>
-	</WorldAnchor>
-	
-	<AlphaAnim			          ID="CityPanelAlpha"       AlphaBegin="0" AlphaEnd="1" Speed="3"   Function="OutSine" Cycle="Once" Size="full,full">
+  <AlphaAnim			          ID="CityPanelAlpha"       AlphaBegin="0" AlphaEnd="1" Speed="3"   Function="OutSine" Cycle="Once" Size="full,full">
     <SlideAnim						  ID="CityPanelSlide"       Start="200,0" End="0,0"     Speed="3.5" Function="OutSine" Cycle="Once" Size="full,full">
+    <SlideAnim						  ID="CityPanelSlide_ProductionTab"       Start="0,0" End="-175,0"     Speed="3.5" Function="OutSine" Stopped="1" Cycle="Once" Size="full,full">
+	
+        <WorldAnchor ID="GrowthHexAnchor" Hidden="1">
+          <AlphaAnim ID="GrowthHexAlpha" AlphaBegin="1" AlphaEnd="0" Stopped="1" Function="OutQuad">
+            <Stack   ID="GrowthHexStack" Anchor="C,T" StackGrowth="Right" Padding="5">
+              <Label ID="TurnsLeftLabel" Anchor="L,C" Style="FontFlair26" Color0="255,113,246,255" Color1="52,33,90,128" Color2="248,188,238,255" FontStyle="Stroke"/>
+              <Label ID="TurnsLeftDescription" Anchor="L,C" Style="FontNormal14" Color0="252,201,247,255" Color1="0,0,0,100" FontStyle="Stroke" WrapWidth="130" />
+            </Stack>
+          </AlphaAnim>
+        </WorldAnchor>
+        
+        <AlphaAnim                ID="CityPanelAlpha"       AlphaBegin="0" AlphaEnd="1" Speed="3"   Function="OutSine" Cycle="Once" Size="full,full">
+          <SlideAnim              ID="CityPanelSlide"       Start="200,0" End="0,0"     Speed="3.5" Function="OutSine" Cycle="Once" Size="full,full">
+      
       <Grid									ID="WoodBacking"					Anchor="R,B" Offset="175,-5"	Size="500,162"					Texture="SelectionPanel_WoodBacking"	SliceCorner="51,50"  SliceSize="1,1" SliceTextureSize="148,156" ConsumeMouse="1">
         <Grid								ID="PanelStackShadow"			Anchor="L,T" Offset="100,-100" Size="250,200" Style="DropShadow" />
         <Grid								ID="MainPanel"						Anchor="R,B" Offset="46,0"		Size="parent-78,parent-2"	Texture="SelectionPanel_MainPanel"		SliceCorner="60,60" SliceTextureSize="263,160" />
@@ -43,11 +47,19 @@
               <TextureBar		ID="GrowthTurnsBarSmall"	Anchor="L,T" Offset="2,2"			Size="parent-4,parent-3"		Texture="CityPanel_CitizenMeterSmall"		ShadowColor="255,255,255,100" />
               <Label				ID="GrowthNumSmall"				Anchor="C,C" Style="CityPanelNumLarge" WrapWidth="70" String="999"  />
             </Image>
-            <Image					ID="GrowthTurns"					Anchor="L,B" Offset="82,-4"		Size="182,21"								Texture="CityPanel_MeterBacking" >
-              <TextureBar		ID="GrowthTurnsBar"				Anchor="L,T" Offset="2,2"			Size="parent-4,parent-3"		Texture="CityPanel_CitizenMeter"				ShadowColor="255,255,255,100" >
-                <Stack																Anchor="L,C" Offset="5,0"			StackGrowth="Right" StackPadding="2" >
-                  <Label		ID="GrowthNum"						Style="CityPanelNumLarge"			String="-"  />
-                  <Label		ID="GrowthLabel"					Style="CityPanelProgressText" String="n/a"  ColorSet="GrowthCS" 	/>
+            <Image					ID="GrowthTurns"					Anchor="L,B" Offset="92,-4"		Size="71,21"								Texture="CityPanel_MeterSmallBacking" >
+              <TextureBar		ID="GrowthTurnsBar"				Anchor="L,T" Offset="2,2"			Size="parent-4,parent-3"		Texture="CityPanel_CitizenMeterSmall"				ShadowColor="255,255,255,100" >
+                <Stack																Anchor="C,C" Offset="0,0"			StackGrowth="Right" StackPadding="2" >
+                  <Label		ID="GrowthNum"						Style="CityPanelNumLarge"			WrapWidth="70" String="999"  />
+					<!-- <Label		ID="GrowthNum_Clock"		Style="CityPanelNumLarge" String="[ICON_Turn]" Offset="-4,-2"/>-->
+                  <Label		ID="GrowthLabel"					Style="CityPanelProgressText" String="n/a"  ColorSet="GrowthCS" Hidden="1"	/>
+                </Stack>
+              </TextureBar>
+            </Image>
+			<Image					ID="ExpansionTurns"					Anchor="R,B" Offset="14,-4"		Size="71,21"								Texture="CityPanel_MeterSmallBacking" >
+              <TextureBar		ID="ExpansionTurnsBar"				Anchor="L,T" Offset="2,2"	Color="255,100,190,255"		Size="parent-4,parent-3"		Texture="CityPanel_ProductionMeterSmall"				ShadowColor="255,100,190,100" >
+                <Stack																Anchor="C,C" Offset="0,0"			StackExpansion="Left" StackPadding="2" >
+                  <Label		ID="ExpansionNum"						Style="CityPanelNumLarge"	 String="-"  />
                 </Stack>
               </TextureBar>
             </Image>
@@ -103,11 +115,13 @@
             <Image					ID="ProductionIcon"				Anchor="C,C" Offset="0,-2"  Size="80,80"    						Texture="Buildings80" Hidden="1"/>
           </Image>
           <Image						ID="ProductionTurns"			Anchor="R,B" Offset="55,-24"	Size="182,21"							Texture="CityPanel_MeterBacking">
-            <TextureBar			ID="ProductionTurnsBar"		Anchor="L,T" Offset="2,2"			Size="parent-4,parent-3"	Texture="CityPanel_ProductionMeter"				ShadowColor="255,255,255,150">
+            <TextureBar			ID="CurrentProductionProgress"		Anchor="L,T" Offset="2,2"			Size="parent-4,parent-3"	Texture="CityPanel_ProductionMeter"				ShadowColor="255,255,255,150">
               <Stack																	Anchor="L,C" Offset="5,0"			StackGrowth="Right"	StackPadding="4">
-                <Label			ID="ProductionNum"				Style="CityPanelNumLarge"			String="-"  />
-                <Label			ID="ProductionLabel"			Style="CityPanelProgressText" String="n/a"  ColorSet="ResProductionLabelCS" 	/>
+                <Label			ID="CurrentProductionCost"				Style="CityPanelNumLarge"			String="-"  />
+				<Label			ID="CurrentProductionCost_Clock"		Style="CityPanelNumLarge" String="[ICON_Turn]" Offset="-4,-2"/>
+                <Label			ID="ProductionLabel"			Style="CityPanelProgressText" String="n/a"  ColorSet="ResProductionLabelCS" 	Hidden="1"/>
               </Stack>
+			  <Label				ID="CurrentProductionProgressString"				String="[ICON_Production]XX/XXX" Style="WhiteSemiBold14" Color0="172,173,168" Anchor="R,B" Offset="0,0"/>
             </TextureBar>
           </Image>
         </Image>
@@ -160,9 +174,13 @@
             <Stack StackGrowth="Right" Padding="3" Offset="0,-2">
               <CheckBox				ID="PurchaseTileCheck"			Size="44,53"  ButtonTexture="UnitPanel_ActionButton"	ButtonSize="44,53" CheckTexture="CityPanel_ActionPurchaseTile"	    CheckTextureOffset="0,32"		CheckSize="32,32" CheckOffset="10,10"	UnCheckTexture="CityPanel_ActionPurchaseTile"		  UnCheckSize="32,32" UnCheckOffset="10,10" UseSelectedTextures="1" ToolTip="LOC_HUD_CITY_PURCHASE_TILE"/>
               <CheckBox				ID="ManageCitizensCheck"		Size="44,53"  ButtonTexture="UnitPanel_ActionButton"	ButtonSize="44,53" CheckTexture="CityPanel_ActionManageCitizens"    CheckTextureOffset="0,32"		CheckSize="32,32" CheckOffset="5,8"	UnCheckTexture="CityPanel_ActionManageCitizens"	  UnCheckSize="32,32" UnCheckOffset="5,8" UseSelectedTextures="1" ToolTip="LOC_HUD_CITY_MANAGE_CITIZENS" />
+			  
+			  
               <CheckBox				ID="ProduceWithGoldCheck"		Size="44,53"  ButtonTexture="UnitPanel_ActionButton"	ButtonSize="44,53" CheckTexture="CityPanel_ActionGoldProduction"    CheckTextureOffset="0,32"		CheckSize="32,32" CheckOffset="5,8"	UnCheckTexture="CityPanel_ActionGoldProduction"	  UnCheckSize="32,32" UnCheckOffset="5,8" UseSelectedTextures="1" ToolTip="LOC_HUD_CITY_PURCHASE_WITH_GOLD" />
               <CheckBox				ID="ProduceWithFaithCheck"		Size="44,53"  ButtonTexture="UnitPanel_ActionButton"	ButtonSize="44,53" CheckTexture="CityPanel_ActionFaithProduction"    CheckTextureOffset="0,32"		CheckSize="32,32" CheckOffset="5,8"	UnCheckTexture="CityPanel_ActionFaithProduction"	  UnCheckSize="32,32" UnCheckOffset="5,8" UseSelectedTextures="1" ToolTip="LOC_HUD_CITY_PURCHASE_WITH_FAITH" />
 				      <CheckBox				ID="ChangeProductionCheck"		Size="44,53"  ButtonTexture="UnitPanel_ActionButton"	ButtonSize="44,53" CheckTexture="CityPanel_ActionProduction"    CheckTextureOffset="0,32"		CheckSize="32,32" CheckOffset="5,8"	UnCheckTexture="CityPanel_ActionProduction"	  UnCheckSize="32,32" UnCheckOffset="6,9" UseSelectedTextures="1" ToolTip="LOC_HUD_CITY_CHANGE_PRODUCTION">
+				
+				
 					      <Tutorial  ID="TutOpenProduction" Style="TutorialContainer" Anchor="C,T" AnchorSide="O,O" Offset="0,50" TriggerBy="TutorialOpenProduction" >
 					      	<Grid Style="TutorialCalloutGrid">
 					      		<Label Style="TutorialHeaderText" String="LOC_META_3_HEAD" />
@@ -184,6 +202,9 @@
           </Image>
         </Button>
       </Grid>
+	</SlideAnim>
     </SlideAnim>
   </AlphaAnim>
+  
+
 </Context>

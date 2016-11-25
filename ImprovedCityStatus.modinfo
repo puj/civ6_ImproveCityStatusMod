@@ -1,55 +1,165 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Mod id="4becad48-4a0c-379a-5dd1-33d0c65a471d" version="0.01">
-	<Properties>
-		<Name>Improved City Status</Name>
-		<Teaser>See wonder details on hover</Teaser>
-		<Description>Makes information in city buildings view more helpful</Description>
-		<Authors>Van Taylor</Authors>
-		<EnabledByDefault>1</EnabledByDefault>
-		<EnabledAtStartup>1</EnabledAtStartup>
-	</Properties>
-	<Components>
-		<ImportFiles id="CITY_IMPROVE_FILES">
-			<Items>
-				<File>UI/Panels/CityPanelOverview.lua</File>
-				<File>UI/Panels/CityPanelOverview.xml</File>
-				<File>UI/Panels/CityPanel.lua</File>
-				<File>UI/Panels/CityPanel.xml</File>
-				<File>UI/CitySupport.lua</File>
-				<File>UI/Civ6_ColorAtlas.xml</File>
-				<File>UI/ToolTipHelper.lua</File>
-				<File>UI/UnitFlagManager.lua</File>
-				<File>UI/InGame.lua</File>
-				<File>UI/InGame.xml</File>
-				<File>UI/Screens/GovernmentScreen.lua</File>
-				<File>UI/Screens/GovernmentScreen.xml</File>
-				<File>UI/WorldInput.lua</File>
-				<File>UI/WorldInput.xml</File>
-				<File>UI/WorldView/CityBannerManager.lua</File>
-				<File>UI/WorldView/CityBannerManager.xml</File>
-				<File>UI/TopPanel.lua</File>
-				<File>UI/TopPanel.xml</File>
-			</Items>
-		</ImportFiles>
-	</Components>
-	<Files>
-		<File>UI/Panels/CityPanelOverview.lua</File>
-		<File>UI/Panels/CityPanelOverview.xml</File>
-		<File>UI/Panels/CityPanel.lua</File>
-		<File>UI/Panels/CityPanel.xml</File>
-		<File>UI/CitySupport.lua</File>
-		<File>UI/Civ6_ColorAtlas.xml</File>
-		<File>UI/ToolTipHelper.lua</File>
-		<File>UI/UnitFlagManager.lua</File>
-		<File>UI/InGame.lua</File>
-		<File>UI/InGame.xml</File>
-		<File>UI/Screens/GovernmentScreen.lua</File>
-		<File>UI/Screens/GovernmentScreen.xml</File>
-		<File>UI/WorldInput.lua</File>
-		<File>UI/WorldInput.xml</File>
-		<File>UI/WorldView/CityBannerManager.lua</File>
-		<File>UI/WorldView/CityBannerManager.xml</File>
-		<File>UI/TopPanel.lua</File>
-		<File>UI/TopPanel.xml</File>
-	</Files>
+<Mod id="3e1d5f93-84ea-476f-b951-61c43b224081" version="1">
+    <Properties>
+        <Name>No Quitters UI Changes</Name>
+        <Stability>Alpha</Stability>
+        <Teaser>No Quitters Enhanced UI Changes</Teaser>
+        <Description>No Quitters Enhanced UI Changes</Description>
+        <Authors>HellBlazer, NotQue</Authors>
+        <SpecialThanks>HellBlazer, NotQue</SpecialThanks>
+        <EnabledByDefault>1</EnabledByDefault>
+        <EnabledAtStartup>1</EnabledAtStartup>
+    </Properties>
+    <Dependencies/>
+    <References/>
+    <Blocks/>
+    <Files>
+        <File>UI/Popups/BoostUnlockedPopup.lua</File>
+        <File>UI/Popups/TechCivicCompletedPopup.lua</File>
+        <File>UI/Popups/TechCivicCompletedPopup.xml</File>
+        <File>UI/Panels/StatusMessagePanel.lua</File>
+        <File>UI/Panels/StatusMessagePanel.xml</File>
+        <!--<File>UI/Panels/UnitPanel.lua</File> -->
+        <File>UI/Tooltips/PlotToolTip.lua</File>
+        <File>UI/Popups/NaturalWonderPopup.lua</File>
+        <!-- 		 by ouglaaa  -->
+        <File>UI/WorldInput.lua</File>
+        <File>UI/BetterTradeScreen_Text.xml</File>
+        <File>UI/TradeOriginChooser.lua</File>
+        <File>UI/TradeOriginChooser.xml</File>
+        <File>UI/TradeOverview.lua</File>
+        <File>UI/TradeOverview.xml</File>
+        <File>UI/TradeRouteChooser.lua</File>
+        <File>UI/TradeRouteChooser.xml</File>
+        <File>UI/Panels/CityPanel.lua</File>
+        <File>UI/Panels/CityPanel.xml</File>
+        <File>UI/Popups/GreatPeoplePopup.lua</File>
+        <File>UI/Popups/GreatPeoplePopup.xml</File>
+        <File>Civilopedia/CivilopediaSupport.lua</File>
+        <File>UI/TopPanel.lua</File>
+        <File>UI/Panels/NewTurnPanel.xml</File>
+        <File>UI/Menus/InGameTopOptionsMenu.lua</File>
+        <File>UI/FrontEnd/MainMenu.lua</File>
+        <File>UI/InGame.lua</File>
+        <File>UI/Screens/ReportScreen.lua</File>
+        <File>UI/Panels/NotificationPanel.lua</File>
+        <File>UI/Panels/NotificationPanel.xml</File>
+        <File>UI/Screens/ReportScreen.xml</File>
+        <!-- VIEW REPORTS MOD BY GREG MILLER https://forums.civfanatics.com/threads/unit-report-screen.602305/ -->
+        <File>UI/Popups/UnitPromotionPopup.lua</File>
+        <!-- VIEW REPORTS MOD BY GREG MILLER https://forums.civfanatics.com/threads/unit-report-screen.602305/ -->
+        <File>UI/Panels/ProductionPanel.lua</File>
+        <File>UI/ProductionPanel.xml</File>
+        <File>UI/StrategicView_MapPlacement.lua</File>
+        <File>UI/SupportFunctions.lua</File>
+        <File>UI/TradeOverview.xml</File>
+        <File>UI/TradeOverview.lua</File>
+        <File>UI/Choosers/TradeRouteChooser.xml</File>
+        <File>UI/Choosers/TradeRouteChooser.lua</File>
+        <File>UI/Choosers/TradeOriginChooser.xml</File>
+        <File>UI/Choosers/TradeOriginChooser.lua</File>
+        <File>Text/BTS_Text.xml</File>
+
+        <File>UI/Panels/CityPanelOverview.lua</File>
+        <File>UI/Panels/CityPanelOverview.xml</File>
+        <File>UI/Panels/CityPanel.lua</File>
+        <File>UI/Panels/CityPanel.xml</File>
+        <File>UI/CitySupport.lua</File>
+        <File>UI/Civ6_ColorAtlas.xml</File>
+        <File>UI/ToolTipHelper.lua</File>
+        <File>UI/UnitFlagManager.lua</File>
+        <File>UI/InGame.lua</File>
+        <File>UI/InGame.xml</File>
+        <File>UI/Screens/GovernmentScreen.lua</File>
+        <File>UI/Screens/GovernmentScreen.xml</File>
+        <File>UI/WorldInput.lua</File>
+        <File>UI/WorldInput.xml</File>
+        <File>UI/WorldView/CityBannerManager.lua</File>
+        <File>UI/WorldView/CityBannerManager.xml</File>
+        <File>UI/TopPanel.lua</File>
+        <File>UI/TopPanel.xml</File>
+        <!--<File>UI/Panels/UnitPanel.lua</File>-->
+    </Files>
+    <Settings>
+        <Custom id="HB_UI_SETTING">
+            <Items>
+                <File>MapConfig.sql</File>
+            </Items>
+        </Custom>
+    </Settings>
+    <Components>
+
+        <LocalizedText id="BTS_TEXT">
+            <Items>
+                <File>Text/BTS_Text.xml</File>
+            </Items>
+        </LocalizedText>
+
+        <ImportFiles id="HB_UI_IMPORT">
+            <Items>
+                <File>UI/Popups/BoostUnlockedPopup.lua</File>
+                <File>UI/Popups/TechCivicCompletedPopup.lua</File>
+                <File>UI/Popups/TechCivicCompletedPopup.xml</File>
+                <File>UI/Panels/StatusMessagePanel.lua</File>
+                <File>UI/Panels/StatusMessagePanel.xml</File>
+                <!--<File>UI/Panels/UnitPanel.lua</File> -->
+                <File>UI/Tooltips/PlotToolTip.lua</File>
+                <File>UI/Popups/NaturalWonderPopup.lua</File>
+                <File>UI/WorldInput.lua</File>
+                <File>UI/BetterTradeScreen_Text.xml</File>
+                <File>UI/TradeOriginChooser.lua</File>
+                <File>UI/TradeOriginChooser.xml</File>
+                <File>UI/TradeOverview.lua</File>
+                <File>UI/TradeOverview.xml</File>
+                <File>UI/TradeRouteChooser.lua</File>
+                <File>UI/TradeRouteChooser.xml</File>
+                <File>UI/Panels/CityPanel.lua</File>
+                <File>UI/Panels/CityPanel.xml</File>
+                <File>UI/Popups/GreatPeoplePopup.lua</File>
+                <File>Civilopedia/CivilopediaSupport.lua</File>
+                <File>UI/TopPanel.lua</File>
+                <File>UI/Panels/NewTurnPanel.xml</File>
+                <File>UI/Popups/GreatPeoplePopup.xml</File>
+                <File>UI/Menus/InGameTopOptionsMenu.lua</File>
+                <File>UI/FrontEnd/MainMenu.lua</File>
+                <File>UI/InGame.lua</File>
+                <File>UI/Screens/ReportScreen.lua</File>
+                <File>UI/Panels/NotificationPanel.lua</File>
+                <File>UI/Panels/NotificationPanel.xml</File>
+                <File>UI/Screens/ReportScreen.xml</File>
+                <!-- VIEW REPORTS MOD BY GREG MILLER https://forums.civfanatics.com/threads/unit-report-screen.602305/ -->
+                <File>UI/Popups/UnitPromotionPopup.lua</File>
+                <!-- VIEW REPORTS MOD BY GREG MILLER https://forums.civfanatics.com/threads/unit-report-screen.602305/ -->
+                <File>UI/Panels/ProductionPanel.lua</File>
+                <File>UI/ProductionPanel.xml</File>
+                <File>UI/StrategicView_MapPlacement.lua</File>
+                <File>UI/SupportFunctions.lua</File>
+                <File>UI/TradeOverview.xml</File>
+                <File>UI/TradeOverview.lua</File>
+                <File>UI/Choosers/TradeRouteChooser.xml</File>
+                <File>UI/Choosers/TradeRouteChooser.lua</File>
+                <File>UI/Choosers/TradeOriginChooser.xml</File>
+                <File>UI/Choosers/TradeOriginChooser.lua</File>
+                <!--<File>UI/Panels/UnitPanel.lua</File>-->
+                <File>UI/Panels/CityPanelOverview.lua</File>
+                <File>UI/Panels/CityPanelOverview.xml</File>
+                <File>UI/Panels/CityPanel.lua</File>
+                <File>UI/Panels/CityPanel.xml</File>
+                <File>UI/CitySupport.lua</File>
+                <File>UI/Civ6_ColorAtlas.xml</File>
+                <File>UI/ToolTipHelper.lua</File>
+                <File>UI/UnitFlagManager.lua</File>
+                <File>UI/InGame.lua</File>
+                <File>UI/InGame.xml</File>
+                <File>UI/Screens/GovernmentScreen.lua</File>
+                <File>UI/Screens/GovernmentScreen.xml</File>
+                <File>UI/WorldInput.lua</File>
+                <File>UI/WorldInput.xml</File>
+                <File>UI/WorldView/CityBannerManager.lua</File>
+                <File>UI/WorldView/CityBannerManager.xml</File>
+                <File>UI/TopPanel.lua</File>
+                <File>UI/TopPanel.xml</File>
+            </Items>
+        </ImportFiles>
+    </Components>
 </Mod>
