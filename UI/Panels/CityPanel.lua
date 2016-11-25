@@ -72,6 +72,7 @@ local m_GrowthHexTextWidth			:number = -1;
 --
 -- ===========================================================================
 function Close()
+	HideGrowthTile();
 	ContextPtr:SetHide( true );
 end
 
@@ -814,6 +815,7 @@ function OnCitySelectionChanged( ownerPlayerID:number, cityID:number, i:number, 
 			Controls.CityPanelSlide:SetToBeginning();
 			Controls.CityPanelSlide:Play();
 			Refresh();
+			DisplayGrowthTile();
 		else
 			Close();
 			-- Tell the CityPanelOverview a city was deselected
@@ -1115,6 +1117,13 @@ function OnCameraUpdate( vFocusX:number, vFocusY:number, fZoomLevel:number )
 	end
 end
 
+function HideGrowthTile()
+	print("HideGrowthTile");
+	Controls.GrowthHexAnchor:SetHide(true);
+	Events.Camera_Updated.Remove(OnCameraUpdate);
+	UILens.ClearHex(LensLayers.PURCHASE_PLOT, m_GrowthPlot);
+end
+
 function DisplayGrowthTile()
 	if m_pCity ~= nil then
 		local cityCulture:table = m_pCity:GetCulture();
@@ -1166,10 +1175,17 @@ function OnInterfaceModeChanged( eOldMode:number, eNewMode:number )
 		end
 	end
 
-	if eNewMode == InterfaceModeTypes.CITY_MANAGEMENT then
-		DisplayGrowthTile();
+		-- if m_GrowthPlot ~= -1 then
+			-- Controls.GrowthHexAnchor:SetHide(true);
+			-- Events.Camera_Updated.Remove(OnCameraUpdate);
+			-- UILens.ClearHex(LensLayers.PURCHASE_PLOT, m_GrowthPlot);
+			-- m_GrowthPlot = -1;
+		-- end
 	end
-	
+
+	-- if eNewMode == InterfaceModeTypes.CITY_MANAGEMENT then
+	-- end
+
 	if eNewMode == InterfaceModeTypes.CITY_RANGE_ATTACK or eNewMode == InterfaceModeTypes.DISTRICT_RANGE_ATTACK then
 		if ContextPtr:IsHidden()==false then
 			Close();
