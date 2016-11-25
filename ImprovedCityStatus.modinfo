@@ -23,7 +23,6 @@
         <File>UI/Tooltips/PlotToolTip.lua</File>
         <File>UI/Popups/NaturalWonderPopup.lua</File>
         <!-- 		 by ouglaaa  -->
-        <File>UI/WorldInput.lua</File>
         <File>UI/BetterTradeScreen_Text.xml</File>
         <File>UI/TradeOriginChooser.lua</File>
         <File>UI/TradeOriginChooser.xml</File>
@@ -31,16 +30,12 @@
         <File>UI/TradeOverview.xml</File>
         <File>UI/TradeRouteChooser.lua</File>
         <File>UI/TradeRouteChooser.xml</File>
-        <File>UI/Panels/CityPanel.lua</File>
-        <File>UI/Panels/CityPanel.xml</File>
         <File>UI/Popups/GreatPeoplePopup.lua</File>
         <File>UI/Popups/GreatPeoplePopup.xml</File>
         <File>Civilopedia/CivilopediaSupport.lua</File>
-        <File>UI/TopPanel.lua</File>
         <File>UI/Panels/NewTurnPanel.xml</File>
         <File>UI/Menus/InGameTopOptionsMenu.lua</File>
         <File>UI/FrontEnd/MainMenu.lua</File>
-        <File>UI/InGame.lua</File>
         <File>UI/Screens/ReportScreen.lua</File>
         <File>UI/Panels/NotificationPanel.lua</File>
         <File>UI/Panels/NotificationPanel.xml</File>
@@ -105,7 +100,6 @@
                 <!--<File>UI/Panels/UnitPanel.lua</File> -->
                 <File>UI/Tooltips/PlotToolTip.lua</File>
                 <File>UI/Popups/NaturalWonderPopup.lua</File>
-                <File>UI/WorldInput.lua</File>
                 <File>UI/BetterTradeScreen_Text.xml</File>
                 <File>UI/TradeOriginChooser.lua</File>
                 <File>UI/TradeOriginChooser.xml</File>
@@ -113,11 +107,8 @@
                 <File>UI/TradeOverview.xml</File>
                 <File>UI/TradeRouteChooser.lua</File>
                 <File>UI/TradeRouteChooser.xml</File>
-                <File>UI/Panels/CityPanel.lua</File>
-                <File>UI/Panels/CityPanel.xml</File>
                 <File>UI/Popups/GreatPeoplePopup.lua</File>
                 <File>Civilopedia/CivilopediaSupport.lua</File>
-                <File>UI/TopPanel.lua</File>
                 <File>UI/Panels/NewTurnPanel.xml</File>
                 <File>UI/Popups/GreatPeoplePopup.xml</File>
                 <File>UI/Menus/InGameTopOptionsMenu.lua</File>
