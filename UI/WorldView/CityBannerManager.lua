@@ -880,6 +880,8 @@ function CityBanner.UpdateStats( self : CityBanner)
 			end
 			self.m_Instance.CityPopulation:SetText(currentPopulation);
 
+
+
 			if (self.m_Player == Players[localPlayerID]) then			--Only show growth data if the player is you
 				self.m_Instance.CityPopulation:SetToolTipString(popTooltip);
 				self.m_Instance.CityPopTurnsLeft:SetText(turnsUntilGrowth);
@@ -901,6 +903,11 @@ function CityBanner.UpdateStats( self : CityBanner)
 
 			--- CITY PRODUCTION ---
 			if (localPlayerID == pCity:GetOwner()) then
+				if(self ~= nil and self.m_Instance ~=nil and pCity ~= nil and pCity:GetCulture() ~= nil) then
+					local turnsUntilExpansion:number= pCity:GetCulture():GetTurnsUntilExpansion();
+					self.m_Instance.CityGrowthTurnsLeft:SetText(turnsUntilExpansion);
+					self.m_Instance.CityGrowthTurnsLeft:SetColorByName("CultureText");
+				end
 				if (pBuildQueue ~= nil) then
 					pct = 0;
 					local currentProduction		:string;
@@ -920,6 +927,8 @@ function CityBanner.UpdateStats( self : CityBanner)
 						pUnitDef		= GameInfo.Units[currentProductionHash];
 						pProjectDef	= GameInfo.Projects[currentProductionHash];
 					end
+
+
 
 					local pProductionToolTipDescriptionLine = "";
 

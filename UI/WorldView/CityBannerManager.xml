@@ -43,6 +43,7 @@
 					<Container																				Anchor="L,C" Size="34,34">
 						<Label					ID="CityPopulation" 						Anchor="C,C" String="999"		Style="FontFlair28"	FontStyle="glow" KerningAdjustment="-3" />
 						<Label					ID="CityPopTurnsLeft"						Anchor="L,T" Offset="3,-6"	Style="StrongSmall2"/>
+						<Label					ID="CityGrowthTurnsLeft"				Anchor="L,B" Offset="3,-6"	Style="StrongSmall2"/>
 					</Container>
 
 					<Container				ID="CityNameContainer"					Anchor="L,C"	Size="50,34">
