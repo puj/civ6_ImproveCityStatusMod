@@ -955,20 +955,24 @@ function DefaultKeyDownHandler( uiKey:number )
   elseif (uiKey == Keys.Y and showMapYield == true) then -- if toggle key is pressed and yield icon is on
     LuaEvents.MinimapPanel_HideYieldIcons(); --then turn it off
     showMapYield = false; -- and modify the global variable
+	end
+  -- END: Yield Icon toggling
+	
   if( uiKey == Keys.VK_NEXT) then
                local wheelValue = 90 * (( (1.0/12000.0) * MOUSE_SCALAR));
                UI.SetMapZoom( UI.GetMapZoom() + wheelValue, 0.0, 0.0 );
  	end
-  -- END: Yield Icon toggling
 
     -- START: Resource Icon toggling
   if (uiKey == Keys.R) then -- if toggle key is pressed
     UserConfiguration.ShowMapResources( not UserConfiguration.ShowMapResources() ); -- toggle the resource icon
+	end
+  -- END: Resource Icon toggling
+
   if( uiKey == Keys.VK_PRIOR ) then
                local wheelValue = 90 * (( (1.0/12000.0) * MOUSE_SCALAR));
                UI.SetMapZoom( UI.GetMapZoom()  -wheelValue, 0.0, 0.0 );
-   end
-  -- END: Resource Icon toggling
+  end
 
     -- START: select next unit
     if (uiKey == Keys.Q) then
@@ -991,11 +995,11 @@ function DefaultKeyUpHandler( uiKey:number )
 
 	local keyPanChanged	:boolean = false;
     if uiKey == Keys.VK_ALT then
-		if m_isALTDown == true then
-			m_isALTDown = false;
-			EndDragMap();
-			ReadyForDragMap();
-		end
+			if m_isALTDown == true then
+				m_isALTDown = false;
+				EndDragMap();
+				ReadyForDragMap();
+			end
     end
     if( uiKey == Keys.VK_UP or uiKey == Keys.W ) then
     	keyPanChanged = true;
