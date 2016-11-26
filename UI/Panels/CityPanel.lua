@@ -458,18 +458,21 @@ function ViewMain( data:table )
 	--data.CurrentProductionStats
 
 
-	local buildQueue	= selectedCity:GetBuildQueue();
-	local currentProductionHash 	= buildQueue:GetCurrentProductionTypeHash();
-	local previousProductionHash 	= buildQueue:GetPreviousProductionTypeHash();
-	local productionHash = 0;
+  if(selectedCity ~= nil) then
 
-	if( currentProductionHash == 0 ) then
-		productionHash = previousProductionHash;
-	else
-		productionHash = currentProductionHash;
-	end
-	local currentProductionInfo				:table = GetProductionInfoOfCity( data.City, productionHash );
+  	local buildQueue	= selectedCity:GetBuildQueue();
+  	local currentProductionHash 	= buildQueue:GetCurrentProductionTypeHash();
+  	local previousProductionHash 	= buildQueue:GetPreviousProductionTypeHash();
+  	local productionHash = 0;
 
+  	if( currentProductionHash == 0 ) then
+  		productionHash = previousProductionHash;
+  	else
+  		productionHash = currentProductionHash;
+  	end
+	  local currentProductionInfo				:table = GetProductionInfoOfCity( data.City, productionHash );
+
+  end
 	--[[
 	local percentThisTurn = currentProductionInfo.PercentCompleteNextTurn-currentProductionInfo.PercentComplete;
 	local retStuff = "";
@@ -561,7 +564,9 @@ function ViewMain( data:table )
 	Controls.CurrentProductionProgress:SetPercent(data.CurrentProdPercent);
 	Controls.CurrentProductionProgress:SetShadowPercent(data.ProdPercentNextTurn);
 	Controls.CurrentProductionCost:SetText( data.CurrentTurnsLeft );
-	Controls.CurrentProductionProgressString:SetText(currentProductionInfo.Progress.."/"..currentProductionInfo.Cost.." [ICON_ProductionLarge]");
+  if(currentProductionInfo ~= nil) then
+  	Controls.CurrentProductionProgressString:SetText(currentProductionInfo.Progress.."/"..currentProductionInfo.Cost.." [ICON_ProductionLarge]");
+  end
 	Controls.ProductionNowLabel:SetText( data.CurrentProductionName );
 
 	Controls.ProductionDescriptionString:SetText( data.CurrentProductionDescription );
@@ -1118,10 +1123,9 @@ function OnCameraUpdate( vFocusX:number, vFocusY:number, fZoomLevel:number )
 end
 
 function HideGrowthTile()
-	print("HideGrowthTile");
 	Controls.GrowthHexAnchor:SetHide(true);
-	Events.Camera_Updated.Remove(OnCameraUpdate);
-	UILens.ClearHex(LensLayers.PURCHASE_PLOT, m_GrowthPlot);
+	-- Events.Camera_Updated. Remove(OnCameraUpdate);
+	-- UILens.ClearHex(LensLayers.PURCHASE_PLOT, m_GrowthPlot);
 end
 
 function DisplayGrowthTile()
