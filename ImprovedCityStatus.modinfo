@@ -26,8 +26,6 @@
         <File>UI/BetterTradeScreen_Text.xml</File>
         <File>UI/TradeOriginChooser.lua</File>
         <File>UI/TradeOriginChooser.xml</File>
-        <File>UI/TradeOverview.lua</File>
-        <File>UI/TradeOverview.xml</File>
         <File>UI/TradeRouteChooser.lua</File>
         <File>UI/TradeRouteChooser.xml</File>
         <File>UI/Popups/GreatPeoplePopup.lua</File>
@@ -103,8 +101,6 @@
                 <File>UI/BetterTradeScreen_Text.xml</File>
                 <File>UI/TradeOriginChooser.lua</File>
                 <File>UI/TradeOriginChooser.xml</File>
-                <File>UI/TradeOverview.lua</File>
-                <File>UI/TradeOverview.xml</File>
                 <File>UI/TradeRouteChooser.lua</File>
                 <File>UI/TradeRouteChooser.xml</File>
                 <File>UI/Popups/GreatPeoplePopup.lua</File>
@@ -113,7 +109,6 @@
                 <File>UI/Popups/GreatPeoplePopup.xml</File>
                 <File>UI/Menus/InGameTopOptionsMenu.lua</File>
                 <File>UI/FrontEnd/MainMenu.lua</File>
-                <File>UI/InGame.lua</File>
                 <File>UI/Screens/ReportScreen.lua</File>
                 <File>UI/Panels/NotificationPanel.lua</File>
                 <File>UI/Panels/NotificationPanel.xml</File>
