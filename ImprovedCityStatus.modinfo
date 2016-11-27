@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Mod id="3e1d5f93-84ea-476f-b951-61c43b224081" version="1">
     <Properties>
-        <Name>No Quitters UI Changes</Name>
+        <Name>Improved City Status</Name>
         <Stability>Alpha</Stability>
-        <Teaser>No Quitters Enhanced UI Changes</Teaser>
-        <Description>No Quitters Enhanced UI Changes</Description>
+        <Teaser>by Van</Teaser>
+        <Description>More city status</Description>
         <Authors>HellBlazer, NotQue</Authors>
         <SpecialThanks>HellBlazer, NotQue</SpecialThanks>
         <EnabledByDefault>1</EnabledByDefault>

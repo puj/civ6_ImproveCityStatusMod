@@ -919,7 +919,7 @@ function ViewYieldsPage()
 	pLineItemInstance.Science:SetText( toPlusMinusNoneString(science) );
 	pLineItemInstance.Culture:SetText( toPlusMinusNoneString(culture) );
 
-  SetGroupCollapsePadding(instance,  );
+  SetGroupCollapsePadding(instance, 10 );
 	pAdjacencyHeaderInstance.LineItemStack:CalculateSize();
 	-- pAdjacencyHeaderInstance.Darken:SetSizeY( pAdjacencyHeaderInstance.LineItemStack:GetSizeY() + DARKEN_CITY_INCOME_AREA_ADDITIONAL_Y );
 	-- pAdjacencyHeaderInstance.Top:ReprocessAnchoring();
