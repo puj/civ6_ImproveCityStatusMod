@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Context >
 
   <Grid						ID="Backing"				Anchor="C,T" Size="parent+100,29" Texture="TopBar_Bar" SliceCorner="28,8" SliceTextureSize="57,29">
