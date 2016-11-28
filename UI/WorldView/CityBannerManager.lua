@@ -1582,12 +1582,12 @@ function SpawnHolySiteIconAtLocation( locX : number, locY:number, label:string )
 		zOffset = 0;
 	end
 
-	local worldX:number, worldY:number, worldZ:number = UI.GridToWorld( locX, locY );
-	iconInst.Anchor:SetWorldPositionVal( worldX + xOffset, worldY + yOffset, worldZ + zOffset );
-	iconInst.HolySiteLabel:SetText("[ICON_FaithLarge]"..label);
-	iconInst.HolySiteIcon:SetTexture(198, 88, "FontIcons");
-	iconInst.Anchor:SetSizeX(iconInst.HolySiteIcon:GetSizeX() + iconInst.HolySiteLabel:GetSizeX());
-	iconInst.Anchor:SetToolTipString(Locale.Lookup("LOC_UI_RELIGION_HOLY_SITE_BONUS_TT", label));
+	-- local worldX:number, worldY:number, worldZ:number = UI.GridToWorld( locX, locY );
+	-- iconInst.Anchor:SetWorldPositionVal( worldX + xOffset, worldY + yOffset, worldZ + zOffset );
+	-- iconInst.HolySiteLabel:SetText("[ICON_FaithLarge]"..label);
+	-- iconInst.HolySiteIcon:SetTexture(198, 88, "FontIcons");
+	-- iconInst.Anchor:SetSizeX(iconInst.HolySiteIcon:GetSizeX() + iconInst.HolySiteLabel:GetSizeX());
+	-- iconInst.Anchor:SetToolTipString(Locale.Lookup("LOC_UI_RELIGION_HOLY_SITE_BONUS_TT", label));
 end
 
 function CalculateMeterTypeFromPressure( pressure : number )
