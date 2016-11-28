@@ -22,16 +22,18 @@
       <Grid Size="parent,100" Offset="0,46" Texture="Controls_TitleBarDark" SliceCorner="10,4" SliceSize="22,24" SliceTextureSize="42,34">
         <Label Offset="10,38" Style="FontFlair24" SmallCaps="30" SmallCapsType="EveryWord" String="LOC_ESPIONAGEOVERVIEW_CITY_ACTIVITY_SUBHEADER"/>
 
-        <Grid Anchor="L,B" Size="240,28" Offset="16,7" Style="ColumnHeader">
+        <Grid Anchor="L,B" Size="185,28" Offset="16,7" Style="ColumnHeader">
           <Label Anchor="C,C" Style="FontNormal18" String="LOC_ESPIONAGEOVERVIEW_CITY"/>
         </Grid>
 
-        <Grid Anchor="R,B" Size="240,28" Offset="16,7" Style="ColumnHeader">
+        <Grid Anchor="R,B" Offset="0,7" Style="ColumnHeader">
           <!-- District Icons -->
-          <Stack Anchor="C,C" Offset="0,0" StackGrowth="Right">
+          <Stack Anchor="R,B" Offset="30,0" StackGrowth="Right">
             <Image ID="CityCenterIcon" Size="32,32" Texture="Districts32" TextureOffset="0,0"/>
             <Image ID="CommericalIcon" Size="32,32" Texture="Districts32" TextureOffset="192,0"/>
             <Image ID="TheaterIcon" Size="32,32" Texture="Districts32" TextureOffset="0,32"/>
+            <Image ID="EntertainmentIcon" Size="32,32" Texture="Districts32" TextureOffset="224,0"/>
+            <Image ID="HolyIcon" Size="32,32" Texture="Districts32" TextureOffset="32,0"/>
             <Image ID="ScienceIcon" Size="32,32" Texture="Districts32" TextureOffset="64,0"/>
             <Image ID="IndustrialIcon" Size="32,32" Texture="Districts32" TextureOffset="32,32"/>
             <Image ID="NeighborhoodIcon" Size="32,32" Texture="Districts32" TextureOffset="64,32"/>
@@ -43,7 +45,7 @@
       <!-- City Activity Stack	-->
       <ScrollPanel ID="CityActivityScrollPanel" Anchor="R,B" Size="parent-22,parent-156" Offset="12,6" Vertical="1">
         <ScrollBar Anchor="R,C" AnchorSide="O,I"  Offset="-2,0" Style="ScrollVerticalBar"/>
-          
+
         <Stack ID="CityActivityStack" Anchor="C,T" Offset="2,0" StackGrowth="Down" StackPadding="4"/>
       </ScrollPanel>
     </Container>
@@ -61,7 +63,7 @@
           <Grid Anchor="C,T" Size="Parent-2,40" Texture="Controls_TitleBarDark" SliceCorner="14,11" SliceSize="14, 12" SliceTextureSize="42,34">
             <Label Anchor="C,C" Offset="0,2" Style="FontFlair22" SmallCaps="28" SmallCapsType="EveryWord" String="LOC_ESPIONAGEOVERVIEW_MISSION_HISTORY_SUBHEADER"/>
           </Grid>
-          
+
           <!-- Mission History Stack -->
           <ScrollPanel ID="MissionHistoryScrollPanel" Anchor="C,T" Size="parent-22,400" Offset="0,42" Vertical="1" AutoScrollBar="1">
             <ScrollBar Anchor="R,C" AnchorSide="O,I"  Offset="-2,0" Style="ScrollVerticalBar"/>
@@ -114,7 +116,7 @@
       <!-- Operative Name -->
       <Label ID="OperativeName" Offset="12,10" Style="FontFlair18" SmallCaps="24" SmallCapsType="EveryWord" FontStyle="Glow" EffectColor="EspionageOverview_EffectBlue"/>
 
-      <!-- Operative Name --> 
+      <!-- Operative Name -->
       <Label ID="OperativeRank" Anchor="R,T" Offset="12,9" Style="FontNormal16" Color="Grey"/>
 
       <!-- Awaiting Assignment -->
@@ -177,7 +179,7 @@
           </GridButton>
         </Grid>
       </Container>
-      
+
       <!-- City Banner -->
       <GridButton ID="CityBanner"	Anchor="R,T" Offset="6,38"	Size="80,28" AutoSize="Horizontal" AutoSizePadding="14,0">
         <GridData Texture="Controls_CityBannerSmall" SliceCorner="14,9" SliceSize="5,4" SliceTextureSize="33,28" Color="150,170,100,255"/>
@@ -197,21 +199,21 @@
       <Image ID="SpyIconBack" Anchor="L,C" Size="34,31" Offset="6,0" Texture="Espionage_SpyIconBack">
         <Image ID="SpyIconFront" Anchor="C,C" Size="30,27" Offset="0,0" Texture="Espionage_SpyIconFront"/>
       </Image>
-      
+
       <Label ID="SpyName" Offset="46,10" Style="FontFlair18" SmallCaps="24" SmallCapsType="EveryWord"/>
       <Label ID="CivName" Offset="46,28" Style="FontNormal16"/>
-      
+
       <Label Anchor="R,C" Offset="10,0" Style="FontNormal18" String="LOC_ESPIONAGEOVERVIEW_OFFER_TRADE"/>
     </GridButton>
   </Instance>
-  
+
   <!-- Mission History Instance -->
   <Instance Name="MissionHistoryInstance">
     <Grid ID="Top" Size="489,73" AutoSize="Vertical" AutoSizePadding="0,4" Texture="Espionage_Item" SliceCorner="13,36" SliceSize="463,25" SliceTextureSize="489,73" NoStateChange="1">
       <!-- Operative Name -->
       <Label ID="OperativeName" Offset="12,10" Style="FontFlair18" SmallCaps="24" SmallCapsType="EveryWord" String="NANCY DREW"/>
 
-      <!-- Operative Rank --> 
+      <!-- Operative Rank -->
       <Label ID="OperativeRank" Anchor="R,T" Offset="12,9" Style="FontNormal16" Color="Grey" String="Spy Recruit"/>
 
       <Stack StackGrowth="Down" StackPadding="3" Offset="5,35">
@@ -250,13 +252,13 @@
       </Stack>
     </Grid>
   </Instance>
-  
+
   <!-- City Instance -->
   <Instance Name="CityInstance">
     <Grid ID="CityGrid" Size="parent-8,37" Texture="Espionage_CityContainer" SliceCorner="12,10" SliceSize="13,13">
 
       <!-- City Banner -->
-      <GridButton	ID="BannerBase"	Anchor="L,C" Offset="4,4"	Size="240,33">
+      <GridButton	ID="BannerBase"	Anchor="L,C" Offset="4,4"	Size="185,33">
         <GridData Texture="CityPanel_BannerBase" SliceCorner="20,10" SliceSize="160,1" SliceTextureSize="199,33" Color="150,170,100,255"/>
         <Grid							ID="BannerDarker"					Anchor="L,T" Offset="4,2"			Size="parent-8,parent-10"		Texture="CityPanel_BannerDarker"			SliceCorner="95,10" SliceSize="1,1" SliceTextureSize="191,23" Color="0,0,0,100" />
         <Grid							ID="BannerLighter"				Anchor="L,T" Offset="4,2"			Size="parent-8,parent-10"		Texture="CityPanel_BannerLighter"			SliceCorner="95,10" SliceSize="1,1" SliceTextureSize="191,23" Color="255,255,255,255" />
@@ -264,7 +266,7 @@
         <Label						ID="CityName"							Anchor="C,C" Offset="0,-3"		Style="FontFlair16"					FontStyle="Stroke" EffectColor="0,0,0,25" String="$CityName$" SmallCaps="20" SmallCapsType="EveryWord"/>
 
         <Image ID="GainSourcesBoostIcon" Anchor="R,C" Size="20,20" Offset="6,-4" Texture="EspionageMissions20"/>
-        
+
         <Image ID="CounterspyIconBack" Anchor="R,C" Size="34,31" Offset="0,-4" Texture="Espionage_SpyIconBack">
           <Image ID="CounterspyIconFront" Anchor="C,C" Size="30,27" Offset="0,0" Texture="Espionage_SpyIconFront"/>
         </Image>

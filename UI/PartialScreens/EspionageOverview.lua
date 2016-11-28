@@ -348,6 +348,8 @@ function AddCity(city:table)
 	AddDistrictIcon(cityInstance.CityDistrictStack, city, "DISTRICT_CITY_CENTER");
 	AddDistrictIcon(cityInstance.CityDistrictStack, city, "DISTRICT_COMMERCIAL_HUB");
 	AddDistrictIcon(cityInstance.CityDistrictStack, city, "DISTRICT_THEATER");
+	AddDistrictIcon(cityInstance.CityDistrictStack, city, "DISTRICT_ENTERTAINMENT_COMPLEX");
+	AddDistrictIcon(cityInstance.CityDistrictStack, city, "DISTRICT_HOLY_SITE");
 	AddDistrictIcon(cityInstance.CityDistrictStack, city, "DISTRICT_CAMPUS");
 	AddDistrictIcon(cityInstance.CityDistrictStack, city, "DISTRICT_INDUSTRIAL_ZONE");
 	AddDistrictIcon(cityInstance.CityDistrictStack, city, "DISTRICT_NEIGHBORHOOD");
@@ -473,7 +475,7 @@ function PopulateTabs()
 		Controls.CityActivityTabButton:RegisterCallback(Mouse.eMouseEnter, function() UI.PlaySound("Main_Menu_Mouse_Over"); end);
 		m_tabs.CityActivityTabAdded = true;
 	end
-		
+
 	-- Mission History Tab
 	-- Only show mission history if we have any mission history or captured enemy operatives
 	local shouldShowMissionHistory:boolean = false;
@@ -578,7 +580,7 @@ function AddOperative(spy:table)
 
 		-- Operation Name
 		local operationInfo:table = GameInfo.UnitOperations[operationType];
-		TruncateStringWithTooltip(operativeInstance.OperationName, MAX_BEFORE_TRUNC_MISSION_NAME, Locale.Lookup(operationInfo.Description)); 
+		TruncateStringWithTooltip(operativeInstance.OperationName, MAX_BEFORE_TRUNC_MISSION_NAME, Locale.Lookup(operationInfo.Description));
 
 		-- Turns Remaining
 		local turnsRemaining:number = spy:GetSpyOperationEndTurn() - Game.GetCurrentGameTurn();
@@ -694,7 +696,7 @@ function AddCapturedOperative(spy:table, spyID:number, playerCapturedBy:number)
 		operativeInstance.CapturingCivIconFront:SetTexture(textureOffsetX, textureOffsetY, textureSheet);
 		operativeInstance.CapturingCivName:SetText(Locale.Lookup(capturingPlayerConfig:GetPlayerName()));
 		TruncateStringWithTooltip(operativeInstance.AskForTradeButton, MAX_BEFORE_TRUNC_ASK_FOR_TRADE, Locale.Lookup("LOC_ESPIONAGEOVERVIEW_ASK_FOR_TRADE"));
-		
+
 		-- Show the ask trade button, if there is no pending deal.
 		if (not DealManager.HasPendingDeal(Game.GetLocalPlayer(), capturingPlayerID)) then
 			operativeInstance.AskForTradeButton:SetDisabled(false);
@@ -856,7 +858,7 @@ end
 
 ------------------------------------------------------------------------------------------------
 function OnCloseAllExcept(contextToStayOpen:string)
-	if contextToStayOpen ~= ContextPtr:GetID() then 
+	if contextToStayOpen ~= ContextPtr:GetID() then
 		Close();
 	end
 end
@@ -891,10 +893,10 @@ end
 -- ===========================================================================
 function OnGameDebugReturn(context:string, contextTable:table)
 	if context == RELOAD_CACHE_ID then
-		if contextTable["isVisible"] ~= nil and contextTable["isVisible"] then			
+		if contextTable["isVisible"] ~= nil and contextTable["isVisible"] then
 			Open();
 		end
-		if contextTable["selectedTab"] ~= nil then			
+		if contextTable["selectedTab"] ~= nil then
 			SelectTabByIndex( contextTable["selectedTab"] );
 		end
 	end
@@ -919,12 +921,12 @@ function Initialize()
 	Events.SystemUpdateUI.Add(m_AnimSupport.OnUpdateUI);
 	ContextPtr:SetInputHandler(m_AnimSupport.OnInputHandler, true);
 
-	-- Game Engine Events	
+	-- Game Engine Events
 	Events.UnitOperationStarted.Add( OnUnitOperationStarted );
 	Events.LocalPlayerTurnEnd.Add( OnLocalPlayerTurnEnd );
 
 	Events.InterfaceModeChanged.Add( OnInterfaceModeChanged );
-	
+
 	Events.SpyAdded.Add( OnSpyAdded );
 	Events.SpyRemoved.Add( OnSpyRemoved );
 
@@ -936,5 +938,3 @@ function Initialize()
 	PopulateTabs();
 end
 Initialize();
-
-
