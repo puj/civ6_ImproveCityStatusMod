@@ -1461,27 +1461,29 @@ function group_military( unit, unitInstance, group, parent, type )
 	if ( bCanStart ) then
 		local bCanStart, tResults = UnitManager.CanStartOperation( unit, UnitOperationTypes.UPGRADE, nil, false, true )
 
-		unitInstance.Upgrade:SetHide( false )
-		unitInstance.Upgrade:RegisterCallback( Mouse.eLClick, function() bUnits.group = group; bUnits.parent = parent; bUnits.type = type; UnitManager.RequestOperation( unit, UnitOperationTypes.UPGRADE ); end )
-		local upgradeUnitName = GameInfo.Units[tResults[UnitOperationResults.UNIT_TYPE]].Name;
-		local toolTipString	= Locale.Lookup( "LOC_UNITOPERATION_UPGRADE_DESCRIPTION" );
-		toolTipString = toolTipString .. " " .. Locale.Lookup(upgradeUnitName);
-		local upgradeCost = unit:GetUpgradeCost();
+		if(tResults ~= nil) then
+			unitInstance.Upgrade:SetHide( false )
+			unitInstance.Upgrade:RegisterCallback( Mouse.eLClick, function() bUnits.group = group; bUnits.parent = parent; bUnits.type = type; UnitManager.RequestOperation( unit, UnitOperationTypes.UPGRADE ); end )
+			local upgradeUnitName = GameInfo.Units[tResults[UnitOperationResults.UNIT_TYPE]].Name;
+			local toolTipString	= Locale.Lookup( "LOC_UNITOPERATION_UPGRADE_DESCRIPTION" );
+			toolTipString = toolTipString .. " " .. Locale.Lookup(upgradeUnitName);
+			local upgradeCost = unit:GetUpgradeCost();
 
-		if (upgradeCost ~= nil) then
-			toolTipString = toolTipString .. ": " .. upgradeCost .. " " .. Locale.Lookup("LOC_TOP_PANEL_GOLD");
-		end
-
-		toolTipString = Locale.Lookup( "LOC_UNITOPERATION_UPGRADE_INFO", upgradeUnitName, upgradeCost );
-
-		if (tResults[UnitOperationResults.FAILURE_REASONS] ~= nil) then
-			-- Add the reason(s) to the tool tip
-			for i,v in ipairs(tResults[UnitOperationResults.FAILURE_REASONS]) do
-				toolTipString = toolTipString .. "[NEWLINE]" .. "[COLOR:Red]" .. Locale.Lookup(v) .. "[ENDCOLOR]";
+			if (upgradeCost ~= nil) then
+				toolTipString = toolTipString .. ": " .. upgradeCost .. " " .. Locale.Lookup("LOC_TOP_PANEL_GOLD");
 			end
-		end
 
-		unitInstance.Upgrade:SetToolTipString( toolTipString )
+			toolTipString = Locale.Lookup( "LOC_UNITOPERATION_UPGRADE_INFO", upgradeUnitName, upgradeCost );
+
+			if (tResults[UnitOperationResults.FAILURE_REASONS] ~= nil) then
+				-- Add the reason(s) to the tool tip
+				for i,v in ipairs(tResults[UnitOperationResults.FAILURE_REASONS]) do
+					toolTipString = toolTipString .. "[NEWLINE]" .. "[COLOR:Red]" .. Locale.Lookup(v) .. "[ENDCOLOR]";
+				end
+			end
+
+			unitInstance.Upgrade:SetToolTipString( toolTipString )
+		end
 	end
 
 end
