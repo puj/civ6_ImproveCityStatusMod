@@ -1108,9 +1108,9 @@ end
 function OnCameraUpdate( vFocusX:number, vFocusY:number, fZoomLevel:number )
 	if m_GrowthPlot ~= -1 then
 
-		if fZoomLevel and fZoomLevel > 0.5 then
+		if fZoomLevel and fZoomLevel > 0.3 then
 			local delta:number = (fZoomLevel - 0.3);
-			local alpha:number = delta / 0.7;
+			local alpha:number = delta / 1.4;
 			Controls.GrowthHexAlpha:SetProgress(alpha);
 		else
 			Controls.GrowthHexAlpha:SetProgress(0);
@@ -1133,7 +1133,8 @@ function DisplayGrowthTile()
 		local cityCulture:table = m_pCity:GetCulture();
 		if cityCulture ~= nil then
 			local newGrowthPlot:number = cityCulture:GetNextPlot();
-			if(newGrowthPlot ~= -1 and newGrowthPlot ~= m_GrowthPlot) then
+			if(newGrowthPlot ~= -1 ) then
+	      UILens.ClearHex(LensLayers.PURCHASE_PLOT, m_GrowthPlot);
 				m_GrowthPlot = newGrowthPlot;
 
 				local cost:number = cityCulture:GetNextPlotCultureCost();
@@ -1143,8 +1144,8 @@ function DisplayGrowthTile()
 				local nextTurnGrowth:number = math.max(math.min((currentCulture + currentYield) / cost, 1.0), 0);
 
 				UILens.SetLayerGrowthHex(LensLayers.PURCHASE_PLOT, Game.GetLocalPlayer(), m_GrowthPlot, 1, "GrowthHexBG");
-				UILens.SetLayerGrowthHex(LensLayers.PURCHASE_PLOT, Game.GetLocalPlayer(), m_GrowthPlot, nextTurnGrowth, "GrowthHexNext");
-				UILens.SetLayerGrowthHex(LensLayers.PURCHASE_PLOT, Game.GetLocalPlayer(), m_GrowthPlot, currentGrowth, "GrowthHexCurrent");
+				-- UILens.SetLayerGrowthHex(LensLayers.PURCHASE_PLOT, Game.GetLocalPlayer(), m_GrowthPlot, nextTurnGrowth, "GrowthHexNext");
+				-- UILens.SetLayerGrowthHex(LensLayers.PURCHASE_PLOT, Game.GetLocalPlayer(), m_GrowthPlot, currentGrowth, "GrowthHexCurrent");
 
 				local turnsRemaining:number = cityCulture:GetTurnsUntilExpansion();
 				Controls.TurnsLeftDescription:SetText(Locale.ToUpper(Locale.Lookup("LOC_HUD_CITY_TURNS_UNTIL_BORDER_GROWTH", turnsRemaining)));
@@ -1171,23 +1172,19 @@ function OnInterfaceModeChanged( eOldMode:number, eNewMode:number )
 		if Controls.PurchaseTileCheck:IsChecked()   then Controls.PurchaseTileCheck:SetAndCall( false ); end
 		if Controls.ManageCitizensCheck:IsChecked() then Controls.ManageCitizensCheck:SetAndCall( false ); end
 		UI.SetFixedTiltMode( false );
-			if m_GrowthPlot ~= -1 then
-			Controls.GrowthHexAnchor:SetHide(true);
+		if m_GrowthPlot ~= -1 then
+        HideGrowthTile();
+			-- Controls.GrowthHexAnchor:SetHide(true);
 			Events.Camera_Updated.Remove(OnCameraUpdate);
-			UILens.ClearHex(LensLayers.PURCHASE_PLOT, m_GrowthPlot);
-			m_GrowthPlot = -1;
+			-- UILens.ClearHex(LensLayers.PURCHASE_PLOT, m_GrowthPlot);
+			-- m_GrowthPlot = -1;
 		end
 	end
 
-	if m_GrowthPlot ~= -1 then
-			Controls.GrowthHexAnchor:SetHide(true);
-			Events.Camera_Updated.Remove(OnCameraUpdate);
-			UILens.ClearHex(LensLayers.PURCHASE_PLOT, m_GrowthPlot);
-			m_GrowthPlot = -1;
-	end
 
-	-- if eNewMode == InterfaceModeTypes.CITY_MANAGEMENT then
-	-- end
+	if eNewMode == InterfaceModeTypes.CITY_MANAGEMENT then
+    DisplayGrowthTile();
+	end
 
 	if eNewMode == InterfaceModeTypes.CITY_RANGE_ATTACK or eNewMode == InterfaceModeTypes.DISTRICT_RANGE_ATTACK then
 		if ContextPtr:IsHidden()==false then
