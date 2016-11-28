@@ -528,6 +528,7 @@ end
 --	Set + - in group row
 -- ===========================================================================
 function RealizeGroup( instance:table )
+	if(not instance) then return end
 	local v :number = (instance["isCollapsed"]==false and instance.RowExpandCheck:GetSizeY() or 0);
 	instance.RowExpandCheck:SetTextureOffsetVal(0, v);
 
@@ -1126,6 +1127,29 @@ function ViewResourcesPage()
 		local pFooterInstance:table = {};
 		ContextPtr:BuildInstanceForControl( "ResourcesFooterInstance", pFooterInstance, instance.ContentStack ) ;
 		pFooterInstance.Amount:SetText( tostring(kSingleResourceData.Total) );
+
+
+		-- Show how many of this resource are being allocated to what cities
+		local localPlayerID = Game.GetLocalPlayer();
+		local localPlayer = Players[localPlayerID];
+		local citiesProvidedTo: table = localPlayer:GetResources():GetResourceAllocationCities(GameInfo.Resources[kResource.ResourceType].Index);
+		local numCitiesProvidingTo: number = table.count(citiesProvidedTo);
+		if (numCitiesProvidingTo > 0) then
+			pFooterInstance.AmenitiesContainer:SetHide(false);
+			pFooterInstance.Amenities:SetText("[ICON_Amenities][ICON_GoingTo]"..numCitiesProvidingTo.." "..Locale.Lookup("LOC_PEDIA_CONCEPTS_PAGEGROUP_CITIES_NAME"));
+			local amenitiesTooltip: string = "";
+			local playerCities = localPlayer:GetCities();
+			for i,city in ipairs(citiesProvidedTo) do
+				local cityName = Locale.Lookup(playerCities:FindID(city.CityID):GetName());
+				if i ~=1 then
+					amenitiesTooltip = amenitiesTooltip.. "[NEWLINE]";
+				end
+				amenitiesTooltip = amenitiesTooltip.. city.AllocationAmount.." [ICON_".. kResource.ResourceType.."] [Icon_GoingTo] " ..cityName;
+			end
+			pFooterInstance.Amenities:SetToolTipString(amenitiesTooltip);
+		else
+			pFooterInstance.AmenitiesContainer:SetHide(true);
+		end
 
 		if kSingleResourceData.IsStrategic then
 			strategicResources = strategicResources .. kSingleResourceData.Icon .. tostring( kSingleResourceData.Total );

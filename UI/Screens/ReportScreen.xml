@@ -710,6 +710,9 @@
 	<Instance					Name="ResourcesFooterInstance">
 		<Container			ID="Top"														Offset="8,0" Size="1003,30">
 			<Image																						Offset="4,0"	Size="parent-24,parent-2" Texture="Controls_GradientSmall" FlipY="1" Color="39,89,137,125" />
+			<Grid             ID="AmenitiesContainer" Style="SubContainerSmall"  Size="48,24" Anchor="L,C" Offset="5,1" AutoSizePadding="3,0">
+        <Label          ID="Amenities"	Anchor="C,C"	Style="ReportTotalText"			String="[ICON_Amenities] 3 Cities"/>
+      </Grid>
 			<Stack	StackGrowth="Right" >
 				<Box																													Size="2,26"	Color="46,70,95,128" />
 				<Container																										Size="780,26">
