@@ -35,6 +35,8 @@
         <File>UI/Menus/InGameTopOptionsMenu.lua</File>
         <File>UI/FrontEnd/MainMenu.lua</File>
         <File>UI/Screens/ReportScreen.lua</File>
+        <File>UI/PartialScreens/EspionageOverview.lua</File>
+        <File>UI/PartialScreens/EspionageOverview.xml</File>
         <File>UI/Panels/NotificationPanel.lua</File>
         <File>UI/Panels/NotificationPanel.xml</File>
         <File>UI/Screens/ReportScreen.xml</File>
@@ -110,6 +112,8 @@
                 <File>UI/Menus/InGameTopOptionsMenu.lua</File>
                 <File>UI/FrontEnd/MainMenu.lua</File>
                 <File>UI/Screens/ReportScreen.lua</File>
+        	<File>UI/PartialScreens/EspionageOverview.lua</File>
+	        <File>UI/PartialScreens/EspionageOverview.xml</File>
                 <File>UI/Panels/NotificationPanel.lua</File>
                 <File>UI/Panels/NotificationPanel.xml</File>
                 <File>UI/Screens/ReportScreen.xml</File>
