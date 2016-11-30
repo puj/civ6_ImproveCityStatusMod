@@ -957,16 +957,16 @@ function DefaultKeyDownHandler( uiKey:number )
     showMapYield = false; -- and modify the global variable
 	end
   -- END: Yield Icon toggling
-	
+
   if( uiKey == Keys.VK_NEXT) then
                local wheelValue = 90 * (( (1.0/12000.0) * MOUSE_SCALAR));
                UI.SetMapZoom( UI.GetMapZoom() + wheelValue, 0.0, 0.0 );
  	end
 
     -- START: Resource Icon toggling
-  if (uiKey == Keys.R) then -- if toggle key is pressed
-    UserConfiguration.ShowMapResources( not UserConfiguration.ShowMapResources() ); -- toggle the resource icon
-	end
+  -- if (uiKey == Keys.R) then -- if toggle key is pressed
+    -- UserConfiguration.ShowMapResources( not UserConfiguration.ShowMapResources() ); -- toggle the resource icon
+	-- end
   -- END: Resource Icon toggling
 
   if( uiKey == Keys.VK_PRIOR ) then
