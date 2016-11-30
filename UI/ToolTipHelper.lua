@@ -149,6 +149,14 @@ ToolTipHelper.GetBuildingToolTip = function(buildingHash, playerId, city)
 			end
 		end
 
+		local prereqCivic = building.PrereqCivic;
+		if(prereqCivic) then
+			local eraType = GameInfo.Civics[prereqCivic].EraType;
+			if(eraType) then
+				eraStringKey = GameInfo.Eras[eraType].Name;
+			end
+		end
+
 		if(eraStringKey) then
 			table.insert(toolTipLines, Locale.Lookup(eraStringKey));
 		end
