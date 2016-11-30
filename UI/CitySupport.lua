@@ -427,6 +427,7 @@ function GetCityData( pCity:table )
 			local gold		:number = YieldFind( kYields, "YIELD_GOLD" );
 			local production:number = YieldFind( kYields, "YIELD_PRODUCTION" );
 			local science	:number = YieldFind( kYields, "YIELD_SCIENCE" );
+			local sToolTip :string = ToolTipHelper.GetBuildingToolTip( building.Hash, pPlayer:GetID(), pCity ) .. "";
 
 			if building.IsWonder then
 				table.insert( data.Wonders, {
@@ -440,7 +441,8 @@ function GetCityData( pCity:table )
 					FoodPerTurn			= food,
 					GoldPerTurn			= gold,
 					ProductionPerTurn	= production,
-					SciencePerTurn		= science
+					SciencePerTurn		= science,
+					ToolTip 					= sToolTip
 				});
 			else
 				data.BuildingsNum = data.BuildingsNum + 1;
@@ -456,7 +458,8 @@ function GetCityData( pCity:table )
 					FoodPerTurn			= food,
 					GoldPerTurn			= gold,
 					ProductionPerTurn	= production,
-					SciencePerTurn		= science
+					SciencePerTurn		= science,
+					ToolTip 					= sToolTip
 				});
 			end
 
