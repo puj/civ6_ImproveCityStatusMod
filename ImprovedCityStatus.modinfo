@@ -69,6 +69,8 @@
         <File>UI/Screens/GovernmentScreen.xml</File>
         <File>UI/WorldInput.lua</File>
         <File>UI/WorldInput.xml</File>
+        <File>UI/WorldViewIconsManager.lua</File>
+        <File>UI/WorldViewIconsManager.xml</File>
         <File>UI/WorldView/CityBannerManager.lua</File>
         <File>UI/WorldView/CityBannerManager.xml</File>
         <File>UI/TopPanel.lua</File>
@@ -145,6 +147,8 @@
                 <File>UI/Screens/GovernmentScreen.xml</File>
                 <File>UI/WorldInput.lua</File>
                 <File>UI/WorldInput.xml</File>
+                <File>UI/WorldViewIconsManager.lua</File>
+                <File>UI/WorldViewIconsManager.xml</File>
                 <File>UI/WorldView/CityBannerManager.lua</File>
                 <File>UI/WorldView/CityBannerManager.xml</File>
                 <File>UI/TopPanel.lua</File>
