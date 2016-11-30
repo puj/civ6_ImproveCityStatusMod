@@ -75,6 +75,8 @@
         <File>UI/WorldView/CityBannerManager.xml</File>
         <File>UI/TopPanel.lua</File>
         <File>UI/TopPanel.xml</File>
+
+        <File>Data/happiness.xml</File>
         <!--<File>UI/Panels/UnitPanel.lua</File>-->
     </Files>
     <Settings>
@@ -85,6 +87,14 @@
         </Custom>
     </Settings>
     <Components>
+        <UpdateDatabase id="emptycomponent">
+            <Properties>
+                <Name>COMPONENT_NAME</Name>
+            </Properties>
+            <Items>
+                <File>Data/happiness.xml</File>
+            </Items>
+        </UpdateDatabase>
 
         <LocalizedText id="BTS_TEXT">
             <Items>
@@ -114,8 +124,8 @@
                 <File>UI/Menus/InGameTopOptionsMenu.lua</File>
                 <File>UI/FrontEnd/MainMenu.lua</File>
                 <File>UI/Screens/ReportScreen.lua</File>
-        	<File>UI/PartialScreens/EspionageOverview.lua</File>
-	        <File>UI/PartialScreens/EspionageOverview.xml</File>
+                <File>UI/PartialScreens/EspionageOverview.lua</File>
+                <File>UI/PartialScreens/EspionageOverview.xml</File>
                 <File>UI/Panels/NotificationPanel.lua</File>
                 <File>UI/Panels/NotificationPanel.xml</File>
                 <File>UI/Screens/ReportScreen.xml</File>
