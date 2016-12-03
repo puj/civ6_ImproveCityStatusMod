@@ -76,7 +76,7 @@
         <File>UI/TopPanel.lua</File>
         <File>UI/TopPanel.xml</File>
 
-        <File>Data/happiness.xml</File>
+        <File>Data/citycenterresources.sql</File>
         <!--<File>UI/Panels/UnitPanel.lua</File>-->
     </Files>
     <Settings>
@@ -92,7 +92,7 @@
                 <Name>COMPONENT_NAME</Name>
             </Properties>
             <Items>
-                <File>Data/happiness.xml</File>
+                <File>Data/citycenterresources.sql</File>
             </Items>
         </UpdateDatabase>
 
