@@ -26,6 +26,8 @@
         <File>UI/BetterTradeScreen_Text.xml</File>
         <File>UI/TradeOriginChooser.lua</File>
         <File>UI/TradeOriginChooser.xml</File>
+        <File>UI/GreatWorksOverview.lua</File>
+        <File>UI/GreatWorksOverview.xml</File>
         <File>UI/TradeRouteChooser.lua</File>
         <File>UI/TradeRouteChooser.xml</File>
         <File>UI/Popups/GreatPeoplePopup.lua</File>
@@ -117,6 +119,8 @@
                 <File>UI/BetterTradeScreen_Text.xml</File>
                 <File>UI/TradeOriginChooser.lua</File>
                 <File>UI/TradeOriginChooser.xml</File>
+                <File>UI/GreatWorksOverview.lua</File>
+                <File>UI/GreatWorksOverview.xml</File>
                 <File>UI/TradeRouteChooser.lua</File>
                 <File>UI/TradeRouteChooser.xml</File>
                 <File>UI/Popups/GreatPeoplePopup.lua</File>
