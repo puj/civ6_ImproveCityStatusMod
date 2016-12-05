@@ -2,7 +2,7 @@
 --	CityStates "Rundown" partial-screen
 --
 --	su·ze·rain (noun)
---	a sovereign or state having some control over another state that is 
+--	a sovereign or state having some control over another state that is
 --	internally autonomous.
 -- ===========================================================================
 
@@ -26,7 +26,7 @@ local NUM_ENVOY_TOKENS_FOR_FIRST_BONUS	:number = 1;
 local NUM_ENVOY_TOKENS_FOR_SECOND_BONUS	:number = 3;
 local NUM_ENVOY_TOKENS_FOR_THIRD_BONUS	:number = 6;
 local MAX_BEFORE_TRUNC_SUZERAIN:number = 310;
-local DIPLO_PIP_INFO = {};	
+local DIPLO_PIP_INFO = {};
 		DIPLO_PIP_INFO["DIPLO_STATE_PROTECTOR"]		= { IconName="ICON_RELATIONSHIP_SUZERAIN",	Tooltip="LOC_CITY_STATES_DIPLO_SUZERAIN"};
 		DIPLO_PIP_INFO["DIPLO_STATE_PATRON"]		= { IconName="ICON_RELATIONSHIP_GOOD",		Tooltip="LOC_CITY_STATES_DIPLO_GOOD"};
 		DIPLO_PIP_INFO["DIPLO_STATE_AWARE"]			= { IconName="ICON_RELATIONSHIP_NEUTRAL",	Tooltip="LOC_CITY_STATES_DIPLO_AWARE"};
@@ -89,15 +89,15 @@ end
 function LookAtCityState( iPlayerID:number )
 	local pPlayer		:table = Players[iPlayerID];
 	local pPlayerCities	:table = pPlayer:GetCities();
-	if pPlayerCities:GetCount() > 1 then 
-		-- Might change in the future; currently city states will just raze 
+	if pPlayerCities:GetCount() > 1 then
+		-- Might change in the future; currently city states will just raze
 		UI.DataError("The CityState player "..tostring(iPlayerID).." has "..tostring(pPlayerCities:GetCount()).." cities, but should only have 1.");
 	end
 	for _, pCity in pPlayerCities:Members() do
 		local locX			:number = pCity:GetX();
 		local locY			:number = pCity:GetY();
 		UI.LookAtPlotScreenPosition( locX, locY, 0.33, 0.5 );
-	end				
+	end
 end
 
 
@@ -121,7 +121,7 @@ function GetBonusText( playerID:number, envoyTokenNum:number )
 	elseif envoyTokenNum == NUM_ENVOY_TOKENS_FOR_THIRD_BONUS then bonusTypeText = Locale.Lookup("LOC_MINOR_CIV_LARGE_INFLUENCE_ENVOYS");
 	else UI.DataError("Unknown envoy number for city-state type bonus:" .. tostring(envoyTokenNum));
 	end
-	
+
 	local bonusDetailsText = "";
 	if (leader == "LEADER_MINOR_CIV_SCIENTIFIC" or leaderInfo.InheritFrom == "LEADER_MINOR_CIV_SCIENTIFIC") then
 		if envoyTokenNum == NUM_ENVOY_TOKENS_FOR_FIRST_BONUS then bonusDetailsText = Locale.Lookup("LOC_MINOR_CIV_SCIENTIFIC_TRAIT_SMALL_INFLUENCE_BONUS");
@@ -175,7 +175,7 @@ end
 --	RETURN the full bonus text type for a city, and a short (brief) version
 -- ===========================================================================
 function GetSuzerainBonusText( playerID:number )
-	
+
 	local leader	:string = PlayerConfigurations[playerID]:GetLeaderTypeName();
 	local leaderInfo:table	= GameInfo.Leaders[leader];
 	if leaderInfo == nil then
@@ -184,7 +184,7 @@ function GetSuzerainBonusText( playerID:number )
 	end
 
 	local text		:string = "";
-	
+
 	-- Unique Bonus
 	for leaderTraitPairInfo in GameInfo.LeaderTraits() do
 		if (leader ~= nil and leader == leaderTraitPairInfo.LeaderType) then
@@ -195,11 +195,11 @@ function GetSuzerainBonusText( playerID:number )
 				text = text .. Locale.Lookup(traitInfo.Description);
 			end
 		end
-	end	
+	end
 
 	-- Diplomatic Bonus
 	text = text .. "[NEWLINE][NEWLINE]" .. Locale.Lookup("LOC_CITY_STATES_SUZERAIN_DIPLOMATIC_BONUS");
-	
+
 	-- Resources Available
 	local resourceIcons	:string = "";
 	local player = Players[playerID];
@@ -235,7 +235,7 @@ function GetQuests( playerID:number )
 	if questsManager ~= nil then
 		for questInfo in GameInfo.Quests() do
 			if questsManager:HasActiveQuestFromPlayer( localPlayerID, playerID, questInfo.Index) then
-				kQuests[questInfo.Index] = { 
+				kQuests[questInfo.Index] = {
 					Description = questsManager:GetActiveQuestDescription( localPlayerID, playerID, questInfo.Index),
 					Name		= questsManager:GetActiveQuestName( localPlayerID, playerID, questInfo.Index),
 					Reward		= questsManager:GetActiveQuestReward( localPlayerID, playerID, questInfo.Index),
@@ -254,14 +254,14 @@ end
 -- ===========================================================================
 --	Returns the texture name and UV for a bonus icon type.
 -- ===========================================================================
-function GetBonusIconAtlasPieces( kCityState:table, size:number )			
+function GetBonusIconAtlasPieces( kCityState:table, size:number )
 	local iconName:string = "";
-	if	   kCityState.Type == "SCIENTIFIC"		then	iconName = "ICON_ENVOY_BONUS_SCIENCE";	
-	elseif kCityState.Type == "RELIGIOUS"		then	iconName = "ICON_ENVOY_BONUS_FAITH";	
+	if	   kCityState.Type == "SCIENTIFIC"		then	iconName = "ICON_ENVOY_BONUS_SCIENCE";
+	elseif kCityState.Type == "RELIGIOUS"		then	iconName = "ICON_ENVOY_BONUS_FAITH";
 	elseif kCityState.Type == "TRADE"			then	iconName = "ICON_ENVOY_BONUS_GOLD";
-	elseif kCityState.Type == "CULTURE"			then	iconName = "ICON_ENVOY_BONUS_CULTURE";	
-	elseif kCityState.Type == "MILITARISTIC"	then	iconName = "ICON_ENVOY_BONUS_MILITARY";	
-	elseif kCityState.Type == "INDUSTRIAL"		then	iconName = "ICON_ENVOY_BONUS_PRODUCTION";	
+	elseif kCityState.Type == "CULTURE"			then	iconName = "ICON_ENVOY_BONUS_CULTURE";
+	elseif kCityState.Type == "MILITARISTIC"	then	iconName = "ICON_ENVOY_BONUS_MILITARY";
+	elseif kCityState.Type == "INDUSTRIAL"		then	iconName = "ICON_ENVOY_BONUS_PRODUCTION";
 	end
 	return IconManager:FindIconAtlas(iconName, size);
 end
@@ -276,7 +276,7 @@ function GetRelationshipPipAtlasPieces( kCityState:table )
 	if iconName == nil or iconName == "" then
 		print("WARNING: Unexpected DiplomaticState when obtain PIP art. value:"..kCityState.DiplomaticState);
 		iconName = "ICON_RELATIONSHIP_NEUTRAL";
-	end	
+	end
 	local textureOffsetX:number, textureOffsetY:number, textureSheet:string = IconManager:FindIconAtlas(iconName, 23);
 	return textureOffsetX, textureOffsetY, textureSheet, tooltip;
 end
@@ -304,18 +304,18 @@ end
 --	tooltip describing that type.
 -- ===========================================================================
 function GetTypeAtlasPieces( kCityState:table, size:number )
-	local iconName		:string; 
-	if	   kCityState.Type == "SCIENTIFIC"		then	iconName = "ICON_CITYSTATE_SCIENCE";		
-	elseif kCityState.Type == "RELIGIOUS"		then	iconName = "ICON_CITYSTATE_FAITH";			
-	elseif kCityState.Type == "TRADE"			then	iconName = "ICON_CITYSTATE_TRADE";			
-	elseif kCityState.Type == "CULTURE"			then	iconName = "ICON_CITYSTATE_CULTURE";		
-	elseif kCityState.Type == "MILITARISTIC"	then	iconName = "ICON_CITYSTATE_MILITARISTIC";	
-	elseif kCityState.Type == "INDUSTRIAL"		then	iconName = "ICON_CITYSTATE_INDUSTRIAL";		
+	local iconName		:string;
+	if	   kCityState.Type == "SCIENTIFIC"		then	iconName = "ICON_CITYSTATE_SCIENCE";
+	elseif kCityState.Type == "RELIGIOUS"		then	iconName = "ICON_CITYSTATE_FAITH";
+	elseif kCityState.Type == "TRADE"			then	iconName = "ICON_CITYSTATE_TRADE";
+	elseif kCityState.Type == "CULTURE"			then	iconName = "ICON_CITYSTATE_CULTURE";
+	elseif kCityState.Type == "MILITARISTIC"	then	iconName = "ICON_CITYSTATE_MILITARISTIC";
+	elseif kCityState.Type == "INDUSTRIAL"		then	iconName = "ICON_CITYSTATE_INDUSTRIAL";
 	else
 		UI.DataError("WARNING: Unknown type '"..kCityState.Type.."' for getting the City-State icon (at size "..tostring(size)..")");
 		return 0,0,"","";
 	end
-			
+
 	local textureOffsetX:number, textureOffsetY:number, textureSheet:string = IconManager:FindIconAtlas(iconName, size);
 	return textureOffsetX, textureOffsetY, textureSheet;
 end
@@ -323,7 +323,7 @@ end
 -- ===========================================================================
 --	Returns the texture name and UV for a bonus icon type.
 -- ===========================================================================
-function GetTypeName( kCityState:table )			
+function GetTypeName( kCityState:table )
 	if	   kCityState.Type == "SCIENTIFIC"		then	return Locale.Lookup("LOC_CITY_STATES_TYPE_SCIENTIFIC");
 	elseif kCityState.Type == "RELIGIOUS"		then	return Locale.Lookup("LOC_CITY_STATES_TYPE_RELIGIOUS");
 	elseif kCityState.Type == "TRADE"			then	return Locale.Lookup("LOC_CITY_STATES_TYPE_TRADE");
@@ -335,7 +335,7 @@ function GetTypeName( kCityState:table )
 end
 
 -- ===========================================================================
---	Sum up the envoy changes the player is proposing to make (but not 
+--	Sum up the envoy changes the player is proposing to make (but not
 --	submitted to the game engine).
 --	RETURNS: # of envoy token changes across all City States
 -- ===========================================================================
@@ -362,7 +362,7 @@ end
 --	UI Callback
 --	Clicking close on interface.
 -- ===========================================================================
-function OnClose()	
+function OnClose()
 	Close();
 end
 
@@ -375,7 +375,7 @@ function OnBackClose()
 		m_mode = MODE.SendEnvoys;
 	else
 		m_mode = MODE.Overview;
-	end			
+	end
 	Refresh();
 end
 
@@ -392,7 +392,7 @@ end
 --	LUA Event
 --	Explicit close called from else-where.
 -- ===========================================================================
-function OnCloseCityStates()	
+function OnCloseCityStates()
 	Close();
 end
 
@@ -400,7 +400,7 @@ end
 -- ===========================================================================
 --	LUA Event
 -- ===========================================================================
-function OnOpenCityStates()	
+function OnOpenCityStates()
 	OpenOverview();
 end
 
@@ -410,7 +410,7 @@ end
 --	iPlayer	(optional) the player number for the city state to focus on, if
 --			-1 or nil it will show an overview list.
 -- ===========================================================================
-function OpenOverview( iPlayer:number )	
+function OpenOverview( iPlayer:number )
 	UI.PlaySound("CityStates_Panel_Open");
 	m_mode = MODE.Overview;
 	m_kScreenSlideAnim.Show();
@@ -424,7 +424,7 @@ end
 --	iPlayer	(optional) the player number for the city state to focus on, if
 --			-1 or nil it will show an overview list.
 -- ===========================================================================
-function OnOpenSendEnvoys( iPlayer:number )	
+function OnOpenSendEnvoys( iPlayer:number )
 	m_mode = MODE.SendEnvoys;
 	UI.PlaySound("CityStates_Panel_Open");
 	m_kScreenSlideAnim.Show();
@@ -451,11 +451,11 @@ end
 -- ===========================================================================
 --	Open panel pointing to a specific City State
 -- ===========================================================================
-function OpenSingleViewCityState( playerID:number )	
+function OpenSingleViewCityState( playerID:number )
 	if m_mode == MODE.Overview or m_mode == MODE.SendEnvoys then
 		m_mode = MODE.EnvoySent;
 	end
-	
+
 	UI.PlaySound("CityStates_Panel_Open");
 	m_iCurrentCityState = playerID;
 	m_kScreenSlideAnim.Show();
@@ -469,8 +469,8 @@ end
 --	Obtain latest data and display it.
 -- ===========================================================================
 function Refresh()
-	GetData();	
-	if m_mode == MODE.Overview or m_mode == MODE.SendEnvoys then		
+	GetData();
+	if m_mode == MODE.Overview or m_mode == MODE.SendEnvoys then
 		ViewList();
 	else
 		-- If no city state is selected, then change to the overview.
@@ -486,12 +486,12 @@ end
 -- ===========================================================================
 --	Helper to realize an envoy's contents and size of font use
 -- ===========================================================================
-function RealizeEnvoyToken( total:number, control:table )	
+function RealizeEnvoyToken( total:number, control:table )
 	if total < 10 then
 		control:SetFontSize(FONT_SIZE_SINGLE_DIGIT_ENVOYS);
 	elseif total < 100 then
 		control:SetFontSize(FONT_SIZE_TWO_DIGIT_ENVOYS);
-	else		
+	else
 		control:SetFontSize(FONT_SIZE_THREE_DIGIT_ENVOYS);	-- So much envoy!
 	end
 	control:SetText( total );
@@ -510,7 +510,7 @@ function RealizeListHeader()
 		header = Locale.ToUpper( Locale.Lookup("LOC_CITY_STATES_SEND_ENVOYS", (m_kPlayerData.EnvoyTokens - sum)) );
 		header = header .. " " .. Locale.Lookup("LOC_CITY_STATES_SEND_ENVOY_AMOUNT", (m_kPlayerData.EnvoyTokens - sum)) .. " ";	--HACK: space on end due to textcontrol bug, see below
 	end
-	--TODO: Space after [ICON..] breaks smallcaps?! ??TRON: header="SEND ENVOYS (2[ICON_Envoy] )";	
+	--TODO: Space after [ICON..] breaks smallcaps?! ??TRON: header="SEND ENVOYS (2[ICON_Envoy] )";
 	--print("Envoy Header:",header);
 	Controls.Header:SetText( header );
 
@@ -525,7 +525,7 @@ function RealizeListHeader()
 	local influenceThreshold:number	= playerInfluence:GetPointsThreshold();
 	local envoysPerThreshold:number = playerInfluence:GetTokensPerThreshold();
 	local currentEnvoys		:number = playerInfluence:GetTokensToGive();
-	
+
 	local envoyDetails:string = Locale.Lookup("LOC_TOP_PANEL_INFLUENCE_TOOLTIP_POINTS_THRESHOLD", envoysPerThreshold, influenceThreshold);
 	Controls.EnvoyDetails:SetText(envoyDetails);
 
@@ -541,7 +541,7 @@ function RealizeListHeader()
 	sTooltip = sTooltip .. Locale.Lookup("LOC_TOP_PANEL_INFLUENCE_TOOLTIP_POINTS_RATE", influenceRate);
 	sTooltip = sTooltip .. "[NEWLINE][NEWLINE]";
 	sTooltip = sTooltip .. Locale.Lookup("LOC_TOP_PANEL_INFLUENCE_TOOLTIP_SOURCES_HELP");
-	
+
 	local meterRatio = influenceBalance / influenceThreshold;
 	if (meterRatio < 0) then
 		meterRatio = 0;
@@ -568,11 +568,11 @@ function RealizeEnvoyChangeButtons()
 	-- Likely going away so even if warring envoys can still be sent.
 	for iPlayer,inst in pairs( m_uiCityStateRows ) do
 		inst.EnvoyMoreButton:SetDisabled( isMoreDisabled or (not m_kCityStates[iPlayer].CanReceiveTokensFrom) );
-		inst.EnvoyLessButton:SetDisabled( isLessDisabled or (not m_kCityStates[iPlayer].CanReceiveTokensFrom) );	
+		inst.EnvoyLessButton:SetDisabled( isLessDisabled or (not m_kCityStates[iPlayer].CanReceiveTokensFrom) );
 		local amount:number = m_kEnvoyChanges[iPlayer];
 		inst.EnvoyLessButton:SetHide( amount == nil or amount == 0 );
 		if m_kCityStates[iPlayer].isAlive then
-			if m_kCityStates[iPlayer].CanReceiveTokensFrom then 
+			if m_kCityStates[iPlayer].CanReceiveTokensFrom then
 				inst.EnvoyMoreButton:SetToolTipString( Locale.Lookup("LOC_CITY_STATES_ADD_AN_ENVOY") );
 				inst.EnvoyLessButton:SetToolTipString( Locale.Lookup("LOC_CITY_STATES_REMOVE_AN_ENVOY") );
 				inst.Envoy:SetToolTipString( nil );
@@ -587,7 +587,7 @@ function RealizeEnvoyChangeButtons()
 			inst.EnvoyMoreButton:SetToolTipString( tooltip );
 			inst.EnvoyLessButton:SetToolTipString( tooltip );
 			inst.Envoy:SetToolTipString( tooltip );
-		end	
+		end
 	end
 
 	Controls.ConfirmButton:SetDisabled(not m_isLocalPlayerTurn or sum == 0);
@@ -595,9 +595,9 @@ end
 
 -- ===========================================================================
 function OnLessEnvoyTokens( iPlayer:number )
-	
+
 	local amount :number = m_kEnvoyChanges[iPlayer];
-	if amount == nil then 
+	if amount == nil then
 		amount = 0;
 	end
 	amount = amount - 1;
@@ -606,7 +606,7 @@ function OnLessEnvoyTokens( iPlayer:number )
 		m_kEnvoyChanges[iPlayer] = nil;
 		return;
 	end
-	m_kEnvoyChanges[iPlayer] = amount;	
+	m_kEnvoyChanges[iPlayer] = amount;
 	m_uiCityStateRows[iPlayer].EnvoyLessButton:SetDisabled( m_kEnvoyChanges[iPlayer] == 0 );
 
 	UI.PlaySound("UI_Click_Sweetener_Metal_Button_Small");
@@ -620,7 +620,7 @@ end
 function OnMoreEnvoyTokens( iPlayer:number )
 
 	local amount :number = m_kEnvoyChanges[iPlayer];
-	if amount == nil then 
+	if amount == nil then
 		amount = 1;
 	else
 		amount = amount + 1;
@@ -629,7 +629,7 @@ function OnMoreEnvoyTokens( iPlayer:number )
 
 	UI.PlaySound("UI_Click_Sweetener_Metal_Button_Small");
 
-	RealizeEnvoyChangeButtons();	
+	RealizeEnvoyChangeButtons();
 	RealizeEnvoyToken( m_kCityStates[iPlayer].Tokens + m_kEnvoyChanges[iPlayer], m_uiCityStateRows[iPlayer].EnvoyCount);
 	RealizeListHeader();
 end
@@ -648,14 +648,14 @@ function OnConfirmPlacement()
 			for i=1,numTokens,1 do
 				local parameters:table = {};
 				parameters[ PlayerOperations.PARAM_PLAYER_ONE ] = cityStatePlayerID;
-				UI.RequestPlayerOperation( playerID, PlayerOperations.GIVE_INFLUENCE_TOKEN, parameters);	
+				UI.RequestPlayerOperation( playerID, PlayerOperations.GIVE_INFLUENCE_TOKEN, parameters);
 			end
 		end
-		m_kEnvoyChanges		= {};		
+		m_kEnvoyChanges		= {};
 		m_kLastCityStates	= m_kCityStates;	-- Save last city states to check against once an update occurs
 		UI.PlaySound("Click_Confirm");
 		if totalLeft < 1 then					-- If no changes are left to be made, we're done here; goodbye.
-			Close();				
+			Close();
 		end
 	else
 		UI.DataError("Unable to get a valid local player when confirming envoy tokens.");
@@ -693,7 +693,7 @@ function OnChangeWarPeaceStatus( kCityState:table )
 	local iPlayer		:number = kCityState.iPlayer;
 	local localPlayerID :number = Game.GetLocalPlayer();
 	local pLocalPlayer	:table	= Players[localPlayerID];
-	
+
 	if pLocalPlayer ~= nil then
 		if kCityState.isAtWar then
 			local parameters :table = {};
@@ -715,7 +715,7 @@ function OnLevyMilitary( kCityState:table)
 	local iPlayer		:number = kCityState.iPlayer;
 	local localPlayerID :number = Game.GetLocalPlayer();
 	local pLocalPlayer	:table	= Players[localPlayerID];
-	
+
 	if pLocalPlayer ~= nil then
 		local parameters :table = {};
 		parameters[ PlayerOperations.PARAM_PLAYER_ONE ] = iPlayer;
@@ -728,14 +728,27 @@ end
 
 -- ===========================================================================
 function AddCityStateRow( kCityState:table )
-	
-	local kInst				:table = m_CityStateRowIM:GetInstance();				
+
+	local kInst				:table = m_CityStateRowIM:GetInstance();
 	local textureOffsetX	:number;
 	local textureOffsetY	:number;
 	local textureSheet		:string;
 	local questToolTip		:string = Locale.Lookup("LOC_CITY_STATES_QUESTS");
 	local numQuests			:number = 0;
 	local cityStateName		:string = Locale.ToUpper( Locale.Lookup(kCityState.Name) .. (kCityState.isAlive and "" or "("..Locale.Lookup("LOC_CITY_STATES_DESTROYED")..")") );
+
+
+	-- Find first place and second place
+
+		local largestAmount:number = 0;
+		local secondLargestAmount:number = 0;
+		for iOtherPlayer,influence in pairs(kCityState.Influence) do
+			if influence > largestAmount then
+				secondLargestAmount = largestAmount;
+				largestAmount = influence;
+			end
+		end
+
 
 	-- Set name, truncate if necessary
 	kInst.NameLabel:SetText( cityStateName );
@@ -760,7 +773,7 @@ function AddCityStateRow( kCityState:table )
 	RealizeEnvoyToken( kCityState.Tokens, kInst.EnvoyCount);
 	kInst.EnvoyLessButton:SetDisabled( true );
 	kInst.EnvoyLessButton:SetHide( m_mode ~= MODE.SendEnvoys );
-	kInst.EnvoyMoreButton:SetHide( m_mode ~= MODE.SendEnvoys );	
+	kInst.EnvoyMoreButton:SetHide( m_mode ~= MODE.SendEnvoys );
 	kInst.EnvoyLessButton:SetVoid1( kCityState.iPlayer );
 	kInst.EnvoyMoreButton:SetVoid1( kCityState.iPlayer );
 	kInst.EnvoyLessButton:RegisterCallback( Mouse.eLClick, OnLessEnvoyTokens );
@@ -770,7 +783,7 @@ function AddCityStateRow( kCityState:table )
 	textureOffsetX, textureOffsetY, textureSheet = GetBonusIconAtlasPieces( kCityState, 26 );
 
 	kInst.BonusImage1:SetTexture( kCityState.isBonus1 and "CityState_BonusSlotOn" or "CityState_BonusSlotOff" );
-	kInst.BonusImage1:SetToolTipString( kCityState.Bonuses[1].Title .."[NEWLINE]".. kCityState.Bonuses[1].Details );	
+	kInst.BonusImage1:SetToolTipString( kCityState.Bonuses[1].Title .."[NEWLINE]".. kCityState.Bonuses[1].Details );
 
 	kInst.BonusIcon1:SetTexture( textureOffsetX, textureOffsetY, textureSheet );
 	kInst.BonusIcon1:SetColor( kCityState.isBonus1 and kCityState.ColorSecondary or COLOR_ICON_BONUS_OFF );
@@ -783,7 +796,7 @@ function AddCityStateRow( kCityState:table )
 	kInst.BonusImage6:SetTexture( kCityState.isBonus6 and "CityState_BonusSlotOn" or "CityState_BonusSlotOff" );
 	kInst.BonusImage6:SetToolTipString( kCityState.Bonuses[6].Title .."[NEWLINE]".. kCityState.Bonuses[6].Details );
 	kInst.BonusIcon6:SetTexture( textureOffsetX, textureOffsetY, textureSheet );
-	kInst.BonusIcon6:SetColor( kCityState.isBonus6 and kCityState.ColorSecondary or COLOR_ICON_BONUS_OFF );	
+	kInst.BonusIcon6:SetColor( kCityState.isBonus6 and kCityState.ColorSecondary or COLOR_ICON_BONUS_OFF );
 	kInst.BonusText6:SetColor( kCityState.isBonus6 and COLOR_TEXT_BONUS_ON or COLOR_TEXT_BONUS_OFF )
 	kInst.BonusImageSuzerainOff:SetHide( kCityState.isBonusSuzerain );
 	kInst.BonusImageSuzerainOff:SetColor( COLOR_ICON_BONUS_OFF );
@@ -791,16 +804,19 @@ function AddCityStateRow( kCityState:table )
 	kInst.BonusImageSuzerainOn:SetColor( COLOR_ICON_BONUS_ON );
 	kInst.BonusImageSuzerainOff:SetToolTipString( kCityState.Bonuses["Suzerain"].Title .."[NEWLINE]".. kCityState.Bonuses["Suzerain"].Details );
 	kInst.BonusImageSuzerainOn:SetToolTipString( kCityState.Bonuses["Suzerain"].Title .."[NEWLINE]".. kCityState.Bonuses["Suzerain"].Details );
-	kInst.BonusIconSuzerain:SetColor( kCityState.isBonusSuzerain and kCityState.ColorSecondary or COLOR_ICON_BONUS_OFF );	
+	kInst.BonusIconSuzerain:SetColor( kCityState.isBonusSuzerain and kCityState.ColorSecondary or COLOR_ICON_BONUS_OFF );
 	kInst.BonusTextSuzerain:SetColor( kCityState.isBonusSuzerain and kCityState.ColorSecondary or COLOR_TEXT_BONUS_OFF );
 	kInst.BonusTextSuzerain:SetText( kCityState.SuzerainTokensNeeded );
-	kInst.SuzerainLabel:SetColor( kCityState.isBonusSuzerain and kCityState.ColorSecondary or COLOR_ICON_BONUS_OFF );	
+	kInst.BonusTextSuzerainSecondary:SetColor( COLOR_TEXT_BONUS_OFF );
+	kInst.BonusTextSuzerainSecondary:SetText( secondLargestAmount);
+	kInst.BonusTextSuzerainSecondary:SetHide( not kCityState.isBonusSuzerain );
+	kInst.SuzerainLabel:SetColor( kCityState.isBonusSuzerain and kCityState.ColorSecondary or COLOR_ICON_BONUS_OFF );
 	kInst.Suzerain:SetColor( kCityState.isBonusSuzerain and kCityState.ColorSecondary or COLOR_ICON_BONUS_OFF );
-	kInst.Suzerain:SetText( kCityState.SuzerainName ); 
+	kInst.Suzerain:SetText( kCityState.SuzerainName );
 
 	kInst.LookAtButton:SetVoid1( kCityState.iPlayer );
 	kInst.LookAtButton:RegisterCallback( Mouse.eLClick, LookAtCityState );
-	
+
 	kInst.Icon:SetIcon( "ICON_"..kCityState.CivType );
 	kInst.Icon:SetToolTipString( Locale.Lookup( GetTypeTooltip(kCityState) ));
 	kInst.Icon:SetColor( kCityState.ColorSecondary );
@@ -839,10 +855,10 @@ function ViewList()
 
 	-- Top list
 	m_CityStateRowIM:ResetInstances();
-	m_uiCityStateRows = {};	
+	m_uiCityStateRows = {};
 	for iPlayer, kCityState in pairs( m_kCityStates ) do
 		if kCityState.isHasMet then
-			local kInst :table = AddCityStateRow( kCityState );		
+			local kInst :table = AddCityStateRow( kCityState );
 			m_uiCityStateRows[iPlayer] = kInst;
 		end
 	end
@@ -854,11 +870,11 @@ function ViewList()
 		m_BonusCityHeaderIM:ResetInstances();
 		m_BonusItemIM:ResetInstances();
 		for iPlayer, kCityState in pairs( m_kCityStates ) do
-			
+
 			-- At least the simplest of bonuses?
 			if kCityState.isBonus1 then
 				local kHeader	:table = m_BonusCityHeaderIM:GetInstance();
-				kHeader.CityName:SetText( Locale.ToUpper(  kCityState.Name ) );				
+				kHeader.CityName:SetText( Locale.ToUpper(  kCityState.Name ) );
 
 				local kItem		:table = m_BonusItemIM:GetInstance();
 				local textureOffsetX, textureOffsetY, textureSheet = GetBonusIconAtlasPieces( kCityState, 50 );
@@ -866,7 +882,7 @@ function ViewList()
 				kItem.Icon:SetColor( kCityState.ColorSecondary );
 				kItem.Title:SetColor( kCityState.ColorSecondary );
 				kItem.Title:SetText( kCityState.Bonuses[NUM_ENVOY_TOKENS_FOR_FIRST_BONUS].Title );
-				kItem.Details:SetText( kCityState.Bonuses[NUM_ENVOY_TOKENS_FOR_FIRST_BONUS].Details );	
+				kItem.Details:SetText( kCityState.Bonuses[NUM_ENVOY_TOKENS_FOR_FIRST_BONUS].Details );
 
 				if kCityState.isBonus3 then
 					kItem		= m_BonusItemIM:GetInstance();
@@ -892,7 +908,7 @@ function ViewList()
 					kItem.Icon:SetTexture( textureOffsetX, textureOffsetY, textureSheet );
 					kItem.Icon:SetColor( kCityState.ColorSecondary );
 					kItem.Title:SetColor( kCityState.ColorSecondary );
-					TruncateStringWithTooltip(kItem.Title, MAX_BEFORE_TRUNC_SUZERAIN, Locale.Lookup(kCityState.Bonuses["Suzerain"].Title)); 
+					TruncateStringWithTooltip(kItem.Title, MAX_BEFORE_TRUNC_SUZERAIN, Locale.Lookup(kCityState.Bonuses["Suzerain"].Title));
 					kItem.Details:SetText( kCityState.Bonuses["Suzerain"].Details );
 					local PADDING:number = 40;
 					kItem.Top:SetSizeY( kItem.Details:GetSizeY() + PADDING );
@@ -911,7 +927,7 @@ function ViewList()
 	else
 		Controls.BonusArea:SetHide( true );
 		Controls.CityStateScroll:SetSizeY( m_height - 210 );
-	end 
+	end
 
 	Controls.ConfirmFrame:SetHide( m_mode ~= MODE.SendEnvoys );
 	Controls.ConfirmButton:SetDisabled( true );
@@ -926,7 +942,7 @@ end
 -- ===========================================================================
 function ColorizeBonusItem( isHaveBonus:boolean, pInst:table, kCityState:table)
 	pInst.Check:SetHide( not isHaveBonus );
-	if isHaveBonus then			
+	if isHaveBonus then
 		pInst.Icon:SetColor( kCityState.ColorSecondary );
 		pInst.Title:SetColor( kCityState.ColorSecondary );
 		pInst.Details:SetColorByName("CityStateCS");
@@ -941,7 +957,7 @@ end
 --	View detailed information for a single City State
 -- ===========================================================================
 function ViewCityState( iPlayer:number )
-	
+
 	local localPlayerID = Game.GetLocalPlayer();
 	if (localPlayerID == -1) then
 		return;
@@ -950,7 +966,7 @@ function ViewCityState( iPlayer:number )
 	-- Create a column of City-States on the left side so a player can click
 	-- and instantly view them.
 	m_CityStateColumnIM:ResetInstances();
-	m_uiCityStateRows = {};	
+	m_uiCityStateRows = {};
 	for _, kCityState in pairs( m_kCityStates ) do
 		if kCityState.isHasMet then
 			local kInst :table = m_CityStateColumnIM:GetInstance();
@@ -960,7 +976,7 @@ function ViewCityState( iPlayer:number )
 
 			kInst.IconButton:SetColor( kCityState.ColorPrimary );
 			kInst.IconButton:SetVoid1( kCityState.iPlayer );
-			kInst.IconButton:RegisterCallback( Mouse.eLClick, OpenSingleViewCityState );	
+			kInst.IconButton:RegisterCallback( Mouse.eLClick, OpenSingleViewCityState );
 
 			textureOffsetX, textureOffsetY, textureSheet, tooltip = GetRelationshipPipAtlasPieces( kCityState );
 			kInst.DiplomacyPip:SetTexture( textureOffsetX, textureOffsetY, textureSheet );
@@ -974,10 +990,10 @@ function ViewCityState( iPlayer:number )
 	local kCityState:table= m_kCityStates[iPlayer];
 	if kCityState == nil then
 		UI.DataError("Attempt to show details for CityState player #"..tostring(iPlayer)..", but that doesn't exist!");
-		
+
 		-- Best attempt to salvage error is to show the list view.
 		m_mode = MODE.Overview;
-		ViewList();	
+		ViewList();
 		return;
 	end
 
@@ -996,10 +1012,10 @@ function ViewCityState( iPlayer:number )
 	local warPeaceTooltip:string = "";
 	if kCityState.isAtWar then
 		Controls.PeaceWarButton:SetText( Locale.Lookup("LOC_CITY_STATES_MAKE_PEACE") );
-		Controls.PeaceWarButton:SetDisabled( not kCityState.CanMakePeaceWith );		
+		Controls.PeaceWarButton:SetDisabled( not kCityState.CanMakePeaceWith );
 		if not kCityState.CanMakePeaceWith then
 			warPeaceTooltip = warPeaceTooltip .. Locale.Lookup("LOC_CITY_STATES_TURNS_WAR", m_iTurnsOfWar + kCityState.iTurnChanged - Game.GetCurrentGameTurn() );
-		end		
+		end
 	else
 		Controls.PeaceWarButton:SetText( Locale.Lookup("LOC_CITY_STATES_DECLARE_WAR_BUTTON") );
 		Controls.PeaceWarButton:SetDisabled( not kCityState.CanDeclareWarOn );
@@ -1010,7 +1026,7 @@ function ViewCityState( iPlayer:number )
 	end
 	Controls.PeaceWarButton:SetToolTipString( warPeaceTooltip );
 	Controls.PeaceWarButton:RegisterCallback( Mouse.eLClick, function() OnChangeWarPeaceStatus( kCityState ); end );
-	
+
 	Controls.LevyMilitaryButton:SetDisabled(not kCityState.CanLevyMilitary);
 	if kCityState.HasLevyActive and kCityState.IsLocalPlayerSuzerain then
 		local levyTooltip = Locale.Lookup("LOC_CITY_STATES_MILITARY_ALREADY_LEVIED");
@@ -1018,7 +1034,7 @@ function ViewCityState( iPlayer:number )
 	else
 		local levyTooltip = Locale.Lookup("LOC_CITY_STATES_LEVY_MILITARY_DETAILS", kCityState.LevyMilitaryCost, kCityState.LevyMilitaryTurnLimit);
 		Controls.LevyMilitaryButton:SetToolTipString(levyTooltip);
-	end 
+	end
 	Controls.LevyMilitaryButton:RegisterCallback( Mouse.eLClick, function() OnLevyMilitary( kCityState ); end );
 
 	Controls.TypeValue:SetText( GetTypeName(kCityState) );
@@ -1036,21 +1052,21 @@ function ViewCityState( iPlayer:number )
 		Controls.EnvoysSentArea:SetHide( false );
 		Controls.InfluenceArea:SetHide( true );
 		Controls.QuestsArea:SetHide( true );
-		
+
 		Controls.EnvoysSentValue2:SetText( tostring(kCityState.Tokens) );
 
 		m_EnvoysBonusCityHeaderIM:ResetInstances();
 		m_EnvoysBonusItemIM:ResetInstances();
 
 		local kHeader	:table = m_EnvoysBonusCityHeaderIM:GetInstance();
-		kHeader.CityName:SetText( Locale.ToUpper( Locale.Lookup("LOC_CITY_STATES_BONUSES",kCityState.Name)) );				
-			
+		kHeader.CityName:SetText( Locale.ToUpper( Locale.Lookup("LOC_CITY_STATES_BONUSES",kCityState.Name)) );
+
 		-- At least the simplest of bonuses?
 		local kItem		:table = m_EnvoysBonusItemIM:GetInstance();
 		local textureOffsetX, textureOffsetY, textureSheet = GetBonusIconAtlasPieces( kCityState, 50 );
 		kItem.Icon:SetTexture( textureOffsetX, textureOffsetY, textureSheet );
 		kItem.Title:SetText( kCityState.Bonuses[NUM_ENVOY_TOKENS_FOR_FIRST_BONUS].Title );
-		kItem.Details:SetText( kCityState.Bonuses[NUM_ENVOY_TOKENS_FOR_FIRST_BONUS].Details );		
+		kItem.Details:SetText( kCityState.Bonuses[NUM_ENVOY_TOKENS_FOR_FIRST_BONUS].Details );
 		ColorizeBonusItem( kCityState.isBonus1, kItem, kCityState );
 
 		kItem		= m_EnvoysBonusItemIM:GetInstance();
@@ -1068,9 +1084,9 @@ function ViewCityState( iPlayer:number )
 		kItem		= m_EnvoysBonusItemIM:GetInstance();
 		textureOffsetX, textureOffsetY, textureSheet = IconManager:FindIconAtlas("ICON_ENVOY_BONUS_SUZERAIN", 50);
 		kItem.Icon:SetTexture( textureOffsetX, textureOffsetY, textureSheet );
-		TruncateStringWithTooltip(kItem.Title, MAX_BEFORE_TRUNC_SUZERAIN, Locale.Lookup(kCityState.Bonuses["Suzerain"].Title)); 
+		TruncateStringWithTooltip(kItem.Title, MAX_BEFORE_TRUNC_SUZERAIN, Locale.Lookup(kCityState.Bonuses["Suzerain"].Title));
 		kItem.Details:SetText( kCityState.Bonuses["Suzerain"].Details );
-		
+
 		local PADDING:number = 40;
 		kItem.Top:SetSizeY( kItem.Details:GetSizeY() + PADDING );
 
@@ -1088,7 +1104,7 @@ function ViewCityState( iPlayer:number )
 		Controls.EnvoysSentArea:SetHide( true );
 		Controls.InfluenceArea:SetHide( false );
 		Controls.QuestsArea:SetHide( true );
-		
+
 		m_InfluenceRowIM:ResetInstances();
 
 		-- First determine the large # of envoy tokens given for influence so
@@ -1104,7 +1120,7 @@ function ViewCityState( iPlayer:number )
 		local kSortTable:table = {};
 		function SortHighestFirst(a, b)
 			local aOrder = kSortTable[ tostring( a ) ];
-			local bOrder = kSortTable[ tostring( b ) ];			
+			local bOrder = kSortTable[ tostring( b ) ];
 			if aOrder == nil then return false; end
 			if bOrder == nil then return true; end
 			return aOrder.influence > bOrder.influence;
@@ -1125,11 +1141,11 @@ function ViewCityState( iPlayer:number )
 			end
 			kItem.CityName:SetText( Locale.ToUpper(civName) );
 			kItem.AmountBar:SetPercent( influence / largestAmount);
-			kItem.Amount:SetText( tostring(influence) );			
+			kItem.Amount:SetText( tostring(influence) );
 			kSortTable[ tostring(kItem.GetTopControl()) ] = { influence = influence };	-- Store for sorting.
 		end
 		Controls.InfluenceStack:SortChildren( SortHighestFirst )
-		
+
 	elseif m_mode == MODE.Quests then
 		-- Setup the buttons and what (sub) areas are shown/hidden.
 		Controls.EnvoysSentButton:SetSelected( false );
@@ -1139,7 +1155,7 @@ function ViewCityState( iPlayer:number )
 		Controls.EnvoysSentArea:SetHide( true );
 		Controls.InfluenceArea:SetHide( true );
 		Controls.QuestsArea:SetHide( false );
-		
+
 		m_QuestsIM:ResetInstances();
 		for _,kQuest in pairs( kCityState.Quests ) do
 			local kItem:table = m_QuestsIM:GetInstance();
@@ -1147,8 +1163,8 @@ function ViewCityState( iPlayer:number )
 			kItem.Description:SetString( kQuest.Description );
 			kItem.Reward:SetString( kQuest.Reward );
 			kItem.Callout:SetString( kQuest.Callout );
-		end		
-		
+		end
+
 		Controls.QuestsStack:CalculateSize();
 		Controls.QuestsScroll:CalculateSize();
 
@@ -1165,7 +1181,7 @@ end
 --	Obtain data on city states
 -- ===========================================================================
 function GetData()
-	
+
 	local localPlayerID = Game.GetLocalPlayer();
 	if (localPlayerID == -1) then
 		return;
@@ -1183,7 +1199,7 @@ function GetData()
 	if pLocalPlayerInfluence ~= nil then
 		envoyTokensAvailable = pLocalPlayerInfluence:GetTokensToGive();
 		if pLocalPlayerInfluence:CanGiveInfluence() and envoyTokensAvailable > 0 then
-			isCanGiveInfluence = true;			
+			isCanGiveInfluence = true;
 		end
 	end
 
@@ -1193,7 +1209,7 @@ function GetData()
 	}
 
 	local isNewBonusAchieved:boolean = false;
-	
+
 	-- Every player that is in this game...
 	for i, pPlayer in ipairs(PlayerManager.GetAliveMinors()) do
 		local iPlayer = pPlayer:GetID();
@@ -1202,7 +1218,7 @@ function GetData()
 		local envoyTokensMostReceived	:number	= 0;
 		local kInfluence				:table	= {};
 		local suzerainID				:number	= -1;
-		local pPlayerInfluence			:table	= pPlayer:GetInfluence();		
+		local pPlayerInfluence			:table	= pPlayer:GetInfluence();
 		if pPlayerInfluence ~= nil then
 			isCanReceiveInfluence	= pPlayerInfluence:CanReceiveInfluence();
 			envoyTokens				= pPlayerInfluence:GetTokensReceived(pLocalPlayer:GetID());
@@ -1214,20 +1230,20 @@ function GetData()
 				local tokensReceived :number = pPlayerInfluence:GetTokensReceived( iInfluencePlayer );
 				if tokensReceived > 0 then
 					kInfluence[iInfluencePlayer] = tokensReceived;
-				end	
+				end
 			end
 
 		end
-				
+
 		-- For all players (other than ourselves) and can receive influence (only CityStates)...
 		if iPlayer ~= pLocalPlayer:GetID() and isCanReceiveInfluence then
-			local primaryColor, secondaryColor = UI.GetPlayerColors( iPlayer );			
-			
+			local primaryColor, secondaryColor = UI.GetPlayerColors( iPlayer );
+
 			local suzerainName:string = Locale.Lookup("LOC_CITY_STATES_NONE");
 			if suzerainID ~=-1 then
 				if (suzerainID == localPlayerID) then
 					local pPlayerConfig :table = PlayerConfigurations[suzerainID];
-					suzerainName = Locale.Lookup("LOC_CITY_STATES_YOU");					
+					suzerainName = Locale.Lookup("LOC_CITY_STATES_YOU");
 				elseif pLocalPlayer:GetDiplomacy():HasMet(suzerainID) then
 					local pPlayerConfig :table = PlayerConfigurations[suzerainID];
 					suzerainName = Locale.Lookup(pPlayerConfig:GetPlayerName());
@@ -1242,7 +1258,7 @@ function GetData()
 			if leaderInfo == nil or leaderInfo.InheritFrom == nil then
 				UI.DataError("Cannot determine leader type for player #"..tostring( iPlayer ));
 				cityStateType = "unknown";
-			elseif (leader == "LEADER_MINOR_CIV_SCIENTIFIC" or leaderInfo.InheritFrom == "LEADER_MINOR_CIV_SCIENTIFIC") then				
+			elseif (leader == "LEADER_MINOR_CIV_SCIENTIFIC" or leaderInfo.InheritFrom == "LEADER_MINOR_CIV_SCIENTIFIC") then
 				cityStateType = "SCIENTIFIC";
 			elseif (leader == "LEADER_MINOR_CIV_RELIGIOUS" or leaderInfo.InheritFrom == "LEADER_MINOR_CIV_RELIGIOUS") then
 				cityStateType = "RELIGIOUS";
@@ -1286,7 +1302,7 @@ function GetData()
 				isBonus3				= (envoyTokens >= NUM_ENVOY_TOKENS_FOR_SECOND_BONUS),	-- WARNING: Inferring game rules to set bonus thresholds.
 				isBonus6				= (envoyTokens >= NUM_ENVOY_TOKENS_FOR_THIRD_BONUS),	-- WARNING: Inferring game rules to set bonus thresholds.
 				isBonusSuzerain			= (suzerainID == localPlayerID),
-				isHasMet				= pLocalPlayer:GetDiplomacy():HasMet( iPlayer ),				
+				isHasMet				= pLocalPlayer:GetDiplomacy():HasMet( iPlayer ),
 				iScore					= pPlayer:GetDiplomaticAI():GetDiplomaticScore( localPlayerID ),
 				iState					= iPlayerDiploState,
 				iTurnChanged			= pLocalPlayer:GetDiplomacy():GetAtWarChangeTurn( iPlayer ),
@@ -1296,7 +1312,7 @@ function GetData()
 				LevyMilitaryTurnLimit	= pPlayer:GetInfluence():GetLevyTurnLimit(),
 				HasLevyActive			= (pPlayer:GetInfluence():GetLevyTurnCounter() >= 0),
 				IsLocalPlayerSuzerain	= (pLocalPlayer:GetID() == suzerainID),
-				Quests					= GetQuests( iPlayer ),				
+				Quests					= GetQuests( iPlayer ),
 				SuzerainID				= suzerainID,
 				SuzerainName			= suzerainName,
 				SuzerainTokensNeeded	= envoyTokensMostReceived,
@@ -1309,34 +1325,34 @@ function GetData()
 			if kCityState.SuzerainTokensNeeded < MIN_ENVOY_TOKENS_SUZERAIN then
 				kCityState.SuzerainTokensNeeded = MIN_ENVOY_TOKENS_SUZERAIN
 			elseif not kCityState.isBonusSuzerain then
-				kCityState.SuzerainTokensNeeded = kCityState.SuzerainTokensNeeded + 1; 
+				kCityState.SuzerainTokensNeeded = kCityState.SuzerainTokensNeeded + 1;
 			end
 
 			-- Obtain bonus text:
 			local title:string, details:string = GetBonusText( iPlayer, NUM_ENVOY_TOKENS_FOR_FIRST_BONUS );
-			kCityState.Bonuses[ NUM_ENVOY_TOKENS_FOR_FIRST_BONUS ] = { Title = title, Details = details } 				
-			if kCityState.isBonus1 then	
+			kCityState.Bonuses[ NUM_ENVOY_TOKENS_FOR_FIRST_BONUS ] = { Title = title, Details = details }
+			if kCityState.isBonus1 then
 				if m_kLastCityStates ~= nil and not m_kLastCityStates[iPlayer].isBonus1 then
 					isNewBonusAchieved = true;
 				end
 			end
 			title, details = GetBonusText( iPlayer, NUM_ENVOY_TOKENS_FOR_SECOND_BONUS );
-			kCityState.Bonuses[ NUM_ENVOY_TOKENS_FOR_SECOND_BONUS ] = { Title = title, Details = details } 
+			kCityState.Bonuses[ NUM_ENVOY_TOKENS_FOR_SECOND_BONUS ] = { Title = title, Details = details }
 			if kCityState.isBonus3 then
 				if m_kLastCityStates ~= nil and not m_kLastCityStates[iPlayer].isBonus3 then
 					isNewBonusAchieved = true;
 				end
 			end
 			title, details = GetBonusText( iPlayer, NUM_ENVOY_TOKENS_FOR_THIRD_BONUS );
-			kCityState.Bonuses[ NUM_ENVOY_TOKENS_FOR_THIRD_BONUS ] = { Title = title, Details = details } 
+			kCityState.Bonuses[ NUM_ENVOY_TOKENS_FOR_THIRD_BONUS ] = { Title = title, Details = details }
 			if kCityState.isBonus6 then
 				if m_kLastCityStates ~= nil and not m_kLastCityStates[iPlayer].isBonus6 then
 					isNewBonusAchieved = true;
 				end
 			end
 			details = GetSuzerainBonusText( iPlayer );
-			kCityState.Bonuses["Suzerain"] = { 
-				Title = Locale.Lookup("LOC_CITY_STATES_SUZERAIN_ENVOYS"), 
+			kCityState.Bonuses["Suzerain"] = {
+				Title = Locale.Lookup("LOC_CITY_STATES_SUZERAIN_ENVOYS"),
 				Details = details
 				}
 			if kCityState.isBonusSuzerain then
@@ -1346,12 +1362,12 @@ function GetData()
 			end
 
 			-- Save to master table
-			m_kCityStates[iPlayer] = kCityState;	
+			m_kCityStates[iPlayer] = kCityState;
 		end
 	end
 
 	-- Play sound if any city state just achieved a bonus.
-	if isNewBonusAchieved then		
+	if isNewBonusAchieved then
 		UI.PlaySound("Receive_Envoy_Bonus");
 	end
 
@@ -1365,7 +1381,7 @@ end
 -- ===========================================================================
 function OnInputHandler( input:table )
 	--if m_mode == MODE.EnvoySent or m_mode == MODE.InfluencedBy or m_mode == MODE.Quests then
-	return m_kScreenSlideAnim.OnInputHandler( input );	
+	return m_kScreenSlideAnim.OnInputHandler( input );
 end
 
 -- ===========================================================================
@@ -1382,8 +1398,8 @@ end
 -- ===========================================================================
 function OnShutdown()
 	LuaEvents.GameDebug_AddValue(RELOAD_CACHE_ID, "isHidden", ContextPtr:IsHidden());
-	LuaEvents.GameDebug_AddValue(RELOAD_CACHE_ID, "m_mode", m_mode);	
-	LuaEvents.GameDebug_AddValue(RELOAD_CACHE_ID, "m_iCurrentCityState", m_iCurrentCityState);	
+	LuaEvents.GameDebug_AddValue(RELOAD_CACHE_ID, "m_mode", m_mode);
+	LuaEvents.GameDebug_AddValue(RELOAD_CACHE_ID, "m_iCurrentCityState", m_iCurrentCityState);
 end
 
 -- ===========================================================================
@@ -1394,10 +1410,10 @@ function OnGameDebugReturn(context:string, contextTable:table)
 	if context == RELOAD_CACHE_ID then
 		if contextTable["m_mode"] ~= nil				then m_mode = contextTable["m_mode"]; end
 		if contextTable["m_iCurrentCityState"] ~= nil	then m_iCurrentCityState = contextTable["m_iCurrentCityState"]; end
-		if contextTable["isHidden"] ~= nil and not contextTable["isHidden"] then			
-			if		m_mode == MODE.Overview then OpenOverview(); 
+		if contextTable["isHidden"] ~= nil and not contextTable["isHidden"] then
+			if		m_mode == MODE.Overview then OpenOverview();
 			elseif	m_mode == MODE.SendEnvoys then OnOpenSendEnvoys();
-			elseif	m_mode == MODE.EnvoySent or m_mode == MODE.InfluencedBy or m_mode == MODE.Quests then 
+			elseif	m_mode == MODE.EnvoySent or m_mode == MODE.InfluencedBy or m_mode == MODE.Quests then
 				m_kScreenSlideAnim.Show();
 				Refresh();
 			end
@@ -1489,7 +1505,7 @@ end
 --	Game Event
 -- ===========================================================================
 function OnUpdateUI( type:number, tag:string, iData1:number, iData2:number, strData1:string)
-	m_kScreenSlideAnim.OnUpdateUI( type, tag, iData1, iData2, strData1 );	
+	m_kScreenSlideAnim.OnUpdateUI( type, tag, iData1, iData2, strData1 );
 	if type == SystemUpdateUI.ScreenResize then
 		Resize();
 	end
@@ -1506,7 +1522,7 @@ function Resize()
 	Controls.QuestsArea:SetSizeY( m_height - (360+subMenuY));
 
 	Controls.EnvoysBonusScroll:SetSizeY( m_height - (424+subMenuY));
-	Controls.InfluenceScroll:SetSizeY( m_height - (424+subMenuY));	
+	Controls.InfluenceScroll:SetSizeY( m_height - (424+subMenuY));
 	Controls.QuestsScroll:SetSizeY( m_height - (424+subMenuY));
 end
 
@@ -1541,7 +1557,7 @@ function Initialize()
 	m_kScreenSlideAnim = CreateScreenAnimation( Controls.SlideAnim );
 
 	-- UI Callbacks
-	Controls.CloseListButton:RegisterCallback( Mouse.eLClick, OnClose );	
+	Controls.CloseListButton:RegisterCallback( Mouse.eLClick, OnClose );
 	Controls.CloseBackButton:RegisterCallback( Mouse.eLClick, OnBackClose );
 	Controls.Title:SetText(Locale.ToUpper(Locale.Lookup("LOC_CITY_STATES_TITLE")));
 	Controls.ConfirmButton:RegisterCallback( Mouse.eLClick, OnConfirmPlacement );
@@ -1569,12 +1585,12 @@ function Initialize()
 
 	-- LUA Events
 	LuaEvents.CityBannerManager_RaiseMinorCivPanel.Add( OnRaiseMinorCivicsPanel );
-	LuaEvents.GameDebug_Return.Add( OnGameDebugReturn );	
-	LuaEvents.NotificationPanel_OpenCityStatesSendEnvoys.Add( OnOpenSendEnvoys );	
+	LuaEvents.GameDebug_Return.Add( OnGameDebugReturn );
+	LuaEvents.NotificationPanel_OpenCityStatesSendEnvoys.Add( OnOpenSendEnvoys );
 	LuaEvents.PartialScreenHooks_OpenCityStates.Add( OnOpenCityStates );
 	LuaEvents.PartialScreenHooks_CloseCityStates.Add( OnCloseCityStates );
 	LuaEvents.PartialScreenHooks_CloseAllExcept.Add( OnCloseAllExcept );
-	LuaEvents.WorldRankings_CloseCityStates.Add( OnClose );		
+	LuaEvents.WorldRankings_CloseCityStates.Add( OnClose );
 
 	Resize();
 	m_mode = MODE.Overview;

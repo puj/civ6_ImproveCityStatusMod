@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Context xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="..\..\..\..\..\CivTech\Libs\ForgeUI\ForgeUI_Assets\Controls.xsd">
-		
+
 	<SlideAnim						ID="SlideAnim"					Anchor="R,T"									Size="514,full"				Start="-514,27" End="-1,27" Cycle="Once"	Speed="3.4" Function="OutSine" Stopped="1" >
 
     <Grid																				Anchor="R,T"									Size="parent,parent+5"	Texture="Controls_BannerWide" SliceTextureSize="514,Sli" StretchMode="Tile" ConsumeMouse="1" >
@@ -59,7 +59,7 @@
 				<ScrollPanel		ID="BonusScroll"											Offset="50,39"	Size="400,parent-39"				Vertical="1" >
 					<Stack				ID="BonusStack"					Anchor="L,T"	Offset="0,1"		StackPadding="4" />
 					<ScrollBar														Anchor="R,C"	Offset="10,0"		AnchorSide="O,I"						Style="ScrollVerticalBarAlt" />
-				</ScrollPanel>	
+				</ScrollPanel>
 			</Grid>
 
 			<Grid																			Anchor="C,B"	Offset="1,-4"		Size="parent+5,32"					Texture="Controls_BannerBottom" SliceCorner="18,2" SliceTextureSize="37,32" />
@@ -77,7 +77,7 @@
 			</Image>
 			<Grid																											Offset="3,70"		Size="parent-55,parent-70"	Style="DiplomacyInfoWindowGrid">
 				<Grid																																		Size="parent,165"						Style="DiplomacyInfoHeaderGrid" />
-				<Button						ID="CloseBackButton"		Anchor="R,T"									Style="BackButtonSmall" />				
+				<Button						ID="CloseBackButton"		Anchor="R,T"									Style="BackButtonSmall" />
 				<Image																		Anchor="C,T"	Offset="0,-21"															Texture="Diplomacy_PortraitBacking" />
 				<Image																		Anchor="C,T"	Offset="0,-56"															Texture="CityState_HeaderCircle" />
 				<Image						ID="CityStateTypeIcon"	Anchor="C,T"	Offset="-1,-58"	Size="64,64"								Texture="CivSymbols64" />
@@ -86,7 +86,7 @@
 				</Image>
 				<Label																		Anchor="C,T"	Offset="0,25"		Style="FontFlair16"					SmallCaps="26" SmallCapsType="EveryWord" String="{LOC_CITY_STATES_CITY_STATE:upper}" />
 				<Label						ID="CityStateName"			Anchor="C,T"	Offset="0,47"		Style="FontFlair24"					SmallCaps="30" SmallCapsType="EveryWord" String="$CityStateName$" />
-			
+
 				<Stack						ID="SingleViewStack"									Offset="1,80"		StackGrowth="Bottom">
 					<Stack					ID="SubMenu"													Offset="1,0"		StackGrowth="Bottom"				StackPadding="-8">
 						<!-- TODO: REmove, using Back button
@@ -98,7 +98,7 @@
 					<Grid																		Anchor="C,T"	Offset="0,0"		Size="parent-10,40"					Texture="Controls_TitleBarDark"	SliceCorner="21,17"	SliceTextureSize="42,34">
 						<Image																															Size="parent,parent"				Texture="Controls_Gradient_HalfRadial"																					Color="170,176,180,35" />
 						<Label																Anchor="C,C"	Offset="0,3"																Style="FontFlair24"		Color0="170,176,180" String="{LOC_CITY_STATES_REPORT:upper}" SmallCaps="30" SmallCapsType="EveryWord" />
-					</Grid>				
+					</Grid>
 					<Box						ID="ReportArea"					Anchor="C,T"	Offset="0,0"		Size="parent-10,120"				Color="40,50,60,255">
 						<Box											  					Anchor="L,T"	Offset="1,1"		Size="parent-2,parent-2"		Color="3,4,5,255" />
 						<Image																Anchor="L,T"	Offset="1,1"		Size="parent-2,parent-2"		Texture="Controls_Gradient"																											Color="30,40,50,255" >
@@ -126,9 +126,9 @@
 						<ScrollPanel	ID="EnvoysBonusScroll"								Offset="7,60"		Size="parent-25,265"				Vertical="1">
 							<Stack			ID="EnvoysBonusStack"		Anchor="L,T"	Offset="0,1"		StackPadding="4" />
 							<ScrollBar													Anchor="R,C"	Offset="0,0"		AnchorSide="O,I"						Style="ScrollVerticalBarAlt" />
-						</ScrollPanel>												
+						</ScrollPanel>
 					</Container>
-					<Container			ID="InfluenceArea"																		Size="parent,200" Hidden="1">						
+					<Container			ID="InfluenceArea"																		Size="parent,200" Hidden="1">
 						<Grid																								Offset="10,10"	Size="parent-20,40"					Style="CityStateHeader" >
 							<Label															Anchor="C,C"																							Style="CityStateHeaderText"					String="{LOC_CITY_STATES_ENVOYS_INFLUENCE_BY_CIVILIZATION:upper}" />
 						</Grid>
@@ -136,7 +136,7 @@
 							<Stack			ID="InfluenceStack"			Anchor="L,T"	Offset="0,1"		StackPadding="4" />
 							<ScrollBar													Anchor="R,C"	Offset="4,0"		AnchorSide="O,I"						Style="ScrollVerticalBarAlt" />
 						</ScrollPanel>
-					</Container>				
+					</Container>
 					<Container			ID="QuestsArea"																				Size="parent,200"	Hidden="1" >
 						<Grid																								Offset="10,10"	Size="parent-20,40"					Style="CityStateHeader" >
 							<Label															Anchor="C,C"																							Style="CityStateHeaderText"					String="{LOC_CITY_STATES_AVAILABLE_QUESTS:upper}" />
@@ -146,7 +146,7 @@
 							<ScrollBar													Anchor="R,C"	Offset="-12,0"	AnchorSide="O,I"						Style="ScrollVerticalBarAlt" />
 						</ScrollPanel>
 					</Container>
-				</Stack>				
+				</Stack>
 			</Grid>
 		</Container>
 
@@ -191,11 +191,12 @@
 				<Grid			ID="BonusImageSuzerainOff"															Size="parent,parent"	Texture="CityState_BonusSlotBigOff" SliceCorner="31,21" SliceTextureSize="34,42"	/>
 				<Grid			ID="BonusImageSuzerainOn"																Size="parent,parent"	Texture="CityState_BonusSlotBigOn"	SliceCorner="31,21" SliceTextureSize="34,42"		/>
 				<Label		ID="BonusTextSuzerain"		Anchor="R,T"	Offset="4,2"													Style="FontNormal12"								String="4" />
+				<Label		ID="BonusTextSuzerainSecondary"		Anchor="R,B"	Offset="4,2"													Style="FontNormal12"								String="4" />
 				<Image		ID="BonusIconSuzerain"		Anchor="L,B"	Offset="2,0"		Size="26,26"					Texture="EnvoyBonuses26"						TextureOffset="156,0"	/>
 				<Label		ID="SuzerainLabel"				Anchor="L,B"	Offset="32,14"												Style="FontNormal12"								String="LOC_CITY_STATES_SUZERAIN" />
 				<Label		ID="Suzerain"							Anchor="L,B"	Offset="32,2"													Style="FontNormal12"								String="LOC_CITY_STATES_NONE" />
 			</Container>
-			
+
 			<Button			ID="LookAtButton"					Anchor="R,C"	Offset="10,-7"		Size="23,31"					Texture="Controls_ShowMe"					StateOffsetIncrement="0,0"	ToolTip="LOC_CITY_STATES_LOOK_AT" />
 
 			<Label			ID="TypeLabel"						Anchor="L,C"	Offset="125,0"												Style="FontNormal16"	Hidden="1"	String="[ICON_Faith]Religious" Note="DEPRECATED" />
@@ -218,7 +219,7 @@
 			<Label			ID="CityName" Anchor="C,C" String="$City$" Style="FontFlair14" SmallCaps="18" SmallCapsType="EveryWord" 	Color="255,255,255,120" />
 		</Container>
 	</Instance>
-	
+
 	<Instance				Name="BonusItemOnInstance">
 		<Grid					ID="Top"			Anchor="L,T"									Size="parent,72"				Texture="CityState_BonusFrameOn" SliceCorner="65,29" SliceTextureSize="74,58" >
 			<Image			ID="Icon"			Anchor="L,T"	Offset="4,5"		Size="50,50"						Texture="EnvoyBonuses50"			/>
@@ -246,7 +247,7 @@
 			<Stack												Anchor="R,B" Offset="0,-4" StackGrowth="Left">
 				<!-- TODO: non-font icon version<Image Icon="" /> -->
 				<Label		ID="Amount"				Style="FontFlair24" String="0" Color="200,190,169,255" />
-				<Label											Style="FontFlair24" String="[Icon_Envoy]" Color="200,190,169,255" />			
+				<Label											Style="FontFlair24" String="[Icon_Envoy]" Color="200,190,169,255" />
 			</Stack>
 		</Container>
 	</Instance>
