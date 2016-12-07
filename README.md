@@ -1,3 +1,5 @@
+This is based on NQ Mod v4
+
 # KNOWN ISSUES:
  - Culture tile sometimes lingers
  - Report->Resources-> Amenity to city shows max 4 cities (game core bug?)
