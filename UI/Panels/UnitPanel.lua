@@ -565,20 +565,6 @@ function GetUnitActionsTable( pUnit )
 				if ( operationRow.VisibleInUI ) then
 					local bCanStart, tResults = UnitManager.CanStartOperation( pUnit, actionHash, nil, true );
 
-					if (bCanStart and actionHash == UnitOperationTypes.REMOVE_FEATURE) then
-						local unitType :string = GameInfo.Units[pUnit:GetUnitType()].UnitType;
-						if (unitType == "UNIT_ROMAN_LEGION") then
-							print("unitType = UNIT_ROMAN_LEGION");
-						else
-							local playerUnitID:number = pUnit:GetOwner();
-							local plot:table = Map.GetPlot(pUnit:GetX(),pUnit:GetY());
-							local playerPlotID:number = plot:GetOwner();
-							if (playerUnitID ~= playerPlotID) then
-								bCanStart = false;
-							end
-						end
-					end
-					
 					if (bCanStart) then
 						-- Check again if the operation can occur, this time for real.
 						bCanStart, tResults = UnitManager.CanStartOperation(pUnit, actionHash, nil, false, true);
@@ -2706,12 +2692,10 @@ function OnInputActionTriggered( actionId )
         end
 		m_kHotkeyActions[actionId](m_kHotkeyCV1[actionId], m_kHotkeyCV2[actionId]);
 	end
-    
     -- "Delete" Hotkey doesn't appear in UnitOperations.xml, we need to hotwire it here
     if m_DeleteHotkeyId ~= nil and (actionId == m_DeleteHotkeyId) then
         OnPromptToDeleteUnit();
     end
-	
 	-- "Attack" Hotkey is pressed; should only work if combat evaluation is displayed. There is no action for basic attacks, necissitating this special case.
 	if m_combatResults ~= nil and m_AttackHotkeyId ~= nil and (actionId == m_AttackHotkeyId) then
 		MoveUnitToPlot( UI.GetHeadSelectedUnit(), m_locX, m_locY );
@@ -2790,7 +2774,7 @@ function ShowCombatAssessment( )
 								combatAssessmentStr = Locale.Lookup("LOC_HUD_UNIT_PANEL_OUTCOME_MINOR_WALL_DAMAGE");
 								ShowCombatStalemateBanner();
 							else
-								combatAssessmentStr = Locale.Lookup("LOC_HUD_UNIT_PANEL_OUTCOME_MAJOR_VICTORY"); 
+								combatAssessmentStr = Locale.Lookup("LOC_HUD_UNIT_PANEL_OUTCOME_MAJOR_WALL_DAMAGE"); 
 								ShowCombatVictoryBanner();
 							end
 						end
@@ -3658,6 +3642,20 @@ function OnPortraitClick()
 	end
 end
 
+function OnPortraitRightClick()
+	if m_selectedPlayerId ~= nil then
+		local pUnits	:table = Players[m_selectedPlayerId]:GetUnits( );
+		local pUnit		:table = pUnits:FindID( m_UnitId );
+		if (pUnit ~= nil) then
+			local unitType = GameInfo.Units[pUnit:GetUnitType()];
+			if(unitType) then
+				LuaEvents.OpenCivilopedia(unitType.UnitType);
+			end
+		end
+	end
+end
+
+
 -- ===========================================================================
 function Initialize()
 
@@ -3678,6 +3676,7 @@ function Initialize()
 	Controls.UnitName:RegisterCallback( Mouse.eLClick, OnUnitListPopupClicked );
 	Controls.UnitListPopup:RegisterSelectionCallback( OnUnitListSelection );
 	Controls.SelectionPanelUnitPortrait:RegisterCallback( Mouse.eLClick, OnPortraitClick );
+	Controls.SelectionPanelUnitPortrait:RegisterCallback( Mouse.eRClick, OnPortraitRightClick);
 
 	Events.BeginWonderReveal.Add( OnBeginWonderReveal );
 	Events.CitySelectionChanged.Add( OnCitySelectionChanged );
@@ -3720,11 +3719,17 @@ function Initialize()
 	Controls.CapacityBonus_FreshWater:SetText("+" .. tostring(FreshWaterBonus));
 	local CoastalWaterColor:number = UI.GetColorValue("COLOR_CHARMING_APPEAL");
 	Controls.SettlementWaterGrid_CoastalWater:SetColor(CoastalWaterColor);
-   
+	local CoastalWaterBonus:number = GlobalParameters.CITY_POPULATION_COAST - GlobalParameters.CITY_POPULATION_NO_WATER;
+	Controls.CapacityBonus_CoastalWater:SetText("+" .. tostring(CoastalWaterBonus));
+	local NoWaterColor:number = UI.GetColorValue("COLOR_AVERAGE_APPEAL");
+	Controls.SettlementWaterGrid_NoWater:SetColor(NoWaterColor);
+	local SettlementBlockedColor:number = UI.GetColorValue("COLOR_DISGUSTING_APPEAL");
+	Controls.SettlementWaterGrid_SettlementBlocked:SetColor(SettlementBlockedColor);
+
 	-- get housing direct from database
 	local searchterm = 'CITY_POPULATION_COAST';
 	local CityPopCoast = DB.Query("SELECT Value from GlobalParameters where Name = ?", searchterm);
-	
+	print(searchterm);
 	searchterm = 'CITY_POPULATION_NO_WATER';
 	local CityPopNoWater = DB.Query("SELECT Value from GlobalParameters where Name = ?", searchterm);
 	
@@ -3734,6 +3739,7 @@ function Initialize()
 	if(CityPopCoast) then
 		for i, row in ipairs(CityPopCoast) do
 			coastvalue = row.Value;
+			print("Val: " .. coastvalue);
 			break;
 		end
 	end

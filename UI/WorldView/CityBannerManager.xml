@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 
 <Context>
 
@@ -6,9 +6,9 @@
   <Container ID="CityBanners"/>
   <Container ID="CityDistrictIcons"/>
   <Container ID="StrategicViewStrikeButtons" Hidden="1"/>
-
-
-
+  
+	
+	
   <!-- Local Team Banner -->
   <Instance								Name="TeamCityBanner">
     <WorldAnchor					ID="Anchor">
@@ -53,6 +53,12 @@
 							</Label>
               <Label				ID="CityUnderSiegeIcon"					Anchor="L,C"	Style="FontNormal20" String="[ICON_UnderSiege]" ConsumeMouse="1" ToolTip="LOC_HUD_REPORTS_STATUS_UNDER_SEIGE"/>
               <Label				ID="CityOccupiedIcon"	          Anchor="L,C"	Style="FontNormal20" String="[ICON_Occupied]" ConsumeMouse="1" ToolTip="LOC_HUD_CITY_GROWTH_OCCUPIED"/>
+              
+              <Image			ID="PopGrowContainer" Anchor="L,C"	Size="27,27"  Texture="Banner_ProductionCircle" Color="0,0,255,255" Hidden="1" Offset="0,-1">
+			  	<Image			ID="CityGrewIcon"					Anchor="L,C" 	Size="26,26"  Texture="CityPanel_ActionManageCitizens" Color="255,255,255,255" Offset="-2,-2"/>
+			  </Image>
+              <Label				ID="CityGrew"	  Anchor="L,C"	Style="FontNormal20" String="" Offset="0,-2" Hidden="1"/>
+              
               <Label				ID="CityHousingInsufficientIcon"	  Anchor="L,C"	Style="FontNormal20" String="[ICON_HousingInsufficient]"/>
               <Label				ID="CityAmenitiesInsufficientIcon"	Anchor="L,C"	Style="FontNormal20" String="[ICON_AmenitiesInsufficient]"/>
 							<Label				ID="CityQuestIcon"							Anchor="L,C"	Style="FontNormal20" />
@@ -139,7 +145,7 @@
     </WorldAnchor>
   </Instance>
 
-
+	
   <!-- Other Team Banners' -->
   <Instance								Name="OtherCityBanner">
     <WorldAnchor					ID="Anchor" >

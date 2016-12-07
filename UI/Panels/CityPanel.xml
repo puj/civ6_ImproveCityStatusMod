@@ -197,7 +197,7 @@
         </Stack>
 
         <Button					ID="CitizensGrowthButton" Offset="28,116"  Texture="SelectionPanel_StatLarge"	Size="41,42" Disabled="1">
-          <Image Texture="CityPanel_CitizenIcon" Size="32,32" Anchor="C,C" Offset="0,-2" Color="255,255,255,150">
+          <Image Texture="CityPanel_CitizenIcon" Size="32,32" Anchor="C,C" Offset="0,-2" Color="255,255,255,255">
             <Label				ID="PopulationNumber"				Anchor="C,C" Style="CityPanelNumLarge" WrapWidth="70" String="999" Align="Center" KerningAdjustment="-1" Offset="-1,0"/>
           </Image>
         </Button>

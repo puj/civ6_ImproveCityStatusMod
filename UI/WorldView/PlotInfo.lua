@@ -12,14 +12,14 @@ include("CitySupport");
 --	CONSTANTS
 -- ===========================================================================
 local CITIZEN_BUTTON_HEIGHT		:number = 64;
-local PADDING_SWAP_BUTTON			:number = 24;
-local KEY_PLOT_PURCHASE				:string = "PLOT_PURCHASE";
+local PADDING_SWAP_BUTTON		:number = 24;
+local KEY_PLOT_PURCHASE			:string = "PLOT_PURCHASE";
 local KEY_CITIZEN_MANAGEMENT	:string = "CITIZEN_MANAGEMENT";
 local KEY_DISTRICT_PLACEMENT	:string = "DISTRICT_PLACEMENT";
-local KEY_SWAP_TILE_OWNER			:string = "SWAP_TILE_OWNER";
+local KEY_SWAP_TILE_OWNER		:string = "SWAP_TILE_OWNER";
 local YIELD_NUMBER_VARIATION	:string = "Yield_Variation_";
 local YIELD_VARIATION_MANY		:string = "Yield_Variation_Many";
-local YIELD_VARIATION_MAP			:table = {
+local YIELD_VARIATION_MAP		:table = {
 	YIELD_FOOD			= "Yield_Food_",
 	YIELD_PRODUCTION	= "Yield_Production_",
 	YIELD_GOLD			= "Yield_Gold_",
@@ -32,7 +32,7 @@ local CITY_CENTER_DISTRICT_INDEX = GameInfo.Districts["DISTRICT_CITY_CENTER"].In
 -- ===========================================================================
 --	MEMBERS
 -- ===========================================================================
-local m_PlotIM					:table = InstanceManager:new( "InfoInstance",	"Anchor", Controls.PlotInfoContainer );
+local m_PlotIM				:table = InstanceManager:new( "InfoInstance",	"Anchor", Controls.PlotInfoContainer );
 local m_uiWorldMap			:table = {};
 local m_uiPurchase			:table = {};	-- Purchase plots showing
 local m_uiCitizens			:table = {};	-- Citizens showing
@@ -42,9 +42,10 @@ local m_nextPlotID			:number = 0;	-- Saving the next plot ID for switching betwe
 
 -- ===========================================================================
 function OnClickCitizen( plotId:number )
+
 	local pSelectedCity	:table = UI.GetHeadSelectedCity();
-	local kPlot					:table = Map.GetPlotByIndex(plotId);
-	local tParameters		:table = {};
+	local kPlot			:table = Map.GetPlotByIndex(plotId);
+	local tParameters	:table = {};
 	tParameters[CityCommandTypes.PARAM_MANAGE_CITIZEN] = UI.GetInterfaceModeParameter(CityCommandTypes.PARAM_MANAGE_CITIZEN);
 	tParameters[CityCommandTypes.PARAM_X] = kPlot:GetX();
 	tParameters[CityCommandTypes.PARAM_Y] = kPlot:GetY();
@@ -56,8 +57,8 @@ end
 -- ===========================================================================
 function OnClickSwapTile( plotId:number )
 	local pSelectedCity	:table = UI.GetHeadSelectedCity();
-	local kPlot					:table = Map.GetPlotByIndex(plotId);
-	local tParameters		:table = {};
+	local kPlot			:table = Map.GetPlotByIndex(plotId);
+	local tParameters	:table = {};
 	tParameters[CityCommandTypes.PARAM_SWAP_TILE_OWNER] = UI.GetInterfaceModeParameter(CityCommandTypes.PARAM_SWAP_TILE_OWNER);
 	tParameters[CityCommandTypes.PARAM_X] = kPlot:GetX();
 	tParameters[CityCommandTypes.PARAM_Y] = kPlot:GetY();
@@ -158,9 +159,9 @@ function ShowPurchases()
 	local tPlots	:table = tResults[CityCommandResults.PLOTS];
 	if (tPlots ~= nil and table.count(tPlots) ~= 0) then
 
-		local playerTreasury	:table	= Players[Game.GetLocalPlayer()]:GetTreasury();
-		local playerGold			:number = playerTreasury:GetGoldBalance();
-		local cityGold				:table	= pSelectedCity:GetGold();
+		local playerTreasury:table	= Players[Game.GetLocalPlayer()]:GetTreasury();
+		local playerGold	:number = playerTreasury:GetGoldBalance();
+		local cityGold		:table	= pSelectedCity:GetGold();
 
 		for i,plotId in pairs(tPlots) do
 			local kPlot	:table = Map.GetPlotByIndex(plotId);
@@ -178,7 +179,6 @@ function ShowPurchases()
 				if isValid then
 					local index:number = kPlot:GetIndex();
 					local pInstance:table = GetInstanceAt( index );
-
 					if pInstance ~= nil then
 						local goldCost = cityGold:GetPlotPurchaseCost( index );
 						pInstance.PurchaseButton:SetText(tostring(goldCost));
@@ -239,6 +239,18 @@ end
 function ShowCitizens()
 	ShowSwapTiles();
 
+	local CAMPUS_DISTRICT = GameInfo.Districts["DISTRICT_CAMPUS"].Index;
+	local COMMERCIAL_HUB_DISTRICT = GameInfo.Districts["DISTRICT_COMMERCIAL_HUB"].Index;
+	local INDUSTRIAL_ZONE_DISTRICT = GameInfo.Districts["DISTRICT_INDUSTRIAL_ZONE"].Index;
+	local HANSA_DISTRICT = GameInfo.Districts["DISTRICT_HANSA"].Index;
+	local HOLY_SITE_DISTRICT = GameInfo.Districts["DISTRICT_HOLY_SITE"].Index;
+	local LAVRA_DISTRICT = GameInfo.Districts["DISTRICT_LAVRA"].Index;
+	local THEATER_DISTRICT = GameInfo.Districts["DISTRICT_THEATER"].Index;
+	local ACROPOLIS_DISTRICT = GameInfo.Districts["DISTRICT_ACROPOLIS"].Index;
+	local ENCAMPMENT_DISTRICT = GameInfo.Districts["DISTRICT_ENCAMPMENT"].Index;
+	local HARBOR_DISTRICT = GameInfo.Districts["DISTRICT_HARBOR"].Index;
+	local ROYAL_NAVY_DOCKYARD_DISTRICT = GameInfo.Districts["DISTRICT_ROYAL_NAVY_DOCKYARD"].Index;
+
 	local pSelectedCity :table = UI.GetHeadSelectedCity();
 	if pSelectedCity == nil then
 		-- Add error message here
@@ -254,11 +266,10 @@ function ShowCitizens()
 		return;
 	end
 
-	local tPlots				:table = tResults[CityCommandResults.PLOTS];
-	local tUnits				:table = tResults[CityCommandResults.CITIZENS];
-	local tMaxUnits			:table = tResults[CityCommandResults.MAX_CITIZENS];
+	local tPlots		:table = tResults[CityCommandResults.PLOTS];
+	local tUnits		:table = tResults[CityCommandResults.CITIZENS];
+	local tMaxUnits		:table = tResults[CityCommandResults.MAX_CITIZENS];
 	local tLockedUnits	:table = tResults[CityCommandResults.LOCKED_CITIZENS];
-
 	if tPlots ~= nil and (table.count(tPlots) > 0) then
 
 		m_kLensMask[KEY_CITIZEN_MANAGEMENT] = {};
@@ -277,21 +288,60 @@ function ShowCitizens()
 				pInstance.CitizenButton:SetHide(false);
 				pInstance.CitizenButton:SetDisabled( false );
 
-				if(tUnits[i] >= 1) then
+				local numUnits:number = tUnits[i];
+				local maxUnits:number = tMaxUnits[i];
+				if(numUnits >= 1) then
+					local districtType = kPlot:GetDistrictType();
+					--print(districtType);
+					if districtType == CITY_CENTER_DISTRICT_INDEX then
+						pInstance.CitizenButton:SetColor(0XFF4FFF20);
+					else
+						pInstance.CitizenButton:SetColor(0XFF5151FF);
+					end
 					pInstance.CitizenButton:SetTextureOffsetVal(0, CITIZEN_BUTTON_HEIGHT*4);
 				else
+					pInstance.CitizenButton:SetColor(0XBBFFFFFF);
 					pInstance.CitizenButton:SetTextureOffsetVal(0, 0);
 				end
 
-				if(tMaxUnits[i] > 1) then
-					pInstance.CurrentAmount:SetText(tUnits[i]);
-					pInstance.TotalAmount:SetText(tMaxUnits[i]);
+				if(maxUnits > 1) then
+					--[[ TODO: Add back for Patch2, wasn't in due to missing TEXT lock.
+					local toolTip:string = Locale.Lookup("LOC_HUD_CITY_SPECIALISTS", numUnits, maxUnits);
+					pInstance.CitizenMeterBG:SetToolTipString( toolTip );
+					--]]
+					pInstance.CitizenMeterBG:SetHide(false);
+					pInstance.CurrentAmount:SetText(numUnits);
+					pInstance.TotalAmount:SetText(maxUnits);
+					pInstance.CitizenMeter:SetPercent(numUnits / maxUnits);
+				else
+					pInstance.CitizenMeterBG:SetHide(true);
 				end
 
 				if(tLockedUnits[i] > 0) then
+					local districtType = kPlot:GetDistrictType();
+
+					if (districtType == CAMPUS_DISTRICT) then
+						pInstance.CitizenButton:SetColor(0XFFFF7777);
+					elseif (districtType == INDUSTRIAL_ZONE_DISTRICT) or (districtType == HANSA_DISTRICT) then
+						pInstance.CitizenButton:SetColor(0XFF023D6E);
+					elseif (districtType == COMMERCIAL_HUB_DISTRICT) then
+						pInstance.CitizenButton:SetColor(0XFF00E4FF);
+					elseif (districtType == THEATER_DISTRICT) or (districtType == ACROPOLIS_DISTRICT) then
+						pInstance.CitizenButton:SetColor(0XFF8E236B);
+					elseif (districtType == HOLY_SITE_DISTRICT) or (districtType ==  LAVRA_DISTRICT) then
+						pInstance.CitizenButton:SetColor(0XFFFFFFFF);
+					elseif (districtType == ENCAMPMENT_DISTRICT) then
+						pInstance.CitizenButton:SetColor(0XFFF1BFF5);
+					elseif (districtType == HARBOR_DISTRICT) or (districtType == ROYAL_NAVY_DOCKYARD_DISTRICT) then
+						pInstance.CitizenButton:SetColor(0XFFA6A000);
+					else
+						pInstance.CitizenButton:SetColor(0XFF4FFF20);
+						--pInstance.CitizenButton:SetTextureOffsetVal(0, CITIZEN_BUTTON_HEIGHT*3);
+					end
 					pInstance.LockedIcon:SetHide(false);
 				else
 					pInstance.LockedIcon:SetHide(true);
+					--pInstance.CitizenButton:SetTextureOffsetVal(0, 0);
 				end
 			end
 		end
@@ -488,6 +538,7 @@ function HideCitizens()
 
 	for _,kInstance in ipairs(m_uiCitizens) do
 		kInstance.CitizenButton:SetHide( true );
+		kInstance.CitizenMeterBG:SetHide( true );
 	end
 	m_uiCitizens = {};
 
@@ -773,6 +824,7 @@ function OnCityWorkerChanged( owner:number, cityID:number, plotX:number, plotY:n
 	if owner == Game.GetLocalPlayer() then
 		RefreshCitizenManagement();
 		ShowNextCityPlot();
+		LuaEvents.PlotInfo_UpdatePlotTooltip(true);
 	end
 end
 
