@@ -3,10 +3,10 @@
     <Properties>
         <Name>Improved City Status</Name>
         <Stability>Alpha</Stability>
-        <Teaser>by Van</Teaser>
+        <Teaser>NotQUI with more</Teaser>
         <Description>More city status</Description>
-        <Authors>HellBlazer, NotQue</Authors>
-        <SpecialThanks>HellBlazer, NotQue</SpecialThanks>
+        <Authors>HellBlazer, NotQue, Puj</Authors>
+        <SpecialThanks>HellBlazer, NotQue, Puj</SpecialThanks>
         <EnabledByDefault>1</EnabledByDefault>
         <EnabledAtStartup>1</EnabledAtStartup>
     </Properties>
