@@ -1,49 +1,49 @@
-KNOWN ISSUES:
+# KNOWN ISSUES:
  - Culture tile sometimes lingers
  - Report->Resources-> Amenity to city shows max 4 cities (game core bug?)
 
 
-v0.6 :
- CITIES
+# v0.6
+##### CITIES
   - Tweaked next growth tile to show on city selection
 
- REPORTS
+##### REPORTS
   - Added a section for adjacency yields
 
- BUILDERS
+ ##### BUILDERS
   - Possible improvement tiles are now empire-wide, not city-wide
 
- ESPIONAGE
+ ##### ESPIONAGE
   - Added entertainment complex and holy site icons in city overview..  Because I want to
 
- GREAT WORKS
+ ##### GREAT WORKS
   - Sort great works buildings by name
 
- CITY STATES
+ ##### CITY STATES
   - Added second place #of envoys if suzerain
 
- MISC
+#####  MISC
   - Changed R key back to unbind (from 'show resources') I use r for range attack, personally
 
-v0.5:
- WAR COLORS
+# v0.5:
+#####  WAR COLORS
   - All enemies and cities units have a red shaded banner color
   - All enemy city defense numbers are red color
 
- IDLE TRADE ROUTES
+#####  IDLE TRADE ROUTES
   - Added idle trade routes to top bar
    Was in format x/y, is now x/y/z
    x: Number of active trade routes
    y: Trade route capacity
    z: Number of idle trade routes (if any exist, hidden otherwise)
 
- HOUSING & AMENITY ICONS PER CITY
+#####  HOUSING & AMENITY ICONS PER CITY
   - Added color coded housing and amenity icons per city (same colors as in city overview panel)
   - Tooltip shows how many amenities/housing available out of required (format x/y)
 
- WONDER TOOLTIPS
+#####  WONDER TOOLTIPS
   - Added era to all wonder tooltips
   - Added tooltips to buildings/wonders in city overview -> buildings
 
- MISC
+#####  MISC
  - Center on capital after game load instead of starting in middle of fog of war
